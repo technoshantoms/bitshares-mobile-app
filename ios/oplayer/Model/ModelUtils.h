@@ -13,6 +13,26 @@
 @interface ModelUtils : NSObject
 
 /*
+ *  (public) 资产 - 是否是挖矿相关的资产
+ */
++ (BOOL)assetIsMinerAsset:(id)asset_object_or_asset_id;
+
+/*
+ *  (public) 资产 - 是否是参与挖矿的资产
+ */
++ (BOOL)assetIsMinerInAsset:(id)asset_object_or_asset_id;
+
+/*
+ *  (public) 资产 - 是否是退出挖矿的资产
+ */
++ (BOOL)assetIsMinerOutAsset:(id)asset_object_or_asset_id;
+
+/*
+ *  (public) 资产 - 资产是否是网关资产判断
+ */
++ (BOOL)assetIsGatewayAsset:(NSDictionary*)asset_object;
+
+/*
  *  (public) 资产 - 判断资产是否允许强清
  */
 + (BOOL)assetCanForceSettle:(id)asset_object;
@@ -58,6 +78,11 @@
 + (BOOL)assetIsCore:(id)asset;
 
 /*
+ *  （public) 获取智能币扩展参数
+ */
++ (NSDecimalNumber*)getBitAssetDataExtargs:(id)bitasset_data arg_name:(NSString*)arg_name precision:(NSInteger)precision;
+
+/*
  *  (public) 判断是否价格无效
  */
 + (BOOL)isNullPrice:(id)price;
@@ -96,5 +121,12 @@
  *  filterTradingPair - 筛选当前交易对相关订单，可为nil。
  */
 + (NSMutableArray*)processLimitOrders:(NSArray*)limit_orders filter:(TradingPair*)filterTradingPair;
+
+/*
+ *  (public) 高精度计算模式控制，控制四舍五入以及小数点精度等。
+ */
++ (NSDecimalNumberHandler*)decimalHandler:(NSRoundingMode)round_mode scale:(short)scale;
++ (NSDecimalNumberHandler*)decimalHandlerRoundUp:(short)scale;
++ (NSDecimalNumberHandler*)decimalHandlerRoundDown:(short)scale;
 
 @end

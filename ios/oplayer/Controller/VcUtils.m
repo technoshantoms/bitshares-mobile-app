@@ -466,16 +466,20 @@
  */
 + (NSString*)genShareLink:(BOOL)containWelcomeMessage
 {
+    id invite_link = [[SettingManager sharedSettingManager] getAppUrls:@"invite_link"];
+    assert(invite_link && ![invite_link isEqualToString:@""]);
+    
     WalletManager* walletMgr = [WalletManager sharedWalletManager];
-    id value = [NSString stringWithFormat:@"https://faucet.btspp.io/?lang=%@",
-                NSLocalizedString(@"kShareLinkPageDefaultLang", @"share link lang")];
+    id value = [NSString stringWithFormat:@"%@?lang=%@",
+                invite_link, NSLocalizedString(@"kShareLinkPageDefaultLang", @"share link lang")];
     if ([walletMgr isWalletExist]) {
         value = [NSString stringWithFormat:@"%@&r=%@", value, [walletMgr getWalletAccountName]];
     }
     if (containWelcomeMessage) {
         value = [NSString stringWithFormat:@"%@\n%@",
-                 NSLocalizedString(@"kShareWelcomeMessage", @"欢迎来到比特股去中心化交易平台"), value];
+                 NSLocalizedString(@"kShareWelcomeMessage", @"立即注册 KSH 账号，享受每日高额挖矿收益。（推荐使用系统浏览器打开）"), value];
     }
+    
     return value;
 }
 
@@ -603,6 +607,55 @@
     [TempManager sharedTempManager].favoritesMarketDirty = YES;
     
     return YES;
+}
+
+/*
+ *  (public) UI - 显示数字输入对话框
+ */
++ (void)showInputDecimalClicked:(NSString*)args_title
+                    placeholder:(NSString*)args_placeholder
+                      precision:(NSInteger)precision
+                      min_value:(NSDecimalNumber*)n_min_value
+                      max_value:(NSDecimalNumber*)n_max_value
+                          scale:(NSDecimalNumber*)n_scale
+                       callback:(void (^)(NSDecimalNumber* n_value))callback
+{
+    assert(args_title);
+    assert(args_placeholder);
+    
+    [[UIAlertViewManager sharedUIAlertViewManager] showInputBox:args_title
+                                                      withTitle:nil
+                                                    placeholder:args_placeholder
+                                                     ispassword:NO
+                                                             ok:NSLocalizedString(@"kBtnOK", @"确定")
+                                                          tfcfg:(^(SCLTextView *tf) {
+        if (precision > 0) {
+            tf.keyboardType = UIKeyboardTypeDecimalPad;
+            tf.iDecimalPrecision = precision;
+        } else {
+            tf.keyboardType = UIKeyboardTypeNumberPad;
+            tf.iDecimalPrecision = 0;
+        }
+    })
+                                                     completion:(^(NSInteger buttonIndex, NSString *tfvalue)
+                                                                 {
+        if (buttonIndex != 0){
+            NSDecimalNumber* n_value = [OrgUtils auxGetStringDecimalNumberValue:tfvalue];
+            //  最小值
+            if (n_min_value && [n_value compare:n_min_value] < 0) {
+                n_value = n_min_value;
+            }
+            //  最大值
+            if (n_max_value && [n_value compare:n_max_value] > 0) {
+                n_value = n_max_value;
+            }
+            //  缩放
+            if (n_scale) {
+                n_value = [n_value decimalNumberByMultiplyingBy:n_scale];
+            }
+            callback(n_value);
+        }
+    })];
 }
 
 @end

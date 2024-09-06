@@ -6,6 +6,7 @@
 /* 首页行情 */
 "kTabBarNameMarkets" = "行情";
 "kTabBarNameCollateral" = "抵押";
+"kTabBarNameMiner" = "挖矿";
 "kTabBarNameServices" = "服务";
 "kTabBarNameMy" = "我的";
 
@@ -13,13 +14,18 @@
 
 "kLabelMarketFavorites" = "自选";
 "kLabelGroupNameMain" = "主区";
+"kLabelGroupNameOTC" = "人人承兑";
+"kLabelGroupNamePerpetual" = "永续合约";
 "kLabelGroupNameCommunity" = "社区";
+"kLabelGroupNameMinerZone" = "挖矿区";
+"kLabelGroupNameDEX" = "DEX(网关)";
 "kLabelGroupNameGDEX" = "GDEX(网关)";
 "kLabelGroupNameWWW" = "WWW(网关)";
 "kLabelGroupNameOPEN" = "OPEN(网关)";
 "kLabelGroupNameWIN" = "WIN(网关)";
 "kLabelGroupNameOther" = "其他";
 "kLabelGroupIntroduction" = "介绍 >";
+"kLabelMarketNameFutures" = "合约";
 
 "kLabelNoFavMarket" = "没有任何自选";
 "kLabelBtnNameAddPair" = "添加";
@@ -67,6 +73,39 @@
 "kDebtWarmTips" = "【温馨提示】\n1、当喂价下降到强平触发价时，系统将会自动出售您的抵押资产用于归还借款。请注意调整抵押率控制风险。\n2、当锁定借款金额时，抵押率会随抵押物数量变化而变化。\n3、当锁定抵押率时，借款金额会随抵押物数量变化而变化。";
 "kDebtWarmTipsForPM" = "【温馨提示】\n当前资产为预测市场资产。借款金额和抵押物数量恒定为 1:1。";
 
+/* 中间挖矿界面各种入口 */
+"kMinerSecTitleMiner" = "NBS锁仓挖矿";
+"kMinerSecTitleScny" = "nbCNY抵押挖矿";
+"kMinerSecTitleShare" = "推荐挖矿";
+"kMinerCellLabelMinerMining" = "一键挖矿";
+"kMinerCellLabelScnyMining" = "一键挖矿";
+"kMinerCellLabelMinerExit" = "一键退出";
+"kMinerCellLabelScnyExit" = "一键退出";
+"kMinerCellLabelDataMiner" = "MINER推荐挖矿数据";
+"kMinerCellLabelDataScny" = "SCNY推荐挖矿数据";
+"kMinerCellLabelNbsLock" = "一键挖矿 - 定期";
+"kMinerCellLabelCnyLock" = "一键挖矿 - 定期";
+"kMinerCellLabelMyLockList" = "我的锁仓";
+"kMinerCellLabelShareLink" = "推荐好友";
+"kMinerCellClickTipsDontSupportedFeature" = "该功能未开启。";
+"kMinerCellClickTipsInvalidAuthToken" = "当前账号登录信息失效，请重新登录。";
+"kMinerSharesDataNoAnyShares" = "没有任何推荐数据";
+"kMinerSharesDataShareItemsTitle" = "推荐明细";
+"kMinerNBSMiningRewardTitle" = "MINER锁仓挖矿收益";
+"kMinerNBSShareMiningRewardTitle" = "MINER推荐挖矿收益";
+"kMinerCNYMiningRewardTitle" = "SCNY抵押挖矿收益";
+"kMinerCNYShareMiningRewardTitle" = "SCNY推荐挖矿收益";
+"kMinerTotalInviteAccountTitle" = "总共邀请 %@ 人";
+"kMinerTotalInviteAmountTitle" = "有效邀请持有量 %@ %@";
+"kMinerApiErrServerOrNetwork" = "推荐数据服务器或网络异常，请稍后再试。";
+"kMinerApiErrNotSupportedMultiAccount" = "多签账号不支持查看推荐数据。";
+"kMinerValidHoldAmountTipsMINER" = "1、自身需锁仓不少于 %@ NBS（含MINER和定期锁仓）。\n2、自身锁仓的NBS数量必须大于被推荐账号，否则缺口部分不计入有效邀请持有量。";
+"kMinerValidHoldAmountTipsSCNY" = "1、自身需持有不少于 %@ SCNY。\n2、自身持有的SCNY数量必须大于被推荐账号，否则缺口部分不计入有效邀请持有量。";
+"kMinerMiningRewardTipsMINER" = "所有锁仓NBS的账户（含定期锁仓和MINER）按照持有数量平均分配每日 %@ NCN 的矿池产出。";
+"kMinerMiningRewardTipsSCNY" = "所有持有SCNY的账户按照持有数量平均分配每日 %@ NCN 的矿池产出。";
+"kMinerShareRewardTipsMINER" = "推荐锁仓挖矿的每日收益为：（有效邀请持有量）x %@%%";
+"kMinerShareRewardTipsSCNY" = "推荐抵押挖矿的每日收益为：（有效邀请持有量）x %@%%";
+
 /* 服务界面 */
 "kServicesCellLabelQrScan" = "扫一扫";
 "kServicesCellLabelTransfer" = "转账";
@@ -79,7 +118,7 @@
 "kServicesCellLabelOtcMerchant" = "商家信息";
 "kServicesCellLabelDepositWithdraw" = "充币提币";
 "kServicesCellLabelAdvFunction" = "高级功能";
-"kServicesCellLabelBtsExplorer" = "BTS浏览器";
+"kServicesCellLabelBtsExplorer" = "NBS浏览器";
 
 /* 扫一扫相关字符串 */
 "kVcScanPermissionNoCamera" = "未检测到您的摄像头。";
@@ -199,6 +238,8 @@
 "kLblMembershipLifetime" = "终身会员";
 "kLblAccountLocked" = "锁定中";
 "kLblAccountUnlocked" = "未锁定";
+"kUserLockTipMessageLocked" = "已锁定。";
+"kUserLockTipMessageUnlocked" = "已解锁。";
 "kLblCellMyProposal" = "提案管理";
 "kLblCellAssetMgr" = "资产管理";
 "kLblCellWalletAndMultiSign" = "钱包&多签";
@@ -272,8 +313,10 @@
 "kEditPasswordCellTitleYourNewPassword" = "您的新密码";
 "kEditPasswordSwitchToEnPassword" = "切换英文密码";
 "kEditPasswordSwitchToZhPassword" = "切换中文密码";
+"kEditPasswordCopyAbovePassword" = "复制密码";
+"kEditPasswordCopyConfirmAsk" = "复制密码可能存在风险，是否继续复制？";
 "kEditPasswordBtnNext" = "下一步";
-"kEditPasswordUiSecTips" = "【温馨提示】\n请勿复制、拍照、截图。\n请使用纸笔按照从左到右、从上到下的顺序依次记录以上 %@ 个字符组成的密码，并妥善保存。丢失后将无法找回。";
+"kEditPasswordUiSecTips" = "【温馨提示】\n请使用纸笔按照从左到右、从上到下的顺序依次记录以上 %@ 个字符组成的密码，并妥善保存。丢失后将无法找回。";
 "kEditPasswordCellTitleCurrAccountName" = "当前账号";
 "kEditPasswordCellTItleYourNewAccountName" = "您的账号";
 "kEditPasswordCellTitleVerifyPassword" = "验证密码";
@@ -306,7 +349,7 @@
 "kLoginPageModeBrainKey" = "助记词";
 "kLoginPageModePrivateKey" = "私钥模式";
 "kLoginPageModeWallet" = "钱包模式";
-"kLoginTipsPlaceholderAccount" = "请输入 Bitshares 账号名";
+"kLoginTipsPlaceholderAccount" = "请输入 NewBitshares 账号名";
 "kLoginTipsPlaceholderBrainKey" = "请输入助记词，每个单词之间按空格分割。";
 "kLoginTipsPlaceholderTradePassword" = "设置新的解锁密码";
 "kLoginTipsPlaceholderActiveKey" = "请输入资金权限私钥";
@@ -317,6 +360,8 @@
 "kRegTipsPlaceholderNewPassword" = "请输入新的密码";
 "kRegTipsPlaceholderNewWalletPassword" = "请输入新的钱包密码";
 "kRegCellLabelWalletPassword" = "钱包密码";
+"kRegCellLabelInviteAccount" = "邀请人";
+"kRegCellPlaceholderInviteAccount" = "请输入邀请人账号";
 "kLoginCellLabelRefCode" = "推荐码";
 "kLoginTipsLoginOK" = "登录成功。";
 "kLoginTipsRegFullOK" = "注册成功。";
@@ -339,7 +384,7 @@
 "kLoginImportTipsPleaseInputPassword" = "请输入密码。";
 "kLoginImportTipsReadWalletFailed" = "读取钱包文件失败。";
 "kLoginImportTipsInvalidFileOrPassword" = "钱包文件无效或密码不正确。";
-"kLoginImportTipsNotBTSWallet" = "该钱包不是Bitshares区块链的钱包。";
+"kLoginImportTipsNotBTSWallet" = "该钱包不是NewBitshares区块链的钱包。";
 "kLoginImportTipsWalletIsEmpty" = "该钱包为空钱包，请重选选择。";
 "kLoginImportTipsWalletHaveManyAccounts" = "该钱包包含多个账户，不支持导入。";
 "kLoginImportTipsWalletNoPrivateKey" = "该钱包不包含密钥信息，请重新选择。";
@@ -367,8 +412,8 @@
 "kLoginCellWalletPassword" = "钱包密码";
 "kLoginCellActivePrivateKey" = "资金私钥";
 "kLoginCellConfirmPassword" = "确认密码";
-"kLoginRegTipsAccountMode" = "提示：账号密码对应格式要求可以点击问号查看。\n注意：比特股是去中心化区块链应用密码一旦丢失或遗忘将无法找回，请务必妥善保管。";
-"kLoginRegTipsWalletMode" = "提示：钱包密码对应格式要求可以点击问号查看。\n注意：比特股是去中心化区块链应用，钱包文件和密码一旦丢失或遗忘将无法找回，建议您注册后将钱包文件做好备份，并妥善保管。※ 推荐使用钱包模式。";
+"kLoginRegTipsAccountMode" = "提示：账号密码对应格式要求可以点击问号查看。\n注意：新比特股是去中心化区块链应用密码一旦丢失或遗忘将无法找回，请务必妥善保管。";
+"kLoginRegTipsWalletMode" = "提示：钱包密码对应格式要求可以点击问号查看。\n注意：新比特股是去中心化区块链应用，钱包文件和密码一旦丢失或遗忘将无法找回，建议您注册后将钱包文件做好备份，并妥善保管。※ 推荐使用钱包模式。";
 "kLoginFaucetTipsInvalidArguments" = "参数无效。";
 "kLoginFaucetTipsInvalidAccountFmt" = "账号格式无效。";
 "kLoginFaucetTipsAccountAlreadyExist" = "账号已经存在。";
@@ -448,6 +493,10 @@
 "kVcAssetTotalValue" = "总资产折合(%@)";
 "kVcAssetBtnTransfer" = "转账";
 "kVcAssetBtnTrade" = "交易";
+"kVcAssetBtnMiner" = "挖矿";
+"kVcAssetBtnFastSwap" = "闪兑";
+"kVcAssetBtnGatewayDeposit" = "充币";
+"kVcAssetBtnGatewayWithdrawal" = "提币";
 "kVcAssetBtnSettle" = "清算";
 "kVcAssetBtnReserve" = "销毁";
 "kVcAssetBtnStakeVote" = "锁仓";
@@ -494,6 +543,7 @@
 "kVcAssetMgrCellActionIssueAsset" = "发行资产";
 "kVcAssetMgrCellActionClaimFeePool" = "提取手续费池";
 "kVcAssetMgrCellActionClaimMarketFees" = "提取市场手续费";
+"kVcAssetMgrCellActionClaimCollateralFees" = "提取强清和爆仓手续费";
 "kVcAssetMgrCellActionGlobalSettle" = "全局清算";
 "kVcAssetMgrCellInfoCurSupply" = "当前供应量";
 "kVcAssetMgrCellInfoMaxSupply" = "最大供应量";
@@ -522,6 +572,13 @@
 "kVcAssetMgrCellTitleSmartDelayForSettle" = "强清延迟时间";
 "kVcAssetMgrCellTitleSmartOffsetSettle" = "强清补偿比例";
 "kVcAssetMgrCellTitleSmartMaxSettleValuePerHour" = "每周期最大清算量";
+"kVcAssetMgrCellTitleSmartMarginCallFeeRatio" = "爆仓手续费";
+"kVcAssetMgrCellTitleSmartForceSettleFeePercent" = "强清手续费";
+"kVcAssetMgrCellTitleSmartICRValue" = "初始抵押率";
+"kVcAssetMgrCellTitleSmartMCRValue" = "爆仓抵押率";
+"kVcAssetMgrCellTitleSmartMSSRValue" = "爆仓惩罚率";
+"kVcAssetMgrCellTitleSmartMSSRValueDisableUpdate" = "(不可更新)";
+"kVcAssetMgrCellTitleSmartMSSRValueUpdateByFeedProducers" = "允许喂价者更新";
 "kVcAssetMgrCellTitleFeeMarketFeeRatio" = "交易手续费比例";
 "kVcAssetMgrCellTitleFeeMaxFeeValue" = "单笔最大手续费";
 "kVcAssetMgrCellTitleFeeRefPercent" = "引荐人分成比例";
@@ -544,6 +601,11 @@
 "kVcAssetMgrInputPlaceholderSmartDelayForSettle" = "请输入强清延迟";
 "kVcAssetMgrInputPlaceholderSmartOffsetSettle" = "请输入强清补偿";
 "kVcAssetMgrInputPlaceholderSmartMaxSettleValuePerHour" = "请输入每小强清百分比";
+"kVcAssetMgrInputPlaceholderSmartInputMarginCallFeeRatio" = "请输入爆仓手续费";
+"kVcAssetMgrInputPlaceholderSmartInputForceSettleFeePercent" = "请输入强清手续费";
+"kVcAssetMgrInputPlaceholderSmartInputICR" = "请输入初始抵押率";
+"kVcAssetMgrInputPlaceholderSmartInputMCR" = "请输入爆仓抵押率";
+"kVcAssetMgrInputPlaceholderSmartInputMSSR" = "请输入爆仓惩罚率";
 "kVcAssetMgrInputPlaceholderFeeMarketFeeRatio" = "请输入手续费比例";
 "kVcAssetMgrInputPlaceholderFeeMaxFeeValue" = "请输入单笔最大手续费";
 "kVcAssetMgrInputPlaceholderFeeRefPercent" = "请输入引荐人分成比例";
@@ -589,12 +651,40 @@
 "kVcAssetOpUpdateAssetSubmitTipsOK" = "更新资产成功。";
 "kVcAssetOpUpdateBitassetSubmitTipsOK" = "更新智能币成功。";
 
+"kVcAssetOpMinerUiTips" = "【温馨提示】\n1、在订单簿中快速兑换 %@ 资产。\n2、兑换比例为 1:%@，如果市场深度不足则会兑换失败。\n3、根据市场情况可能存在少许误差。";
+"kVcAssetOpMinerCellPlaceholderAmount" = "请输入兑换数量";
+"kVcAssetOpMinerBtnName" = "%@ 兑换 %@";
+"kVcAssetOpMinerSubmitTipsPleaseInputValidAmount" = "请输入有效的兑换数量。";
+"kVcAssetOpMinerSubmitTipSwapOK" = "兑换成功。";
+
+"kVcAssetOpStakeMiningCellStakeAssetName" = "锁仓资产";
+"kVcAssetOpStakeMiningCellStakePeriod" = "锁仓周期";
+"kVcAssetOpStakeMiningPlaceholderSelectStakePeriod" = "请选择锁仓周期";
+"kVcAssetOpStakeMiningPlaceholderInputStakeAmount" = "请输入锁仓数量";
+"kVcAssetOpStakeMiningTitleStakePeriod" = "锁仓周期";
+"kVcAssetOpStakeMiningBtnName" = "锁仓";
+"kVcAssetOpStakeMiningUITipsNonStakeAsset" = "【温馨提示】\n1、锁仓资产在到期之前不可取回，请谨慎操作。\n2、该资产不是挖矿资产，锁仓不会产生任何收益。";
+"kVcAssetOpStakeMiningUITipsRewardRatioLineFmt" = "%@、锁仓%@，%@倍收益。\n";
+"kVcAssetOpStakeMiningUITipsStakeAsset" = "【温馨提示】\n锁仓挖矿和 %@ 挖矿共享同一个矿池奖励。\n%@\n※ 锁仓资产在到期之前不可取回，请谨慎操作。";
+"kVcAssetOpStakeMiningTipsSelectValidStakeAmount" = "请输入有效的锁仓数量。";
+"kVcAssetOpStakeMiningTipsLessThanMinStakeAmount" = "单次最低锁仓数量 %@ %@";
+"kVcAssetOpStakeMiningTipsSelectStakePeriod" = "请选择锁仓周期。";
+"kVcAssetOpStakeMiningAskConfirmTips" = "您确认锁仓 %@ %@ 吗？\n\n※ 锁仓到期之前不可取回，请谨慎操作。"; 
+"kVcAssetOpStakeMiningSubmitTipsSuccess" = "锁仓成功。";
+
+"kVcMyStakeListCellStakeObjectID" = "锁仓编号 #%@";
+"kVcMyStakeListCellPeriodTitle" = "周期";
+"kVcMyStakeListCellLockExpiredTitle" = "到期时间";
+"kVcMyStakeListCellAlreadyExpired" = "已到期";
+"kVcMyStakeListUITipsNoData" = "没有任何锁仓对象";
+"kVcMyStakeListSubmitTipsClaimSuccess" = "锁仓资金 %@ 取回成功。";
+
 "kVcAssetOpSettleTipsDisableSettle" = "该资产禁止清算。";
 "kVcAssetOpSettleTipsMustGlobalSettleFirst" = "预测市场全局清算完成之后才可以进行清算操作。";
 "kVcAssetOpSettleTipsNoFeedData" = "该资产没有有效的喂价，不可清算。";
 "kVcAssetOpSettleDelayHoursN" = "%@小时";
-"kVcAssetOpSettleUiTips" = "【温馨提示】\n1、清算操作强制把清算资产换回背书资产。此操作不可撤销，请谨慎操作。\n2、发起清算后将在%@后排队执行，并以当时的清算价格成交。\n3、清算价 = 成交时的喂价 × %@";
-"kVcAssetOpSettleUiTipsAlreadyGs" = "【温馨提示】\n1、清算操作强制把清算资产换回背书资产。此操作不可撤销，请谨慎操作。\n2、该资产已经触发全局清算，清算操作将立即执行。\n3、清算价 = %@";
+"kVcAssetOpSettleUiTips" = "【温馨提示】\n1、清算操作强制把清算资产换回背书资产。此操作不可撤销，请谨慎操作。\n2、发起清算后将在%@后排队执行，并以当时的清算价格成交。\n3、清算价 = 成交时的喂价 × %@\n4、清算手续费 = %@";
+"kVcAssetOpSettleUiTipsAlreadyGs" = "【温馨提示】\n1、清算操作强制把清算资产换回背书资产。此操作不可撤销，请谨慎操作。\n2、该资产已经触发全局清算，清算操作将立即执行。\n3、清算价 = %@\n4、清算手续费 = %@";
 "kVcAssetOpSettleCellPlaceholderAmount" = "请输入清算数量";
 "kVcAssetOpSettleBtnName" = "发起清算";
 "kVcAssetOpSettleSubmitTipsPleaseInputAmount" = "请输入要清算的资产数量。";
@@ -653,6 +743,7 @@
 "kVcAssetOpClaimMarketFeesBtnName" = "提取";
 "kVcAssetOpClaimMarketFeesSubmitTipsPleaseInputAmount" = "请输入要提取的资产数量。";
 "kVcAssetOpClaimMarketFeesSubmitTipOK" = "提取成功。";
+"kVcAssetOpClaimCollateralFeesUiTips" = "【温馨提示】\n提取用户强清或爆仓贡献的手续费收入。";
 
 "kVcAssetOpGsUiTips" = "【温馨提示】\n全局清算会以指定价格强制关闭所有债仓，此操作不可逆，请谨慎操作。";
 "kVcAssetOpGsCellTitlePrice" = "价格";
@@ -668,14 +759,72 @@
 "kVcOrderPageOpenOrders" = "当前订单";
 "kVcOrderPageHistory" = "历史订单";
 "kVcOrderPageSettleOrders" = "清算单";
+"kVcOrderPageGridOrders" = "量化订单";
 "kVcOrderTipNoHistory" = "近期没有交易记录";
 "kVcOrderTipNoOpenOrder" = "当前没有任何订单";
 "kVcOrderTipNoSettleOrder" = "没有任何清算单";
 "kVcOrderBtnCancel" = "撤销";
 "kVcOrderExpired" = "%@过期";
 "kVcOrderTotal" = "总金额";
+"kVcOrderSettlementFees" = "清算手续费";
 "kVcOrderTipTxCancelFullOK" = "订单 #%@ 已取消。";
 "kVcOrderTipTxCancelOK" = "订单 #%@ 已取消，但刷新界面失败，请稍后再试。";
+
+/* 网格量化 */
+"kBotsNoAnyGridBots" = "网格交易订单为空，点击右上角创建网格交易。";
+"kBotsActionStart" = "启动网格交易";
+"kBotsActionStop" = "停止网格交易";
+"kBotsActionDelete" = "删除网格交易";
+"kBotsActionStartTipsForAutoAuthorize" = "网格交易需要授权服务器进行自动化操作，是否自动授权？";
+"kBotsActionErrTipsAlreadyDeleted" = "该网格交易已经删除了。";
+"kBotsActionErrTipsAlreadyStarted" = "网格交易已经在运行中。";
+"kBotsActionErrTipsStopFirst" = "该网格交易正在运行中，请先停止。";
+"kBotsActionTipsStartOK" = "启动成功。";
+"kBotsActionTipsStopOK" = "网格交易已停止。";
+"kBotsActionTipsDeleteOK" = "删除成功。";
+"kBotsCellLabelPairNameTitle" = "网格交易#%@ (%@/%@)";
+"kBotsCellLabelStatusCreated" = "已创建";
+"kBotsCellLabelStatusRunning" = "运行中";
+"kBotsCellLabelStatusStopped" = "已停止";
+"kBotsCellLabelStatusInvalid" = "已失效";
+"kBotsCellLabelPriceRangeTitle" = "价格区间";
+"kBotsCellLabelGridNAndOrderAmount" = "网格/每格数量";
+"kBotsCellLabelTotalArbitrageAmount" = "总套利金额";
+"kBotsCellLabelArbitrageAndTradeNum" = "套利/交易次数";
+"kBotsCellLabelProfit" = "浮动盈亏";
+"kBotsCellLabelApy" = "年化收益";
+"kBotsCellLabelMsgInvalidGrid" = "该网格订单已失效";
+"kBotsCellLabelMsgRunTimeDHMS" = "已运行 %@ 天 %@ 小时 %@ 分 %@ 秒";
+"kBotsCellLabelMsgRunTimeHMS" = "已运行 %@ 小时 %@ 分 %@ 秒";
+"kBotsCellLabelMsgRunTimeMS" = "已运行 %@ 分 %@ 秒";
+"kBotsCellLabelMsgRunTimeS" = "已运行 %@ 秒";
+"kBotsCellLabelStopMessageUserStop" = "用户停止";
+"kBotsCreateCellTitleMinPrice" = "最低价格";
+"kBotsCreateCellTitleMaxPrice" = "最高价格";
+"kBotsCreateCellTitleGridN" = "网格数量";
+"kBotsCreateCellTitleAmountPerGrid" = "每格交易数量";
+"kBotsCreateCellTitleQuoteAsset" = "交易资产";
+"kBotsCreateCellTitleBaseAsset" = "报价资产";
+"kBotsCreateCellPlaceHolderMinPrice" = "请输入最低价格";
+"kBotsCreateCellPlaceHolderMaxPrice" = "请输入最高价格";
+"kBotsCreateCellPlaceHolderGridN" = "请输入网格数量";
+"kBotsCreateCellPlaceHolderAmountPerGrid" = "请输入每格交易数量";
+"kBotsCreateCellPlaceHolderQuote" = "请选择交易资产";
+"kBotsCreateCellPlaceHolderBase" = "请选择报价资产";
+"kBotsCreateSubmitButton" = "创建";
+"kBotsCreateUiTipsMsg" = "【温馨提示】\n设置网格量化订单参数。\n\n 注意：因账户内其他交易可能会影响网格收益的计算，建议使用单独账户来运行网格，一个账户不要同时运行多个网格。";
+"kBotsCreateTipSelectQuoteAssetFirst" = "请先选择交易资产。";
+"kBotsCreateTipPleaseSelectBase" = "请选择报价资产。";
+"kBotsCreateTipPleaseSelectQuote" = "请选择交易资产。";
+"kBotsCreateTipQuoteAndBaseIsSame" = "交易资产和报价资产不能相同。";
+"kBotsCreateTipPleaseInputGridN" = "请设置网格数量。";
+"kBotsCreateTipInvalidGridNRange" = "网格数量的有效范围 2 ~ 99。";
+"kBotsCreateTipPleaseInputAmountPerGrid" = "请设置每格交易数量。";
+"kBotsCreateTipPleaseInputMinPrice" = "请设置最低价格。";
+"kBotsCreateTipPleaseInputMaxPrice" = "请设置最高价格。";
+"kBotsCreateTipPleaseReinputMinOrMaxPrice" = "请重新设置最低价格或最高价格的值。";
+"kBotsCreateTipPleaseAdjustBotsArgs" = "已经存在相同参数的量化订单，请调整参数后再试。";
+"kBotsCreateTipCreateOK" = "创建成功。";
 
 /* 待解冻金额 */
 "kVestingTipsNoData" = "没有任何待解冻金额";
@@ -841,9 +990,9 @@
 "kVcStCellTitleNetworkFee" = "广播手续费";
 "kVcStCellTitleActualAmount" = "实际到账";
 "kVcStTipUiImportReceipt" = "【温馨提示】\n导入收据同时支持APP生成的收据和CLI命令行钱包收据格式。\n\n如果隐私收据丢失，可尝试直接输入转账对应区块编号进行导入。\n\n如果是通过提案进行隐私转账，则不会生成隐私收据，在提案生效后直接输入创建提案时对应区块编号进行导入即可。";
-"kVcStTipUiTransferToBlind" = "【温馨提示】\n隐私转入：从比特股公开账号向隐私账户转账。并且可同时向多个隐私账户转账。\n\n如果是通过提案进行隐私转账，则不会生成隐私收据，在提案生效后直接输入创建提案时对应区块编号进行导入即可。";
+"kVcStTipUiTransferToBlind" = "【温馨提示】\n隐私转入：从新比特股公开账号向隐私账户转账。并且可同时向多个隐私账户转账。\n\n如果是通过提案进行隐私转账，则不会生成隐私收据，在提案生效后直接输入创建提案时对应区块编号进行导入即可。";
 "kVcStTipUiBlindTransfer" = "【温馨提示】\n隐私转账：在多个隐私账户之间进行转账操作。\n\n找零和赠与：收据总金额减去输出总金额的剩余金额，如果满足找零所需手续费，则会自动找零到我的隐私账户，否则会自动赠与给第一个隐私账户。";
-"kVcStTipUiTransferFromBlind" = "【温馨提示】\n隐私转出：从隐私账户向比特股公开账号转账。";
+"kVcStTipUiTransferFromBlind" = "【温馨提示】\n隐私转出：从隐私账户向新比特股公开账号转账。";
 "kVcStTipErrForbidBlindTransfer" = "资产 %@ 已禁止隐私转账。";
 "kVcStTipErrForbidNormalTransfer" = "资产 %@ 禁止转账。";
 "kVcStTipErrNeedWhiteList" = "资产 %@ 已开启白名单，禁止隐私转账。";
@@ -1040,12 +1189,15 @@
 "kSettingCurrencyNameEUR" = "欧元";
 "kSettingCurrencyNameJPY" = "日元";
 "kSettingCurrencyNameKRW" = "韩元";
-"kSettingCurrencyNameBTS" = "比特股核心资产";
+"kSettingCurrencyNameBTS" = "新比特股";
 "kSettingApiCellValueRandom" = "自动选择";
 "kSettingApiInternalNodeBTSPP" = "中国 - 杭州 (BTS++)";
 "kSettingApiInternalNodeAbit" = "美国（abit）";
 "kSettingApiInternalNodeGDEX" = "中国 - 上海（GDEX）";
 "kSettingApiInternalNodeBTSAI" = "中国 - 北京（bts.ai）";
+"kSettingApiInternalNodeCNVOTE01" = "中国 - 重庆 (CNVOTE)";
+"kSettingApiInternalNodeCNVOTE02" = "中国 - 杭州 (CNVOTE)";
+"kSettingApiInternalNodeCNVOTE03" = "中国 - 北京（CNVOTE）";
 "kSettingApiRandomCell" = "自动选择节点";
 "kSettingApiCellCustomFlag" = "自定义";
 "kSettingApiOpSetAsCurrent" = "设置为当前节点";
@@ -1064,7 +1216,7 @@
 "kSettingNewApiSubmitTipsURLAlreadyExist" = "当前节点已存在。";
 "kSettingNewApiSubmitTipsOK" = "添加成功。";
 "kSettingNewApiSubmitTipsConnectedFailed" = "连接失败，请重新检测URL有效性。";
-"kSettingNewApiSubmitTipsNotBitsharesMainnetNode" = "该节点不是比特股主网节点，请重新输入。";
+"kSettingNewApiSubmitTipsNotBitsharesMainnetNode" = "该节点不是新比特股主网节点，请重新输入。";
 
 /* 各种VC标题栏名字 */
 "kVcTitleLogin" = "登录";
@@ -1156,6 +1308,12 @@
 "kVcTitleSearchAssets" = "搜索资产";
 "kVcTitleSearchBackAsset" = "搜索抵押物";
 "kVcTitleAssetOpSettle" = "发起清算";
+"kVcTitleAssetOpMinerIn" = "挖矿";
+"kVcTitleAssetOpMinerOut" = "退出挖矿";
+"kVcTitleMyLockPositions" = "我的锁仓";
+"kVcTitleStakeMining" = "锁仓挖矿";
+"kVcTitleAssetMiningDataMiner" = "MINER推荐挖矿数据";
+"kVcTitleAssetMiningDataScny" = "SCNY推荐挖矿数据";
 "kVcTitleAssetOpReserve" = "销毁资产";
 "kVcTitleAssetOpStakeVoteCreateTicket" = "创建锁仓";
 "kVcTitleAssetOpStakeVoteUpdateTicket" = "更新锁仓";
@@ -1163,6 +1321,7 @@
 "kVcTitleAssetGlobalSettle" = "全局清算";
 "kVcTitleAssetClaimFeePool" = "提取手续费池";
 "kVcTitleAssetClaimMarketFees" = "提取市场手续费";
+"kVcTitleAssetClaimFees" = "提取手续费";
 "kVcTitleAssetOpViewDetail" = "%@ 详情";
 "kVcTitleAssetOpUpdateBasic" = "更新资产";
 "kVcTitleAssetOpUpdateBitasset" = "更新智能币";
@@ -1170,6 +1329,7 @@
 "kVcTitleMyPairsMgr" = "交易对管理";
 "kVcTitleSearchAssetQuote" = "搜索交易资产";
 "kVcTitleSearchAssetBase" = "搜索报价资产";
+"kVcTitleCreateGridBots" = "创建网格交易";
 
 /* 钱包管理 */
 "kWalletUnlockFailedUnknowMode" = "解锁失败，未知的账号模式：%@。";
@@ -1365,7 +1525,7 @@
 "kOtcMgrErrUserFrozen" = "账号已被冻结。";
 "kOtcMgrErrUserIdCardNotVerify" = "身份信息验证失败。";
 "kOtcMgrErrUserIdCardVerifyFailed" = "身份认证失败。";
-"kOtcMgrErrUserIdCardBindOtherBtsAccount" = "您的身份信息已经绑定其他BTS账号。";
+"kOtcMgrErrUserIdCardBindOtherBtsAccount" = "您的身份信息已经绑定其他NBS账号。";
 "kOtcMgrErrNotLoginOrTokenIsEmpty" = "请退出场外交易界面重新登录。";
 "kOtcMgrErrAdExistSameTypeAd" = "已经存在相同类型的广告。";
 "kOtcMgrErrAdLockPriceExpired" = "价格已变化，请重新下单。";
@@ -1375,7 +1535,7 @@
 "kOtcMgrErrAdMorethanMaxLimit" = "交易数量高于最大限量。";
 "kOtcMgrErrOrderCancelTooMuch" = "今日取消订单数量过多。";
 "kOtcMgrErrOrderMorethanUseableNum" = "超过最大可交易数量。";
-"kOtcMgrErrMerchantBtsFeeNotEnough" = "商家账号手续费不足，请转入对应BTS手续费后继续操作。";
+"kOtcMgrErrMerchantBtsFeeNotEnough" = "商家账号手续费不足，请转入对应NBS手续费后继续操作。";
 "kOtcMgrErrOrderExistTooMuchPendingOrder" = "未完成订单数达到上限。";
 "kOtcMgrErrOrderTotalTooLarge" = "订单金额太大。";
 "kOtcMgrErrOrderTotalTooSmall" = "订单金额太小。";
@@ -1723,16 +1883,16 @@
 "kTxInvalidMemoPriKey" = "备注私钥无效。";
 
 /* 通用字符串 */
-"kShareWelcomeMessage" = "欢迎来到比特股去中心化交易平台。";
+"kShareWelcomeMessage" = "立即注册 NBS 账号，享受每日高额挖矿收益。（推荐使用系统浏览器打开）";
 "kShareLinkCopied" = "分享链接已复制。";
 "kLangKeyZhSimple" = "简体中文";
 "kLangKeyEn" = "English / 英文";
 "kLangKeyJa" = "日本語 / 日文";
 "skip" = "跳过";
 "kNormalErrorInvalidArgs" = "无效参数。";
-"kAppName" = "比特股";
+"kAppName" = "新比特股";
 "kAccount" = "账号";
-"kAboutMainDesc" ="\n比特股移动端钱包是基于石墨烯技术，从产品体验出发，采用原生技术开发的一款可媲美一流中心化交易所的去中心化交易所（DEX）产品。\n\n联系我们\n微信：bts-pp\n邮箱：contact@btsplusplus.com\n电报：https://t.me/btsplusplus\n官网：https://btspp.io\n";
+"kAboutMainDesc" ="\n新比特股移动端钱包是基于石墨烯技术，从产品体验出发，采用原生技术开发的一款可媲美一流中心化交易所的去中心化交易所（DEX）产品。\n\n联系我们\n邮箱：s@nbs.plus\n工会：https://btsgh.com\n官网：https://nbs.plus\n";
 "kAboutChannelAppStore" = "(商店版 & 渠道 %@)";
 "kAboutChannelWebsite" = "(官网版 & 渠道 %@)";
 "kAboutDebugVersion" = "(调试版)";
@@ -1749,9 +1909,9 @@
 "kNormalCellBtnCreateWallet" = "创建钱包";
 "kTipsInitialize" = "初始化中…";
 "kTipsBeRequesting" = "请求中…";
-"kTipsTxFeeNotEnough" = "手续费不足，请确保账号有足额的 BTS/CNY/USD 用于支付网络手续费。";
+"kTipsTxFeeNotEnough" = "手续费不足，请确保账号有足额的 NBS/CNY/USD 用于支付网络手续费。";
 "kTipsTxRequestFailed" = "请求失败，请稍后再试。";
-"kSearchPlaceholderAccount" = "请输入有效的 Bitshares 账号名";
+"kSearchPlaceholderAccount" = "请输入有效的 NewBitshares 账号名";
 "kSearchPlaceholderAsset" = "点击搜索新资产";
 "kSearchTipsMyFavAccount" = "我的关注(%@人)";
 "kSearchTipsMyCustomPairs" = "我的交易对(%@个)";
@@ -1768,6 +1928,7 @@
 "kTipsOrderFilled" = "订单 #%@ 部分成交。";
 "kWarmTips" = "温馨提示";
 "kLoginPassword" = "密码 ";
+"kLoginPasswordWithChineseWords" = "密码(支持中文) ";
 "kBtnLogin" = "立即登录";
 "kBtnRefresh" = "刷新";
 "kBtnCancel" = "取消";
@@ -1804,6 +1965,8 @@
 "kGPErrorInsufficientBalance" = "手续费不足。";
 "kGPErrorRedeemInvalidPreimage" = "原像不正确。";
 "kGPErrorApiNodeVersionTooLow" = "当前API节点版本太低。";
+"kGPErrorLimitOrderUnableToFill" = "订单簿深度不足，兑换失败。";
+"kGPErrorExceedMaxSupply" = "超过资产最大供应量，交易失败。";
 "kGPErrorBlindReceiptIsNotExisted" = "隐私收据不存在。";
 "kGPErrorBlindVerifySumFailed" = "隐私输入和输出金额不相等。";
 "kGPErrorFeePoolInsufficient" = "手续费资产对应的手续费池余额不足。";
@@ -1814,9 +1977,8 @@
 "kShareLinkPageDefaultLang" = "zh";
 "appDepositWithdrawDefaultGateway" = "GDEX";
 "btsaiLangKey" = "cn";
+"appEmbeddedUrlLangKey" = "zh";
 "enableOtcEntry" = "1";
-"qaHtmlFileName" = "qam.html";
-"userAgreementHtmlFileName" = "agreement.html";
 
 /* Android专有字符串 */
 "action_settings" = "Settings";

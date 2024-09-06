@@ -21,6 +21,8 @@
 #import "VCUserActivity.h"
 #import "VCAssetOpCommon.h"
 #import "VCAssetOpStakeVote.h"
+#import "VCAssetOpMiner.h"
+#import "VCDepositWithdrawList.h"
 
 #import "MBProgressHUD.h"
 #import "OrgUtils.h"
@@ -105,9 +107,9 @@
     self.view.backgroundColor = [ThemeManager sharedThemeManager].appBackColor;
     
     //  导航栏右边 收藏 和 区块浏览器 按钮
-//    id btn1 = [self naviButtonWithImage:@"iconFav" action:@selector(onRightOrderButtonClicked) color:theme.textColorNormal];
-//    id btn2 = [self naviButtonWithImage:@"iconFav" action:@selector(onRightUserButtonClicked) color:theme.textColorNormal];
-//    [self.navigationItem setRightBarButtonItems:@[btn2, btn1]];
+    //    id btn1 = [self naviButtonWithImage:@"iconFav" action:@selector(onRightOrderButtonClicked) color:theme.textColorNormal];
+    //    id btn2 = [self naviButtonWithImage:@"iconFav" action:@selector(onRightUserButtonClicked) color:theme.textColorNormal];
+    //    [self.navigationItem setRightBarButtonItems:@[btn2, btn1]];
     
     id account_name = [[_fullAccountInfo objectForKey:@"account"] objectForKey:@"name"];
     
@@ -380,9 +382,12 @@
     
     //  请求（最新价格、执行估算）
     
+    //  默认记账单位
+    NSString* defaultEstimateAsset = [chainMgr getDefaultEstimateUnitSymbol];
+    
     //  这个是显示计价单位
     _displayEstimateAsset = [[SettingManager sharedSettingManager] getEstimateAssetSymbol];
-    _needSecondExchange = ![_displayEstimateAsset isEqualToString:kAppUserAssetCoreEstimateAsset];
+    _needSecondExchange = ![_displayEstimateAsset isEqualToString:defaultEstimateAsset];
     
     //  REMARK：
     //  1、所有资产对CNY进行估价，因为如果其他资产直接对USD等计价可能导致没有匹配的交易对，估值误差较大。比如 SEED/CNY 有估值，SEED/JPY 等直接计较则没估值。
@@ -391,14 +396,14 @@
     for (id asset in _assetDataArray) {
         id quote = [asset objectForKey:@"name"];
         //  记账单位资产，本身不查询。即：CNY/CNY 不查询。
-        if ([quote isEqualToString:kAppUserAssetCoreEstimateAsset]){
+        if ([quote isEqualToString:defaultEstimateAsset]){
             continue;
         }
-        [pairs_list addObject:@{@"base":kAppUserAssetCoreEstimateAsset, @"quote":quote}];
+        [pairs_list addObject:@{@"base":defaultEstimateAsset, @"quote":quote}];
     }
     //  添加 二次兑换系数 查询 CNY到USD 的兑换系数 注意：这里以 _displayEstimateAsset 为 base 获取 ticker 数据。
     if (_needSecondExchange){
-        [pairs_list addObject:@{@"base":_displayEstimateAsset, @"quote":kAppUserAssetCoreEstimateAsset}];
+        [pairs_list addObject:@{@"base":_displayEstimateAsset, @"quote":defaultEstimateAsset}];
     }
     
     //  这里面引用的变量必须是 weak 的，不然该 vc 没法释放。
@@ -422,13 +427,16 @@
     
     double total_estimate_value = 0;
     
+    //  默认记账单位
+    NSString* defaultEstimateAsset = [chainMgr getDefaultEstimateUnitSymbol];
+    
     //  显示精度（以记账单位的精度为准）
     NSInteger display_precision = [[[chainMgr getAssetBySymbol:_displayEstimateAsset] objectForKey:@"precision"] integerValue];
     
     //  计算2次兑换比例，如果核心兑换和显示兑换资产不同，则需要2次兑换。
     double fSecondExchangeRate = 1.0f;
     if (_needSecondExchange){
-        id ticker = [chainMgr getTickerData:_displayEstimateAsset quote:kAppUserAssetCoreEstimateAsset];
+        id ticker = [chainMgr getTickerData:_displayEstimateAsset quote:defaultEstimateAsset];
         assert(ticker);
         fSecondExchangeRate = [[ticker objectForKey:@"latest"] doubleValue];
     }
@@ -437,7 +445,7 @@
     for (id asset in _assetDataArray) {
         id quote = [asset objectForKey:@"name"];
         //  如果当前资产为基准资产则特殊计算
-        if ([quote isEqualToString:kAppUserAssetCoreEstimateAsset]){
+        if ([quote isEqualToString:defaultEstimateAsset]){
             //  基准资产的估算就是资产自身
             //  REMARK：评估资产总和 = 可用 + 抵押 + 冻结 - 负债。
             long long sum_balance = [[asset objectForKey:@"balance"] longLongValue] + [[asset objectForKey:@"call_order_value"] longLongValue] + [[asset objectForKey:@"limit_order_value"] longLongValue] - [[asset objectForKey:@"debt_value"] longLongValue];
@@ -462,7 +470,7 @@
             //  precision = 5;
             //}
             //  REMARK：评估资产总和 = 可用 + 抵押 + 冻结 - 负债。
-            id ticker = [chainMgr getTickerData:kAppUserAssetCoreEstimateAsset quote:quote];
+            id ticker = [chainMgr getTickerData:defaultEstimateAsset quote:quote];
             assert(ticker);
             long long sum_balance = [[asset objectForKey:@"balance"] longLongValue] + [[asset objectForKey:@"call_order_value"] longLongValue] + [[asset objectForKey:@"limit_order_value"] longLongValue] - [[asset objectForKey:@"debt_value"] longLongValue];
             double fPrecision = pow(10, [[asset objectForKey:@"precision"] integerValue]);
@@ -615,6 +623,18 @@
         case ebaok_trade:
             [self onButtonClicked_Trade:button row:[row integerValue]];
             break;
+        case ebaok_miner:
+        case ebaok_fast_swap:
+            [self onButtonClicked_AssetMiner:button row:[row integerValue]];
+            break;
+        case ebaok_gateway_deposit:
+        case ebaok_gateway_withdrawal:
+        {
+            VCDepositWithdrawList* vc = [[VCDepositWithdrawList alloc] init];
+            vc.title = NSLocalizedString(@"kVcTitleDepositWithdraw", @"冲币提币");
+            [_owner pushViewController:vc vctitle:nil backtitle:kVcDefaultBackTitleName];
+        }
+            break;
         case ebaok_settle:
             [self onButtonClicked_AssetSettle:button row:[row integerValue]];
             break;
@@ -641,6 +661,47 @@
             assert(false);
             break;
     }
+}
+
+/*
+ *  操作 - 资产参与挖矿/退出挖矿
+ */
+- (void)onButtonClicked_AssetMiner:(UIButton*)button row:(NSInteger)row
+{
+    ChainObjectManager* chainMgr = [ChainObjectManager sharedChainObjectManager];
+    
+    id clicked_asset = [_assetDataArray objectAtIndex:row];
+    assert(clicked_asset);
+    id oid = clicked_asset[@"id"];
+    
+    id curr_asset = [chainMgr getChainObjectByID:oid];
+    id miner_item = [[SettingManager sharedSettingManager] getAppAssetMinerItem:oid];
+    assert(miner_item);
+    assert(curr_asset);
+    
+    id min_to_receive_asset_id = [[[miner_item objectForKey:@"price"] objectForKey:@"min_to_receive"] objectForKey:@"asset_id"];
+    
+    id p1 = [chainMgr queryFullAccountInfo:[[_accountInfo objectForKey:@"account"] objectForKey:@"id"]];
+    id p2 = [chainMgr queryAllGrapheneObjects:@[min_to_receive_asset_id]];
+    
+    [VcUtils simpleRequest:_owner
+                   request:[WsPromise all:@[p1, p2]]
+                  callback:^(id data_array) {
+        id full_account = [data_array objectAtIndex:0];
+        WsPromiseObject* result_promise = [[WsPromiseObject alloc] init];
+        VCAssetOpMiner* vc = [[VCAssetOpMiner alloc] initWithMinerItem:miner_item
+                                                     full_account_data:full_account
+                                                        result_promise:result_promise];
+        id title = [[miner_item objectForKey:@"miner"] boolValue] ? NSLocalizedString(@"kVcTitleAssetOpMinerIn", @"挖矿") : NSLocalizedString(@"kVcTitleAssetOpMinerOut", @"退出挖矿");
+        [_owner pushViewController:vc vctitle:title backtitle:kVcDefaultBackTitleName];
+        [result_promise then:^id(id dirty) {
+            //  刷新UI
+            if (dirty && [dirty boolValue]) {
+                //  TODO:5.0 考虑刷新界面
+            }
+            return nil;
+        }];
+    }];
 }
 
 /*
@@ -696,6 +757,10 @@
             }
         }
         
+        //  获取强清手续费
+        id str_force_settle_fee_percent = [NSString stringWithFormat:@"%@%%", [ModelUtils getBitAssetDataExtargs:newBitassetData
+                                                                                                        arg_name:@"force_settle_fee_percent"
+                                                                                                       precision:2]];
         NSString* settleMsgTips;
         if (hasAlreadyGlobalSettled) {
             id n_price = [OrgUtils calcPriceFromPriceObject:[newBitassetData objectForKey:@"settlement_price"]
@@ -708,7 +773,7 @@
             NSString* global_settle_price = [NSString stringWithFormat:@"%@ %@/%@",
                                              [OrgUtils formatFloatValue:n_price usesGroupingSeparator:NO],
                                              backing_asset[@"symbol"], newAsset[@"symbol"]];
-            settleMsgTips = [NSString stringWithFormat:NSLocalizedString(@"kVcAssetOpSettleUiTipsAlreadyGs", @"【温馨提示】\n1、清算操作强制把清算资产换回背书资产。此操作不可撤销，请谨慎操作。\n2、该资产已经触发全局清算，清算操作将立即执行。\n3、清算价 = %@"), global_settle_price];
+            settleMsgTips = [NSString stringWithFormat:NSLocalizedString(@"kVcAssetOpSettleUiTipsAlreadyGs", @"【温馨提示】\n1、清算操作强制把清算资产换回背书资产。此操作不可撤销，请谨慎操作。\n2、该资产已经触发全局清算，清算操作将立即执行。\n3、清算价 = %@\n4、清算手续费 = %@"), global_settle_price, str_force_settle_fee_percent];
         } else {
             id options = [newBitassetData objectForKey:@"options"];
             
@@ -722,9 +787,10 @@
                                                                                    isNegative:NO];
             id n_final = [n_force_settlement_offset_percent decimalNumberByAdding:[NSDecimalNumber one]];
             
-            settleMsgTips = [NSString stringWithFormat:NSLocalizedString(@"kVcAssetOpSettleUiTips", @"【温馨提示】\n1、清算操作强制把清算资产换回背书资产。此操作不可撤销，请谨慎操作。\n2、发起清算后将在%@后排队执行，并以当时的清算价格成交。\n3、清算价 = 成交时的喂价 × %@"),
+            settleMsgTips = [NSString stringWithFormat:NSLocalizedString(@"kVcAssetOpSettleUiTips", @"【温馨提示】\n1、清算操作强制把清算资产换回背书资产。此操作不可撤销，请谨慎操作。\n2、发起清算后将在%@后排队执行，并以当时的清算价格成交。\n3、清算价 = 成交时的喂价 × %@\n4、清算手续费 = %@"),
                              s_delay_hour,
-                             n_final];
+                             n_final,
+                             str_force_settle_fee_percent];
         }
         id opArgs = @{
             @"kOpType":@(button.tag),
@@ -877,13 +943,14 @@
     id quote_symbol = [quote objectForKey:@"symbol"];
     if ([base_symbol isEqualToString:quote_symbol]){
         //  特殊处理
-        if ([quote_symbol isEqualToString:@"BTS"]){
+        if ([quote_symbol isEqualToString:chainMgr.grapheneCoreAssetSymbol]){
             //  修改 base
-            base_symbol = @"CNY";
+            base_symbol = [[chainMgr getDefaultParameters] objectForKey:@"core_default_exchange_asset"];
+            assert(base_symbol);
             base = [chainMgr getAssetBySymbol:base_symbol];
         }else{
             //  修改 quote
-            quote_symbol = @"BTS";
+            quote_symbol = chainMgr.grapheneCoreAssetSymbol;
             quote = [chainMgr getAssetBySymbol:quote_symbol];
         }
     }

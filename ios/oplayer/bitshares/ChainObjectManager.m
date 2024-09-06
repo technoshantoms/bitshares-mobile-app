@@ -304,6 +304,16 @@ static ChainObjectManager *_sharedChainObjectManager = nil;
     return [_defaultMarketInfos objectForKey:@"parameters"];
 }
 
+/**
+ *  (public) 获取APP中各种URL配置
+ */
+- (NSString*)getAppEmbeddedUrl:(NSString*)url_key lang_key:(NSString*)lang_key
+{
+    assert(url_key);
+    assert(lang_key);
+    return [[[[self getDefaultParameters] objectForKey:@"app_urls"] objectForKey:url_key] objectForKey:lang_key];
+}
+
 /*
  *  (public) 获取APP配置文件中出现的所有资产符号。初始化时需要查询所有依赖的资产信息。
  */
@@ -315,7 +325,7 @@ static ChainObjectManager *_sharedChainObjectManager = nil;
     NSMutableDictionary* symbols = [NSMutableDictionary dictionary];
     
     //  智能资产
-    for (id sym in [self getMainSmartAssetList]) {
+    for (id sym in [[SettingManager sharedSettingManager] getAppMainSmartAssetList]) {
         [symbols setObject:@YES forKey:sym];
     }
     
@@ -392,6 +402,14 @@ static ChainObjectManager *_sharedChainObjectManager = nil;
 }
 
 /**
+ *  (public) 获取默认的记账单位，列表的第一个。
+ */
+- (NSString*)getDefaultEstimateUnitSymbol
+{
+    return [[[self getEstimateUnitList] objectAtIndex:0] objectForKey:@"symbol"];
+}
+
+/**
  *  (public) 根据计价货币symbol获取计价单位配置信息
  */
 - (NSDictionary*)getEstimateUnitBySymbol:(NSString*)symbol
@@ -418,12 +436,22 @@ static ChainObjectManager *_sharedChainObjectManager = nil;
     if (!_assetBasePriority) {
         NSMutableDictionary* asset_base_priority = [NSMutableDictionary dictionary];
         NSInteger max_priority = 1000;
-        //  REMARK：优先级 从 CNY 到 BTS 逐渐降低，其他非市场 base 的资产优先级默认为 0。
+        //  1、REMARK：优先级 从 CNY 到 BTS 逐渐降低，其他非市场 base 的资产优先级默认为 0。
         for (id market in [self getDefaultMarketInfos]) {
             id symbol = [[market objectForKey:@"base"] objectForKey:@"symbol"];
             [asset_base_priority setObject:@(max_priority) forKey:symbol];
             max_priority -= 1;
         }
+        
+        //  2、合并动态设置
+        id common_asset_base_priority = [[SettingManager sharedSettingManager] getAppAssetBasePriority];
+        if (common_asset_base_priority && [common_asset_base_priority count] > 0) {
+            for (id asset_symbol in common_asset_base_priority) {
+                id value = [common_asset_base_priority objectForKey:asset_symbol];
+                [asset_base_priority setObject:value forKey:asset_symbol];
+            }
+        }
+        
         _assetBasePriority = [asset_base_priority copy];
     }
     return _assetBasePriority;
@@ -843,12 +871,16 @@ static ChainObjectManager *_sharedChainObjectManager = nil;
             //  其他资产和 BTS 资产进行兑换
             id core_exchange_rate = [[fee_asset objectForKey:@"options"] objectForKey:@"core_exchange_rate"];
             //  没有 core_exchange_rate 信息，则不能作为手续费。
-            if (!core_exchange_rate){
+            if (!core_exchange_rate || [ModelUtils isNullPrice:core_exchange_rate]){
                 continue;
             }
             
             id core_base = core_exchange_rate[@"base"];
             id core_quote = core_exchange_rate[@"quote"];
+            if ([[core_base objectForKey:@"amount"] unsignedLongLongValue] == 0 &&
+                [[core_quote objectForKey:@"amount"] unsignedLongLongValue] == 0) {
+                continue;
+            }
             
             id fee_amount;
             id bts_amount;
@@ -904,7 +936,10 @@ static ChainObjectManager *_sharedChainObjectManager = nil;
 - (WsPromise*)grapheneNetworkInit
 {
     GrapheneApi* api = [[GrapheneConnectionManager sharedGrapheneConnectionManager] any_connection].api_db;
-    return [[api exec:@"get_chain_properties" params:@[]] then:(^id(id chain_properties) {
+    id p1 = [api exec:@"get_chain_properties" params:@[]];
+    id p2 = [[SettingManager sharedSettingManager] queryAppSettingsOnChain];
+    return [[WsPromise all:@[p1, p2]] then:^id(id data_array) {
+        id chain_properties = [data_array objectAtIndex:0];
         //  石墨烯网络区块链ID和BTS主网链ID不同，则为测试网络，不判断核心资产名字。因为测试网络资产名字也可能为BTS。
         id chain_id = [chain_properties objectForKey:@"chain_id"];
         if (!chain_id || ![chain_id isEqualToString:@BTS_NETWORK_CHAIN_ID]){
@@ -924,7 +959,7 @@ static ChainObjectManager *_sharedChainObjectManager = nil;
             //  正式网络：直接返回初始化成功
             return @YES;
         }
-    })];
+    }];
 }
 
 #pragma mark- for ticker data
@@ -2152,12 +2187,31 @@ static ChainObjectManager *_sharedChainObjectManager = nil;
     assert(catalog);
     GrapheneApi* api = [[GrapheneConnectionManager sharedGrapheneConnectionManager] any_connection].api_custom_operations;
     if (api && [api isInited]) {
-        //  TODO:2.9 vector<account_storage_object>
         return [api exec:@"get_storage_info" params:@[account_name_or_id, catalog]];
     } else {
-        //  TODO:2.9 不支持返回空，还是报错？
+        //  REMARK：API节点不支持该插件则返回空数据
         return [WsPromise resolve:@[]];
     }
+}
+
+/*
+ * (public) 查询账号所有量化机器人数据。
+ */
+- (WsPromise*)queryAccountAllBotsData:(NSString*)account_id
+{
+    return [[self queryAccountStorageInfo:account_id
+                                  catalog:kAppStorageCatalogBotsGridBots] then:^id(id data_array) {
+        NSMutableDictionary* resultHash = [NSMutableDictionary dictionary];
+        if (data_array && [data_array isKindOfClass:[NSArray class]]) {
+            for (id storage_item in data_array) {
+                id bots_key = [storage_item objectForKey:@"key"];
+                if (bots_key) {
+                    [resultHash setObject:storage_item forKey:bots_key];
+                }
+            }
+        }
+        return resultHash;
+    }];
 }
 
 @end

@@ -30,7 +30,6 @@
 #import "AppCacheManager.h"
 
 #import "VCNotice.h"
-#import "VCWebView.h"
 
 #ifdef DEBUG
 #import "VCTest.h"
@@ -60,8 +59,8 @@ enum
 
 enum
 {
-    kVcSubShareLink = 0,        //  分享专属链接
-    kVcSubSettingsEx,           //  设置
+//    kVcSubShareLink = 0,        //  分享专属链接
+    kVcSubSettingsEx = 0,       //  设置
 #ifdef DEBUG
     kVcSubTestPage,             //  测试
 #endif  //  DEBUG
@@ -91,6 +90,32 @@ enum
         [[IntervalManager sharedIntervalManager] releaseLock:_mainTableView];
         _mainTableView.delegate = nil;
         _mainTableView = nil;
+    }
+}
+
+/*
+ *  事件 - 解锁/锁定 按钮点击。
+ */
+- (void)onLockButtonClicked:(UIButton*)sender
+{
+    WalletManager* walletMgr = [WalletManager sharedWalletManager];
+    if (![walletMgr isWalletExist]) {
+        return;
+    }
+    
+    if ([walletMgr isLocked]) {
+        //  解锁
+        [self GuardWalletUnlocked:NO body:^(BOOL unlocked) {
+            if (unlocked) {
+                [_mainTableView reloadData];
+                [OrgUtils makeToast:NSLocalizedString(@"kUserLockTipMessageUnlocked", @"已解锁")];
+            }
+        }];
+    } else {
+        //  锁定
+        [walletMgr Lock];
+        [_mainTableView reloadData];
+        [OrgUtils makeToast:NSLocalizedString(@"kUserLockTipMessageLocked", @"已锁定")];
     }
 }
 
@@ -124,10 +149,10 @@ enum
 #endif  //  kAppModuleEnableFaq
         
         NSArray* pSection4 = [NSArray arrayWithObjects:
-                              @"kLblCellShareLink",             //  分享专属链接
+//                              @"kLblCellShareLink",             //  分享专属链接
                               @"kSettingEx",                    //  设置,
 #ifdef DEBUG
-                              @"测试页面",
+                              @"Testing Page",
 #endif  //  DEBUG
                               nil];
         [obj addObject:@{@"type":@(kVcSetting), @"rows":pSection4}];
@@ -141,7 +166,7 @@ enum
     [self.view addSubview:_mainTableView];
     
     //  头像view
-    _faceView = [[ViewFaceCell alloc] init];
+    _faceView = [[ViewFaceCell alloc] initWithOwner:self];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -295,12 +320,12 @@ enum
                     cell.imageView.tintColor = [ThemeManager sharedThemeManager].textColorNormal;
                 }
                     break;
-                case kVcSubShareLink:
-                {
-                    cell.imageView.image = [UIImage templateImageNamed:@"iconShare"];
-                    cell.imageView.tintColor = [ThemeManager sharedThemeManager].textColorNormal;
-                }
-                    break;
+//                case kVcSubShareLink:
+//                {
+//                    cell.imageView.image = [UIImage templateImageNamed:@"iconShare"];
+//                    cell.imageView.tintColor = [ThemeManager sharedThemeManager].textColorNormal;
+//                }
+//                    break;
                 default:
                     break;
             }
@@ -409,7 +434,10 @@ enum
                 //                    return nil;
                 //                })];
                 //                return;
-                vc = [[VCBtsaiWebView alloc] initWithUrl:@"https://btspp.io/qa.html"];
+                
+                id url = [[ChainObjectManager sharedChainObjectManager] getAppEmbeddedUrl:@"qa"
+                                                                                 lang_key:NSLocalizedString(@"appEmbeddedUrlLangKey", @"langkey")];
+                vc = [[VCBtsaiWebView alloc] initWithUrl:url];
                 vc.title = NSLocalizedString(@"kVcTitleFAQ", @"常见问题");
             }
                 break;
@@ -426,18 +454,18 @@ enum
                         //                                                                                   paytitle:@"下注"];
                     }
                         break;
-                    case kVcSubShareLink:
-                    {
-                        id value = [VcUtils genShareLink:YES];
-                        [UIPasteboard generalPasteboard].string = [value copy];
-                        [OrgUtils makeToast:NSLocalizedString(@"kShareLinkCopied", @"分享链接已复制。")];
-                    }
-                        break;
+//                    case kVcSubShareLink:
+//                    {
+//                        id value = [VcUtils genShareLink:YES];
+//                        [UIPasteboard generalPasteboard].string = [value copy];
+//                        [OrgUtils makeToast:NSLocalizedString(@"kShareLinkCopied", @"分享链接已复制。")];
+//                    }
+//                        break;
 #ifdef DEBUG
                     case kVcSubTestPage:
                     {
                         vc = [[VCTest alloc] init];
-                        vc.title = @"测试页面";
+                        vc.title = @"Test";
                     }
                         break;
 #endif  //  DEBUG

@@ -15,6 +15,7 @@
 #import "VCLaunch.h"
 #import "VCMarketContainer.h"
 #import "VCDebt.h"
+#import "VCMiner.h"
 #import "VCServices.h"
 #import "VCMyself.h"
 
@@ -417,6 +418,13 @@ nav.navigationBar.titleTextAttributes = textAttributes;
     vcDebt.tabBarItem = tabarItem;
     [tabControllers addObject:vcDebt];
 #endif  //  kAppModuleEnableTabDebt
+
+    VCMiner* vcMiner = [[VCMiner alloc] init];
+    vcMiner.title = NSLocalizedString(@"kTabBarNameMiner", @"挖矿");
+    tabarItem = [[GRCustomUITabBarItem alloc]initWithTitle:NSLocalizedString(@"kTabBarNameMiner", @"挖矿") tag:0];
+    tabarItem.imageString = @"tabMining";
+    vcMiner.tabBarItem = tabarItem;
+    [tabControllers addObject:vcMiner];
     
     VCServices* vcServices = [[VCServices alloc] init];
     vcServices.title = NSLocalizedString(@"kTabBarNameServices", @"服务");
@@ -534,7 +542,7 @@ nav.navigationBar.titleTextAttributes = textAttributes;
     [application setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    [Flurry startSession:@"WY5BMPMSZTXNCC2X986X" withSessionBuilder:[[[[[FlurrySessionBuilder new]
+    [Flurry startSession:@"BXBJJTXFZV8DGTQN68FH" withSessionBuilder:[[[[[FlurrySessionBuilder new]
                                                                         withLogLevel:FlurryLogLevelAll]
                                                                        withCrashReporting:YES]
                                                                       withSessionContinueSeconds:20]

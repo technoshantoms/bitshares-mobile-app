@@ -144,7 +144,7 @@
         //  正式环境 or 测试更新模式下 从服务器加载。
         NSString* pNativeVersion = [NativeAppDelegate appShortVersion];
         NSString* flags = @"0";
-        id version_url = [NSString stringWithFormat:@"https://btspp.io/app/ios/%@_%@/version.json?f=%@", @(kAppChannelID), pNativeVersion, flags];
+        id version_url = [NSString stringWithFormat:@"https://www.nbs...com/app/ios/%@_%@/version.json?f=%@", @(kAppChannelID), pNativeVersion, flags];
         [OrgUtils asyncFetchJson:version_url
                          timeout:[[NativeAppDelegate sharedAppDelegate] getRequestTimeout]
                  completionBlock:^(id pVersionJson)
@@ -211,7 +211,6 @@
 - (void)_enterToMain
 {
     //  进入主界面
-    [[NSNotificationCenter defaultCenter] postNotificationName:kBtsAppEventInitDone object:nil userInfo:nil];
     [[NativeAppDelegate sharedAppDelegate] closeLaunchWindow];
 }
 
@@ -236,6 +235,7 @@
 #ifdef DEBUG
                     //  确保查询成功。
                     for (id sym in dependence_syms) {
+
                         assert([chainMgr getAssetBySymbol:sym]);
                     }
                     for (id oid in custom_asset_ids) {
@@ -254,7 +254,13 @@
                         initFullUserData = [chainMgr queryFullAccountInfo:[[walletMgr getWalletInfo] objectForKey:@"kAccountName"]];
                     }
                     WsPromise* initOtc = [[OtcManager sharedOtcManager] queryConfig];
-                    return [[WsPromise all:@[initTickerData, initGlobalProperties, initFeeAssetInfo, initFullUserData, initOtc]] then:(^id(id data_array) {
+                    WsPromise* initAppAnnouncement = [[ScheduleManager sharedScheduleManager] queryAppAnnouncement];
+                    return [[WsPromise all:@[initTickerData,
+                                             initGlobalProperties,
+                                             initFeeAssetInfo,
+                                             initFullUserData,
+                                             initOtc,
+                                             initAppAnnouncement]] then:(^id(id data_array) {
                         [self hideBlockView];
                         //  更新全局属性
                         [chainMgr updateObjectGlobalProperties:[data_array objectAtIndex:1]];

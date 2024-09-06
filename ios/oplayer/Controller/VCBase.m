@@ -413,8 +413,9 @@ static NSInteger gen_notify_unique_id()
     assert(anchor_name);
     assert(title);
     [OrgUtils logEvents:@"qa_tip_click" params:@{@"qa":anchor_name}];
-    //  TODO:2.9 url config
-    [self gotoWebView:[NSString stringWithFormat:@"%@%@#%@", @"https://btspp.io/", NSLocalizedString(@"qaHtmlFileName", @"qa html file"), anchor_name]
+    NSString* baseurl = [[ChainObjectManager sharedChainObjectManager] getAppEmbeddedUrl:@"qam"
+                                                                                lang_key:NSLocalizedString(@"appEmbeddedUrlLangKey", @"langkey")];
+    [self gotoWebView:[NSString stringWithFormat:@"%@#%@", baseurl, anchor_name]
                 title:title];
 }
 
@@ -943,6 +944,7 @@ static NSInteger gen_notify_unique_id()
                 }
             }];
         }else{
+            //  TODO:BUG checkActivePermission 在已经解锁的情况下没进行 check。
             body(YES);
         }
     }];

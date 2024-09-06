@@ -1,14 +1,13 @@
 {
   "version": "0",
   "force": "0",
-  "appURL": "https://app.btspp.io",
+  "appURL": "https://homepesa.org",
   "newVersionInfo": "",
   "newVersionInfoEn": "",
   "faucetURL": "",
   "wssNodes": {
     "default": [
-      "wss://btsapi.magicw.net/ws",
-      "wss://api.bts.mobi/ws",
+      "ws://127.0.0.1:8090/ws",
     ],
     "cn": [],
     "en": [],

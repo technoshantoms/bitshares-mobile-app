@@ -6,6 +6,7 @@
 /* 首页行情 */
 "kTabBarNameMarkets" = "市況";
 "kTabBarNameCollateral" = "担保";
+"kTabBarNameMiner" = "鉱業";
 "kTabBarNameServices" = "サービス";
 "kTabBarNameMy" = "私の";
 
@@ -13,13 +14,18 @@
 
 "kLabelMarketFavorites" = "自選";
 "kLabelGroupNameMain" = "メイン";
+"kLabelGroupNameOTC" = "Stablecoin";
+"kLabelGroupNamePerpetual" = "Perpetual";
 "kLabelGroupNameCommunity" = "コミュニティ";
+"kLabelGroupNameMinerZone" = "マイニングエリア";
+"kLabelGroupNameDEX" = "DEX(ゲートウェイ)";
 "kLabelGroupNameGDEX" = "GDEX(ゲートウェイ)";
 "kLabelGroupNameWWW" = "WWW(ゲートウェイ)";
 "kLabelGroupNameOPEN" = "OPEN(ゲートウェイ)";
 "kLabelGroupNameWIN" = "WIN(ゲートウェイ)";
 "kLabelGroupNameOther" = "その他の";
 "kLabelGroupIntroduction" = "绍介 >";
+"kLabelMarketNameFutures" = "Futures";//TODO:
 
 "kLabelNoFavMarket" = "自選はありません";
 "kLabelBtnNameAddPair" = "添加";//TODO:
@@ -66,6 +72,39 @@
 "kDebtTipTxUpdatePositionOK" = "ポジションを更新，しかしネットワークが異常で、少しの後でまた試みてください。";
 "kDebtWarmTips" = "【暖かいヒント】\n1、フィード価格が強制単価まで下がると、負債を返済するためにシステムが自動的に資産を売却します。 リスクを管理するように注意してください。 \n2、借金がロックされると、担保によってマージン率が変化します。 \n3、マージン率がロックされると、担保によって借金が変化します。";
 "kDebtWarmTipsForPM" = "【暖かいヒント】\n現在の資産は、予測される市場資産です。 借り入れの量と担保の量は1：1で一定です。";
+
+/* 中间挖矿界面各种入口 */
+"kMinerSecTitleMiner" = "NBS锁仓挖矿";//TODO:
+"kMinerSecTitleScny" = "nbCNY抵押挖矿";//TODO:
+"kMinerSecTitleShare" = "推荐挖矿";//TODO:
+"kMinerCellLabelMinerMining" = "一键挖矿";//TODO:
+"kMinerCellLabelScnyMining" = "一键挖矿";//TODO:
+"kMinerCellLabelMinerExit" = "一键退出";//TODO:
+"kMinerCellLabelScnyExit" = "一键退出";//TODO:
+"kMinerCellLabelDataMiner" = "MINER推荐挖矿数据";//TODO:
+"kMinerCellLabelDataScny" = "SCNY推荐挖矿数据";//TODO:
+"kMinerCellLabelNbsLock" = "一键挖矿 - 定期";//TODO:
+"kMinerCellLabelCnyLock" = "一键挖矿 - 定期";//TODO:
+"kMinerCellLabelMyLockList" = "我的锁仓";//TODO:
+"kMinerCellLabelShareLink" = "推荐好友";//TODO:
+"kMinerCellClickTipsDontSupportedFeature" = "该功能未开启。";//TODO:
+"kMinerCellClickTipsInvalidAuthToken" = "当前账号登录信息失效，请重新登录。";//TODO:
+"kMinerSharesDataNoAnyShares" = "没有任何推荐数据";//TODO:
+"kMinerSharesDataShareItemsTitle" = "推荐明细";//TODO:
+"kMinerNBSMiningRewardTitle" = "MINER锁仓挖矿收益";//TODO:
+"kMinerNBSShareMiningRewardTitle" = "MINER推荐挖矿收益";//TODO:
+"kMinerCNYMiningRewardTitle" = "SCNY抵押挖矿收益";//TODO:
+"kMinerCNYShareMiningRewardTitle" = "SCNY推荐挖矿收益";//TODO:
+"kMinerTotalInviteAccountTitle" = "总共邀请 %@ 人";//TODO:
+"kMinerTotalInviteAmountTitle" = "有效邀请持有量 %@ %@";//TODO:
+"kMinerApiErrServerOrNetwork" = "推荐数据服务器或网络异常，请稍后再试。";//TODO:
+"kMinerApiErrNotSupportedMultiAccount" = "多签账号不支持查看推荐数据。";//TODO:
+"kMinerValidHoldAmountTipsMINER" = "1、自身需锁仓不少于 %@ NBS（含MINER和定期锁仓）。\n2、自身锁仓的NBS数量必须大于被推荐账号，否则缺口部分不计入有效邀请持有量。";//TODO:
+"kMinerValidHoldAmountTipsSCNY" = "1、自身需持有不少于 %@ SCNY。\n2、自身持有的SCNY数量必须大于被推荐账号，否则缺口部分不计入有效邀请持有量。";//TODO:
+"kMinerMiningRewardTipsMINER" = "所有锁仓NBS的账户（含定期锁仓和MINER）按照持有数量平均分配每日 %@ NCN 的矿池产出。";//TODO:
+"kMinerMiningRewardTipsSCNY" = "所有持有SCNY的账户按照持有数量平均分配每日 %@ NCN 的矿池产出。";//TODO:
+"kMinerShareRewardTipsMINER" = "推荐锁仓挖矿的每日收益为：（有效邀请持有量）x %@%%";//TODO:
+"kMinerShareRewardTipsSCNY" = "推荐抵押挖矿的每日收益为：（有效邀请持有量）x %@%%";//TODO:
 
 /* 服务界面 */
 "kServicesCellLabelQrScan" = "スキャン";
@@ -199,6 +238,8 @@
 "kLblMembershipLifetime" = "一生会員";
 "kLblAccountLocked" = "ロックする中";
 "kLblAccountUnlocked" = "ロックしていません";
+"kUserLockTipMessageLocked" = "正常にロックされました。";
+"kUserLockTipMessageUnlocked" = "正常にロック解除されました。";
 "kLblCellMyProposal" = "提案管理";
 "kLblCellAssetMgr" = "資産管理";
 "kLblCellWalletAndMultiSign" = "ウオレット&多く署名";
@@ -272,8 +313,10 @@
 "kEditPasswordCellTitleYourNewPassword" = "新しいパスワード";
 "kEditPasswordSwitchToEnPassword" = "英語のパスワード";
 "kEditPasswordSwitchToZhPassword" = "中国語のパスワード";
+"kEditPasswordCopyAbovePassword" = "コピー";
+"kEditPasswordCopyConfirmAsk" = "パスワードのコピーは危険な場合がありますが、続行しますか？";
 "kEditPasswordBtnNext" = "次のページ";
-"kEditPasswordUiSecTips" = "[リマインダー] \nコピー、写真の撮影、スクリーンショットの撮影はしないでください。 \nペンと紙を使用して、上記の %@ 文字で構成されるパスワードを左から右、上から下の順に記録し、安全な場所に保管してください。 一度失われると、取得できません。";
+"kEditPasswordUiSecTips" = "[リマインダー] \nペンと紙を使用して、上記の %@ 文字で構成されるパスワードを左から右、上から下の順に記録し、安全な場所に保管してください。 一度失われると、取得できません。";
 "kEditPasswordCellTitleCurrAccountName" = "現在のアカウント";
 "kEditPasswordCellTItleYourNewAccountName" = "あなたのアカウント";
 "kEditPasswordCellTitleVerifyPassword" = "パスワードを確認";
@@ -317,6 +360,8 @@
 "kRegTipsPlaceholderNewPassword" = "新しいパスワード";
 "kRegTipsPlaceholderNewWalletPassword" = "新しいウォレットのパスワード";
 "kRegCellLabelWalletPassword" = "ウォレットのパスワード";
+"kRegCellLabelInviteAccount" = "リファラー";
+"kRegCellPlaceholderInviteAccount" = "リファラーのアカウントを入力してください";
 "kLoginCellLabelRefCode" = "推薦コード";
 "kLoginTipsLoginOK" = "ログイン成功。";
 "kLoginTipsRegFullOK" = "新規登録成功。";
@@ -339,7 +384,7 @@
 "kLoginImportTipsPleaseInputPassword" = "パスワードを入力してください";
 "kLoginImportTipsReadWalletFailed" = "ウオレットを読み取るファイルは失敗します。";
 "kLoginImportTipsInvalidFileOrPassword" = "ウオレットのファイルが無効或いはパスワードは正しくありません。";
-"kLoginImportTipsNotBTSWallet" = "このウオレットはBitSharesのウオレットはない。";
+"kLoginImportTipsNotBTSWallet" = "このウオレットはNewBitSharesのウオレットはない。";
 "kLoginImportTipsWalletIsEmpty" = "このウオレットは何もありません，改めて選んでください。";
 "kLoginImportTipsWalletHaveManyAccounts" = "このウオレットは多数のアカウントを含みます，ウオレット導入はできません。";
 "kLoginImportTipsWalletNoPrivateKey" = "このウオレットはキーファイルはない，改めて選んでください。";
@@ -367,8 +412,8 @@
 "kLoginCellWalletPassword" = "アカウントパスワード";
 "kLoginCellActivePrivateKey" = "資金秘密鍵";
 "kLoginCellConfirmPassword" = "パスワードを確認してください";
-"kLoginRegTipsAccountMode" = "提示:アカウントパスワード対応フォーマット要求は疑問符をクリックして見ることができます。\n注意:BitSharesは、中心化ブロックチェーンへのアクセス暗証番号の応用が失われたり、忘れたりするとなかなか戻ってこないので、必ずきちんと保管してください。";
-"kLoginRegTipsWalletMode" = "ヒント:おウオレットパスワード対応フォーマット要件は闻き番号をクリックしてチェックすることができます。\n注意:BitSharesは中心化ブロックチェーンのアプリケーションで、ファイルやパスワードを失うと、忘れてしまうと戻ってきません。登录した后、ファイルをバックアップし、适切に保管することをお勧めします。※ ウオレットモードのご利用はお勧めです。";
+"kLoginRegTipsAccountMode" = "提示:アカウントパスワード対応フォーマット要求は疑問符をクリックして見ることができます。\n注意:NewBitSharesは、中心化ブロックチェーンへのアクセス暗証番号の応用が失われたり、忘れたりするとなかなか戻ってこないので、必ずきちんと保管してください。";
+"kLoginRegTipsWalletMode" = "ヒント:おウオレットパスワード対応フォーマット要件は闻き番号をクリックしてチェックすることができます。\n注意:NewBitSharesは中心化ブロックチェーンのアプリケーションで、ファイルやパスワードを失うと、忘れてしまうと戻ってきません。登录した后、ファイルをバックアップし、适切に保管することをお勧めします。※ ウオレットモードのご利用はお勧めです。";
 "kLoginFaucetTipsInvalidArguments" = "パラメーターが無効です。";
 "kLoginFaucetTipsInvalidAccountFmt" = "アカウントの書式が無効です。";
 "kLoginFaucetTipsAccountAlreadyExist" = "アカウントはすでに存在しました。";
@@ -448,6 +493,10 @@
 "kVcAssetTotalValue" = "資産評価(%@)";
 "kVcAssetBtnTransfer" = "送金";
 "kVcAssetBtnTrade" = "取引";
+"kVcAssetBtnMiner" = "鉱業";
+"kVcAssetBtnFastSwap" = "スワップ";
+"kVcAssetBtnGatewayDeposit" = "入金";
+"kVcAssetBtnGatewayWithdrawal" = "出金";
 "kVcAssetBtnSettle" = "決済";
 "kVcAssetBtnReserve" = "消却";
 "kVcAssetBtnStakeVote" = "锁仓";//TODO:
@@ -494,6 +543,7 @@
 "kVcAssetMgrCellActionIssueAsset" = "資産の発行";
 "kVcAssetMgrCellActionClaimFeePool" = "料金プールを提出する";
 "kVcAssetMgrCellActionClaimMarketFees" = "市場手数料を提出する";
+"kVcAssetMgrCellActionClaimCollateralFees" = "提取强清和爆仓手续费";//TODO:
 "kVcAssetMgrCellActionGlobalSettle" = "グローバルな決済";
 "kVcAssetMgrCellInfoCurSupply" = "供給";
 "kVcAssetMgrCellInfoMaxSupply" = "最大供給";
@@ -522,6 +572,13 @@
 "kVcAssetMgrCellTitleSmartDelayForSettle" = "强清延迟时间";//TODO:
 "kVcAssetMgrCellTitleSmartOffsetSettle" = "强清补偿比例";//TODO:
 "kVcAssetMgrCellTitleSmartMaxSettleValuePerHour" = "每周期最大清算量";//TODO:
+"kVcAssetMgrCellTitleSmartMarginCallFeeRatio" = "爆仓手续费";//TODO:
+"kVcAssetMgrCellTitleSmartForceSettleFeePercent" = "强清手续费";//TODO:
+"kVcAssetMgrCellTitleSmartICRValue" = "初始抵押率";//TODO:
+"kVcAssetMgrCellTitleSmartMCRValue" = "爆仓抵押率";//TODO:
+"kVcAssetMgrCellTitleSmartMSSRValue" = "爆仓惩罚率";//TODO:
+"kVcAssetMgrCellTitleSmartMSSRValueDisableUpdate" = "(不可调整)";//TODO:
+"kVcAssetMgrCellTitleSmartMSSRValueUpdateByFeedProducers" = "只能喂价人更新";//TODO:
 "kVcAssetMgrCellTitleFeeMarketFeeRatio" = "交易手续费比例";//TODO:
 "kVcAssetMgrCellTitleFeeMaxFeeValue" = "单笔最大手续费";//TODO:
 "kVcAssetMgrCellTitleFeeRefPercent" = "引荐人分成比例";//TODO:
@@ -544,6 +601,11 @@
 "kVcAssetMgrInputPlaceholderSmartDelayForSettle" = "请输入强清延迟";//TODO:
 "kVcAssetMgrInputPlaceholderSmartOffsetSettle" = "请输入强清补偿";//TODO:
 "kVcAssetMgrInputPlaceholderSmartMaxSettleValuePerHour" = "请输入每小强清百分比";//TODO:
+"kVcAssetMgrInputPlaceholderSmartInputMarginCallFeeRatio" = "请输入爆仓手续费";//TODO:
+"kVcAssetMgrInputPlaceholderSmartInputForceSettleFeePercent" = "请输入强清手续费";//TODO:
+"kVcAssetMgrInputPlaceholderSmartInputICR" = "请输入初始抵押率";//TODO:
+"kVcAssetMgrInputPlaceholderSmartInputMCR" = "请输入爆仓抵押率";//TODO:
+"kVcAssetMgrInputPlaceholderSmartInputMSSR" = "请输入爆仓惩罚率";//TODO:
 "kVcAssetMgrInputPlaceholderFeeMarketFeeRatio" = "请输入手续费比例";//TODO:
 "kVcAssetMgrInputPlaceholderFeeMaxFeeValue" = "请输入单笔最大手续费";//TODO:
 "kVcAssetMgrInputPlaceholderFeeRefPercent" = "请输入引荐人分成比例";//TODO:
@@ -589,12 +651,40 @@
 "kVcAssetOpUpdateAssetSubmitTipsOK" = "更新资产成功。";//TODO:
 "kVcAssetOpUpdateBitassetSubmitTipsOK" = "更新智能币成功。";//TODO:
 
+"kVcAssetOpMinerUiTips" = "【温馨提示】\n1、在订单簿中快速兑换 %@ 资产。\n2、兑换比例为 1:%@，如果市场深度不足则会兑换失败。\n3、根据市场情况可能存在少许误差。";//TODO:
+"kVcAssetOpMinerCellPlaceholderAmount" = "请输入兑换数量";//TODO:
+"kVcAssetOpMinerBtnName" = "%@ 兑换 %@";//TODO:
+"kVcAssetOpMinerSubmitTipsPleaseInputValidAmount" = "请输入有效的兑换数量。";//TODO:
+"kVcAssetOpMinerSubmitTipSwapOK" = "兑换成功。";//TODO:
+
+"kVcAssetOpStakeMiningCellStakeAssetName" = "锁仓资产";//TODO:
+"kVcAssetOpStakeMiningCellStakePeriod" = "锁仓周期";//TODO:
+"kVcAssetOpStakeMiningPlaceholderSelectStakePeriod" = "请选择锁仓周期";//TODO:
+"kVcAssetOpStakeMiningPlaceholderInputStakeAmount" = "请输入锁仓数量";//TODO:
+"kVcAssetOpStakeMiningTitleStakePeriod" = "锁仓周期";//TODO:
+"kVcAssetOpStakeMiningBtnName" = "锁仓";//TODO:
+"kVcAssetOpStakeMiningUITipsNonStakeAsset" = "【温馨提示】\n1、锁仓资产在到期之前不可取回，请谨慎操作。\n2、该资产不是挖矿资产，锁仓不会产生任何收益。";//TODO:
+"kVcAssetOpStakeMiningUITipsRewardRatioLineFmt" = "%@、锁仓%@，%@倍收益。\n";//TODO:
+"kVcAssetOpStakeMiningUITipsStakeAsset" = "【温馨提示】\n锁仓挖矿和 %@ 挖矿共享同一个矿池奖励。\n%@\n※ 锁仓资产在到期之前不可取回，请谨慎操作。";//TODO:
+"kVcAssetOpStakeMiningTipsSelectValidStakeAmount" = "请输入有效的锁仓数量。";//TODO:
+"kVcAssetOpStakeMiningTipsLessThanMinStakeAmount" = "单次最低锁仓数量 %@ %@";//TODO:
+"kVcAssetOpStakeMiningTipsSelectStakePeriod" = "请选择锁仓周期。";//TODO:
+"kVcAssetOpStakeMiningAskConfirmTips" = "您确认锁仓 %@ %@ 吗？\n\n※ 锁仓到期之前不可取回，请谨慎操作。"; //TODO:
+"kVcAssetOpStakeMiningSubmitTipsSuccess" = "锁仓成功。";//TODO:
+
+"kVcMyStakeListCellStakeObjectID" = "锁仓编号 #%@";//TODO:
+"kVcMyStakeListCellPeriodTitle" = "周期";//TODO:
+"kVcMyStakeListCellLockExpiredTitle" = "到期时间";//TODO:
+"kVcMyStakeListCellAlreadyExpired" = "已到期";//TODO:
+"kVcMyStakeListUITipsNoData" = "没有任何锁仓对象";//TODO:
+"kVcMyStakeListSubmitTipsClaimSuccess" = "锁仓资金 %@ 取回成功。";//TODO:
+
 "kVcAssetOpSettleTipsDisableSettle" = "该资产禁止清算。";//TODO:
 "kVcAssetOpSettleTipsMustGlobalSettleFirst" = "预测市场全局清算完成之后才可以进行清算操作。";//TODO:
 "kVcAssetOpSettleTipsNoFeedData" = "该资产没有有效的喂价，不可清算。";//TODO:
 "kVcAssetOpSettleDelayHoursN" = "%@小时";//TODO:
-"kVcAssetOpSettleUiTips" = "【温馨提示】\n1、清算操作强制把清算资产换回背书资产。此操作不可撤销，请谨慎操作。\n2、发起清算后将在%@后排队执行，并以当时的清算价格成交。\n3、清算价 = 成交时的喂价 × %@";//TODO:
-"kVcAssetOpSettleUiTipsAlreadyGs" = "【温馨提示】\n1、清算操作强制把清算资产换回背书资产。此操作不可撤销，请谨慎操作。\n2、该资产已经触发全局清算，清算操作将立即执行。\n3、清算价 = %@";//TODO:
+"kVcAssetOpSettleUiTips" = "【温馨提示】\n1、清算操作强制把清算资产换回背书资产。此操作不可撤销，请谨慎操作。\n2、发起清算后将在%@后排队执行，并以当时的清算价格成交。\n3、清算价 = 成交时的喂价 × %@\n4、清算手续费 = %@";//TODO:
+"kVcAssetOpSettleUiTipsAlreadyGs" = "【温馨提示】\n1、清算操作强制把清算资产换回背书资产。此操作不可撤销，请谨慎操作。\n2、该资产已经触发全局清算，清算操作将立即执行。\n3、清算价 = %@\n4、清算手续费 = %@";//TODO:
 "kVcAssetOpSettleCellPlaceholderAmount" = "请输入清算数量";//TODO:
 "kVcAssetOpSettleBtnName" = "发起清算";//TODO:
 "kVcAssetOpSettleSubmitTipsPleaseInputAmount" = "请输入要清算的资产数量。";//TODO:
@@ -653,6 +743,7 @@
 "kVcAssetOpClaimMarketFeesBtnName" = "提取";//TODO:
 "kVcAssetOpClaimMarketFeesSubmitTipsPleaseInputAmount" = "请输入要提取的资产数量。";//TODO:
 "kVcAssetOpClaimMarketFeesSubmitTipOK" = "提取成功。";//TODO:
+"kVcAssetOpClaimCollateralFeesUiTips" = "【温馨提示】\n提取用户强清或爆仓贡献的手续费收入。";//TODO:
 
 "kVcAssetOpGsUiTips" = "【温馨提示】\n全局清算会以指定价格强制关闭所有债仓，此操作不可逆，请谨慎操作。";//TODO:
 "kVcAssetOpGsCellTitlePrice" = "价格";//TODO:
@@ -668,14 +759,72 @@
 "kVcOrderPageOpenOrders" = "現在の注文";
 "kVcOrderPageHistory" = "注文履歴";
 "kVcOrderPageSettleOrders" = "清算单";//TODO:
+"kVcOrderPageGridOrders" = "量化订单";//TODO:
 "kVcOrderTipNoHistory" = "最近の取引履歴はありません";
 "kVcOrderTipNoOpenOrder" = "今注文がありません";
 "kVcOrderTipNoSettleOrder" = "没有任何清算单";//TODO:
 "kVcOrderBtnCancel" = "キャンセル";
 "kVcOrderExpired" = "%@ 期限が切れる";
 "kVcOrderTotal" = "合計金額";
+"kVcOrderSettlementFees" = "清算手数料";
 "kVcOrderTipTxCancelFullOK" = "注文 #%@ はキャンセルされました。";
 "kVcOrderTipTxCancelOK" = "注文 #%@ はキャンセルされましたが、更新インターフェイスが失敗しました。後でもう一度やり直してください。";
+
+/* 网格量化 */
+"kBotsNoAnyGridBots" = "网格交易订单为空，点击右上角创建网格交易。";//TODO:
+"kBotsActionStart" = "启动网格交易";//TODO:
+"kBotsActionStop" = "停止网格交易";//TODO:
+"kBotsActionDelete" = "删除网格交易";//TODO:
+"kBotsActionStartTipsForAutoAuthorize" = "网格交易需要授权服务器进行自动化操作，是否自动授权？";//TODO:
+"kBotsActionErrTipsAlreadyDeleted" = "该网格交易已经删除了。";//TODO:
+"kBotsActionErrTipsAlreadyStarted" = "网格交易已经在运行中。";//TODO:
+"kBotsActionErrTipsStopFirst" = "该网格交易正在运行中，请先停止。";//TODO:
+"kBotsActionTipsStartOK" = "启动成功。";//TODO:
+"kBotsActionTipsStopOK" = "网格交易已停止。";//TODO:
+"kBotsActionTipsDeleteOK" = "删除成功。";//TODO:
+"kBotsCellLabelPairNameTitle" = "网格交易#%@ (%@/%@)";  //TODO:
+"kBotsCellLabelStatusCreated" = "已创建";//TODO:
+"kBotsCellLabelStatusRunning" = "运行中"; //TODO:
+"kBotsCellLabelStatusStopped" = "已停止"; //TODO:
+"kBotsCellLabelStatusInvalid" = "已失效"; //TODO:
+"kBotsCellLabelPriceRangeTitle" = "价格区间"; //TODO:
+"kBotsCellLabelGridNAndOrderAmount" = "网格/每格数量"; //TODO:
+"kBotsCellLabelTotalArbitrageAmount" = "总套利金额"; //TODO:
+"kBotsCellLabelArbitrageAndTradeNum" = "套利/交易次数"; //TODO:
+"kBotsCellLabelProfit" = "浮动盈亏"; //TODO:
+"kBotsCellLabelApy" = "年化收益"; //TODO:
+"kBotsCellLabelMsgInvalidGrid" = "该网格订单已失效";//TODO:
+"kBotsCellLabelMsgRunTimeDHMS" = "已运行 %@ 天 %@ 小时 %@ 分 %@ 秒";//TODO:
+"kBotsCellLabelMsgRunTimeHMS" = "已运行 %@ 小时 %@ 分 %@ 秒";//TODO:
+"kBotsCellLabelMsgRunTimeMS" = "已运行 %@ 分 %@ 秒";//TODO:
+"kBotsCellLabelMsgRunTimeS" = "已运行 %@ 秒";//TODO:
+"kBotsCellLabelStopMessageUserStop" = "用户停止";//TODO:
+"kBotsCreateCellTitleMinPrice" = "最低价格";//TODO:
+"kBotsCreateCellTitleMaxPrice" = "最高价格";//TODO:
+"kBotsCreateCellTitleGridN" = "网格数量";//TODO:
+"kBotsCreateCellTitleAmountPerGrid" = "每格交易数量";//TODO:
+"kBotsCreateCellTitleQuoteAsset" = "交易资产";//TODO:
+"kBotsCreateCellTitleBaseAsset" = "报价资产";//TODO:
+"kBotsCreateCellPlaceHolderMinPrice" = "请输入最低价格";//TODO:
+"kBotsCreateCellPlaceHolderMaxPrice" = "请输入最高价格";//TODO:
+"kBotsCreateCellPlaceHolderGridN" = "请输入网格数量";//TODO:
+"kBotsCreateCellPlaceHolderAmountPerGrid" = "请输入每格交易数量";//TODO:
+"kBotsCreateCellPlaceHolderQuote" = "请选择交易资产";//TODO:
+"kBotsCreateCellPlaceHolderBase" = "请选择报价资产";//TODO:
+"kBotsCreateSubmitButton" = "创建";//TODO:
+"kBotsCreateUiTipsMsg" = "【温馨提示】\n设置网格量化订单参数。\n\n 注意：因账户内其他交易可能会影响网格收益的计算，建议使用单独账户来运行网格，一个账户不要同时运行多个网格。";//TODO:
+"kBotsCreateTipSelectQuoteAssetFirst" = "请先选择交易资产。";//TODO:
+"kBotsCreateTipPleaseSelectBase" = "请选择报价资产。";//TODO:
+"kBotsCreateTipPleaseSelectQuote" = "请选择交易资产。";//TODO:
+"kBotsCreateTipQuoteAndBaseIsSame" = "交易资产和报价资产不能相同。";//TODO:
+"kBotsCreateTipPleaseInputGridN" = "请设置网格数量。";//TODO:
+"kBotsCreateTipInvalidGridNRange" = "网格数量的有效范围 2 ~ 99。";//TODO:
+"kBotsCreateTipPleaseInputAmountPerGrid" = "请设置每格交易数量。";//TODO:
+"kBotsCreateTipPleaseInputMinPrice" = "请设置最低价格。";//TODO:
+"kBotsCreateTipPleaseInputMaxPrice" = "请设置最高价格。";//TODO:
+"kBotsCreateTipPleaseReinputMinOrMaxPrice" = "请重新设置最低价格或最高价格的值。";//TODO:
+"kBotsCreateTipPleaseAdjustBotsArgs" = "已经存在相同参数的量化订单，请调整参数后再试。";//TODO:
+"kBotsCreateTipCreateOK" = "创建成功。";//TODO:
 
 /* 待解冻金额 */
 "kVestingTipsNoData" = "待解凍金額がありません";
@@ -841,9 +990,9 @@
 "kVcStCellTitleNetworkFee" = "广播手续费";//TODO:
 "kVcStCellTitleActualAmount" = "实际到账";//TODO:
 "kVcStTipUiImportReceipt" = "【温馨提示】\n导入收据同时支持APP生成的收据和CLI命令行钱包收据格式。\n\n如果隐私收据丢失，可尝试直接输入转账对应区块编号进行导入。\n\n如果是通过提案进行隐私转账，则不会生成隐私收据，在提案生效后直接输入创建提案时对应区块编号进行导入即可。";//TODO:
-"kVcStTipUiTransferToBlind" = "【温馨提示】\n隐私转入：即从比特股公开账号向隐私账户转账。并且可同时向多个隐私账户转账。\n\n如果是通过提案进行隐私转账，则不会生成隐私收据，在提案生效后直接输入创建提案时对应区块编号进行导入即可。";//TODO:
+"kVcStTipUiTransferToBlind" = "【温馨提示】\n隐私转入：即从新比特股公开账号向隐私账户转账。并且可同时向多个隐私账户转账。\n\n如果是通过提案进行隐私转账，则不会生成隐私收据，在提案生效后直接输入创建提案时对应区块编号进行导入即可。";//TODO:
 "kVcStTipUiBlindTransfer" = "【温馨提示】\n隐私转账：即在多个隐私账户之间进行转账操作。\n\n找零和赠与：收据总金额减去输出总金额的剩余金额，如果满足找零所需手续费，则会自动找零到我的隐私账户，否则会自动赠与给第一个隐私账户。";//TODO:
-"kVcStTipUiTransferFromBlind" = "【温馨提示】\n隐私转出：即从隐私账户向比特股公开账号转账。";//TODO:
+"kVcStTipUiTransferFromBlind" = "【温馨提示】\n隐私转出：即从隐私账户向新比特股公开账号转账。";//TODO:
 "kVcStTipErrForbidBlindTransfer" = "资产 %@ 已禁止隐私转账。";//TODO:
 "kVcStTipErrForbidNormalTransfer" = "资产 %@ 禁止转账。";//TODO:
 "kVcStTipErrNeedWhiteList" = "资产 %@ 已开启白名单，禁止隐私转账。";//TODO:
@@ -1040,12 +1189,15 @@
 "kSettingCurrencyNameEUR" = "ユーロ";
 "kSettingCurrencyNameJPY" = "円";
 "kSettingCurrencyNameKRW" = "ウォン";
-"kSettingCurrencyNameBTS" = "BitSharesコア資産";
+"kSettingCurrencyNameBTS" = "NBS";
 "kSettingApiCellValueRandom" = "自動選択";
 "kSettingApiInternalNodeBTSPP" = "中国 - 杭州（BTS ++）";
 "kSettingApiInternalNodeAbit" = "米国（abit）";
 "kSettingApiInternalNodeGDEX" = "中国 - 上海（GDEX）";
 "kSettingApiInternalNodeBTSAI" = "中国 - 北京（bts.ai）";
+"kSettingApiInternalNodeCNVOTE01" = "中国 - 重庆 (CNVOTE)";
+"kSettingApiInternalNodeCNVOTE02" = "中国 - 杭州 (CNVOTE)";
+"kSettingApiInternalNodeCNVOTE03" = "中国 - 北京（CNVOTE）";
 "kSettingApiRandomCell" = "自動";
 "kSettingApiCellCustomFlag" = "カスタム";
 "kSettingApiOpSetAsCurrent" = "現在のノードとして設定";
@@ -1064,7 +1216,7 @@
 "kSettingNewApiSubmitTipsURLAlreadyExist" = "現在のノードは既に存在します。";
 "kSettingNewApiSubmitTipsOK" = "正常に追加されました。";
 "kSettingNewApiSubmitTipsConnectedFailed" = "接続に失敗しました。URLの有効性をもう一度確認してください。";
-"kSettingNewApiSubmitTipsNotBitsharesMainnetNode" = "このノードはBitSharesメインネットワークノードではありません。もう一度入力してください。";
+"kSettingNewApiSubmitTipsNotBitsharesMainnetNode" = "このノードはNewBitSharesメインネットワークノードではありません。もう一度入力してください。";
 
 /* 各种VC标题栏名字 */
 "kVcTitleLogin" = "ログイン";
@@ -1156,6 +1308,12 @@
 "kVcTitleSearchAssets" = "搜索资产";//TODO:
 "kVcTitleSearchBackAsset" = "搜索抵押物";//TODO:
 "kVcTitleAssetOpSettle" = "发起清算";//TODO:
+"kVcTitleAssetOpMinerIn" = "挖矿";//TODO:
+"kVcTitleAssetOpMinerOut" = "退出挖矿";//TODO:
+"kVcTitleMyLockPositions" = "我的锁仓";//TODO:
+"kVcTitleStakeMining" = "锁仓挖矿";//TODO:
+"kVcTitleAssetMiningDataMiner" = "MINER推荐挖矿数据";//TODO:
+"kVcTitleAssetMiningDataScny" = "SCNY推荐挖矿数据";//TODO:
 "kVcTitleAssetOpReserve" = "销毁资产";//TODO:
 "kVcTitleAssetOpStakeVoteCreateTicket" = "创建锁仓";//TODO:
 "kVcTitleAssetOpStakeVoteUpdateTicket" = "更新锁仓";//TODO:
@@ -1163,6 +1321,7 @@
 "kVcTitleAssetGlobalSettle" = "全局清算";//TODO:
 "kVcTitleAssetClaimFeePool" = "提取手续费池";//TODO:
 "kVcTitleAssetClaimMarketFees" = "提取市场手续费";//TODO:
+"kVcTitleAssetClaimFees" = "提取手续费";//TODO:
 "kVcTitleAssetOpViewDetail" = "%@ 详情";//TODO:
 "kVcTitleAssetOpUpdateBasic" = "更新资产";//TODO:
 "kVcTitleAssetOpUpdateBitasset" = "更新智能币";//TODO:
@@ -1170,6 +1329,7 @@
 "kVcTitleMyPairsMgr" = "交易对管理";
 "kVcTitleSearchAssetQuote" = "見積資産の検索";
 "kVcTitleSearchAssetBase" = "基本資産の検索";
+"kVcTitleCreateGridBots" = "创建网格交易";//TODO:
 
 /* 钱包管理 */
 "kWalletUnlockFailedUnknowMode" = "錠解除に失敗する，未知のパターンです：%@。";
@@ -1365,7 +1525,7 @@
 "kOtcMgrErrUserFrozen" = "账号已被冻结。";//TODO:
 "kOtcMgrErrUserIdCardNotVerify" = "身份信息验证失败。";//TODO:
 "kOtcMgrErrUserIdCardVerifyFailed" = "身份认证失败。";//TODO:
-"kOtcMgrErrUserIdCardBindOtherBtsAccount" = "您的身份信息已经绑定其他BTS账号。";//TODO:
+"kOtcMgrErrUserIdCardBindOtherBtsAccount" = "您的身份信息已经绑定其他NBS账号。";//TODO:
 "kOtcMgrErrNotLoginOrTokenIsEmpty" = "请退出场外交易界面重新登录。";//TODO:
 "kOtcMgrErrAdExistSameTypeAd" = "已经存在相同类型的广告。";//TODO:
 "kOtcMgrErrAdLockPriceExpired" = "价格已变化，请重新下单。";//TODO:
@@ -1375,7 +1535,7 @@
 "kOtcMgrErrAdMorethanMaxLimit" = "交易数量高于最大限量。";//TODO:
 "kOtcMgrErrOrderCancelTooMuch" = "今日取消订单数量过多。";//TODO:
 "kOtcMgrErrOrderMorethanUseableNum" = "超过最大可交易数量。";//TODO:
-"kOtcMgrErrMerchantBtsFeeNotEnough" = "商家账号手续费不足，请转入对应BTS手续费后继续操作。";//TODO:
+"kOtcMgrErrMerchantBtsFeeNotEnough" = "商家账号手续费不足，请转入对应NBS手续费后继续操作。";//TODO:
 "kOtcMgrErrOrderExistTooMuchPendingOrder" = "未完成订单数达到上限。";//TODO:
 "kOtcMgrErrOrderTotalTooLarge" = "订单金额太大。";//TODO:
 "kOtcMgrErrOrderTotalTooSmall" = "订单金额太小。";//TODO:
@@ -1723,16 +1883,16 @@
 "kTxInvalidMemoPriKey" = "备注私钥无效。";//TODO:
 
 /* 通用字符串 */
-"kShareWelcomeMessage" = "分散型金融プラットフォームであるBitSharesへようこそ。";
+"kShareWelcomeMessage" = "今すぐNBSアカウントを登録して、毎日の高いマイニング収益をお楽しみください。 （開くにはシステムブラウザを使用することをお勧めします）";
 "kShareLinkCopied" = "リンクがコピーされました。";
 "kLangKeyZhSimple" = "简体中文 / 簡体字中国語";
 "kLangKeyEn" = "English / 英語";
 "kLangKeyJa" = "日本語";
 "skip" = "PASS";
 "kNormalErrorInvalidArgs" = "無効なパラメーター。";
-"kAppName" = "BitShares";
+"kAppName" = "NBS";
 "kAccount" = "アカウント";
-"kAboutMainDesc" ="\nBitSharesモバイルサイドのウオレットは石墨のアルケン技術に基づくので、製品から出発を体験して、採用します原生の技術開発の1モデル匹敵する一流センター化取る引く所のDEX。\n\n私達に連絡します\nWeChat：bts-pp\nE-mail：contact@btsplusplus.com\nTelegram：https://t.me/btsplusplus\n公式サイト：https://btspp.io\n";
+"kAboutMainDesc" ="\nNewBitSharesモバイルサイドのウオレットは石墨のアルケン技術に基づくので、製品から出発を体験して、採用します原生の技術開発の1モデル匹敵する一流センター化取る引く所のDEX。\n\n私達に連絡します\nE-mail：s@nbs.plus\nギルド：https://btsgh.com\n公式サイト：https://nbs.plus\n";
 "kAboutChannelAppStore" = "(商店版 & 渠道 %@)";
 "kAboutChannelWebsite" = "(官网版 & 渠道 %@)";
 "kAboutDebugVersion" = "(调试版)";
@@ -1749,9 +1909,9 @@
 "kNormalCellBtnCreateWallet" = "ウオレットを創建";
 "kTipsInitialize" = "初期化の中…";
 "kTipsBeRequesting" = "願いの中…";
-"kTipsTxFeeNotEnough" = "手数料が足りない，アカウントに足額の BTS/CNY/USD を確保してください";
+"kTipsTxFeeNotEnough" = "手数料が足りない，アカウントに足額の NBS/CNY/USD を確保してください";
 "kTipsTxRequestFailed" = "失敗を要請して、少しの後でまた試みてください。。";
-"kSearchPlaceholderAccount" = "有効な Bitshares アカウントを入力してください";
+"kSearchPlaceholderAccount" = "有効な NBS アカウントを入力してください";
 "kSearchPlaceholderAsset" = "クリックして新しい資産を検索します";
 "kSearchTipsMyFavAccount" = "私の関心(%@人)";
 "kSearchTipsMyCustomPairs" = "私の取引隊(%@个)";
@@ -1768,6 +1928,7 @@
 "kTipsOrderFilled" = "注文 #%@ 一部は取引が成立します。";
 "kWarmTips" = "暖かいヒント";
 "kLoginPassword" = "パスワード ";
+"kLoginPasswordWithChineseWords" = "パスワード ";
 "kBtnLogin" = "ログインする";
 "kBtnRefresh" = "更新";
 "kBtnCancel" = "キャンセル";
@@ -1804,6 +1965,8 @@
 "kGPErrorInsufficientBalance" = "手数料は不足します。";
 "kGPErrorRedeemInvalidPreimage" = "元の画像が正しくありません。";
 "kGPErrorApiNodeVersionTooLow" = "現在のAPIノードのバージョンが低すぎます。";
+"kGPErrorLimitOrderUnableToFill" = "オーダーブックの深さが不十分で、スワップに失敗しました。";
+"kGPErrorExceedMaxSupply" = "資産の最大供給量を超えています。 処理に失敗しました。";
 "kGPErrorBlindReceiptIsNotExisted" = "ブラインド領収書は存在しません。";
 "kGPErrorBlindVerifySumFailed" = "ブラインド入力と出力の量は等しくありません。";
 "kGPErrorFeePoolInsufficient" = "手数料資産に対応する手数料プールの残高が不足しています。";
@@ -1814,9 +1977,8 @@
 "kShareLinkPageDefaultLang" = "en";
 "appDepositWithdrawDefaultGateway" = "GDEX";
 "btsaiLangKey" = "en";
+"appEmbeddedUrlLangKey" = "en";
 "enableOtcEntry" = "0";
-"qaHtmlFileName" = "qam_en.html";
-"userAgreementHtmlFileName" = "agreement_en.html";
 
 /* Android专有字符串 */
 "action_settings" = "Settings";

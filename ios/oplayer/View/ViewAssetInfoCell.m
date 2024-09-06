@@ -13,6 +13,8 @@
 #import "SettingManager.h"
 #import "bts_chain_config.h"
 #import "Extension.h"
+#import "ModelUtils.h"
+#import "ChainObjectManager.h"
 
 @interface ViewAssetInfoCell()
 {
@@ -82,7 +84,7 @@
         UIColor* backColor = [ThemeManager sharedThemeManager].textColorHighlight;
         _lbAssetType.textAlignment = NSTextAlignmentCenter;
         _lbAssetType.backgroundColor = [UIColor clearColor];
-        _lbAssetType.textColor = [ThemeManager sharedThemeManager].textColorMain;
+        _lbAssetType.textColor = [ThemeManager sharedThemeManager].textColorFlag;
         _lbAssetType.font = [UIFont boldSystemFontOfSize:12];
         _lbAssetType.layer.borderWidth = 1;
         _lbAssetType.layer.cornerRadius = 2;
@@ -304,15 +306,37 @@
     if (_btnArray) {
         //  TODO:4.0 后续可扩展【更多】按钮
         NSMutableArray* all_actions = [NSMutableArray arrayWithObjects:@(ebaok_transfer), @(ebaok_trade), nil];
-        if (bIsSmart || bIsPredictionMarket) {
-            [all_actions addObject:@(ebaok_settle)];
+        
+        //  网关资产判断，如果是网关资产，则添加 充币和提币，去掉其他 action。
+        id asset_id = [_item objectForKey:@"id"];
+        id curr_asset = [[ChainObjectManager sharedChainObjectManager] getChainObjectByID:asset_id];
+        assert(curr_asset);
+        if ([ModelUtils assetIsGatewayAsset:curr_asset]) {
+            //  【充币】和【提币】
+            [all_actions addObject:@(ebaok_gateway_deposit)];
+            [all_actions addObject:@(ebaok_gateway_withdrawal)];
         } else {
-            [all_actions addObject:@(ebaok_reserve)];
+        
+            //  【挖矿】和【闪兑】
+            if ([ModelUtils assetIsMinerInAsset:asset_id]) {
+                [all_actions addObject:@(ebaok_miner)];
+            } else if ([ModelUtils assetIsMinerOutAsset:asset_id]) {
+                [all_actions addObject:@(ebaok_fast_swap)];
+            }
+            
+            if (bIsSmart || bIsPredictionMarket) {
+                [all_actions addObject:@(ebaok_settle)];
+            } else {
+                [all_actions addObject:@(ebaok_reserve)];
+            }
+            //  todo nbs: remote state
+    //        //  锁仓投票（仅针对BTS）
+    //        if (bIsCore) {
+    //            [all_actions addObject:@(ebaok_stake_vote)];
+    //        }
+            
         }
-        //  锁仓投票（仅针对BTS）
-        if (bIsCore) {
-            [all_actions addObject:@(ebaok_stake_vote)];
-        }
+        
         NSArray* final_actions;
 //        //  按钮太多，添加【更多】按钮。
 //        if ([all_actions count] > [_btnArray count]) {
@@ -339,6 +363,18 @@
                     break;
                 case ebaok_trade:
                     [btn updateTitleWithoutAnimation:NSLocalizedString(@"kVcAssetBtnTrade", @"交易")];
+                    break;
+                case ebaok_miner:
+                    [btn updateTitleWithoutAnimation:NSLocalizedString(@"kVcAssetBtnMiner", @"挖矿")];
+                    break;;
+                case ebaok_fast_swap:
+                    [btn updateTitleWithoutAnimation:NSLocalizedString(@"kVcAssetBtnFastSwap", @"闪兑")];
+                    break;
+                case ebaok_gateway_deposit:
+                    [btn updateTitleWithoutAnimation:NSLocalizedString(@"kVcAssetBtnGatewayDeposit", @"充币")];
+                    break;
+                case ebaok_gateway_withdrawal:
+                    [btn updateTitleWithoutAnimation:NSLocalizedString(@"kVcAssetBtnGatewayWithdrawal", @"提币")];
                     break;
                 case ebaok_settle:
                     [btn updateTitleWithoutAnimation:NSLocalizedString(@"kVcAssetBtnSettle", @"清算")];

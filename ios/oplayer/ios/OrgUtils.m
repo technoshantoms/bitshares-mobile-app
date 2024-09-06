@@ -79,6 +79,17 @@
                         [self makeToast:NSLocalizedString(@"kGPErrorApiNodeVersionTooLow", @"当前API节点版本太低。")];
                         return;
                     }
+                    if ([lowermsg rangeOfString:@"killing limit order due to unable to fill"].location != NSNotFound) {
+                        [self makeToast:NSLocalizedString(@"kGPErrorLimitOrderUnableToFill", @"订单簿深度不足，兑换失败。")];
+                        return;
+                    }
+                    
+                    //  Execution error: Assert Exception: _dynamic_data_obj->current_supply + o.delta_debt.amount <= _debt_asset->options.max_supply: Borrowing this quantity would exceed MAX_SUPPLY
+                    if ([lowermsg rangeOfString:@"borrowing this quantity would exceed max_supply"].location != NSNotFound) {
+                        [self makeToast:NSLocalizedString(@"kGPErrorExceedMaxSupply", @"超过最大供应量上限，借款失败。")];
+                        return;
+                    }
+                    
                     if ([lowermsg rangeOfString:@"fee pool balance"].location != NSNotFound) {
                         //  format = "core_fee_paid <= fee_asset_dyn_data->fee_pool: Fee pool balance of '${b}' is less than the ${r} required to convert ${c}";
                         [self makeToast:NSLocalizedString(@"kGPErrorFeePoolInsufficient", @"手续费资产对应的手续费池余额不足。")];
@@ -525,6 +536,12 @@
  */
 + (NSTimeInterval)parseBitsharesTimeString:(NSString*)time
 {
+    //  如果以 .000Z 等形式结尾，则先去掉。
+    NSString* three_digit_z_end_regular = @".*.\\d\\d\\dZ$";
+    if ([[NSPredicate predicateWithFormat:@"SELF MATCHES %@", three_digit_z_end_regular] evaluateWithObject:time]){
+        time = [time substringToIndex:time.length - 5]; //  去掉 .000Z 等5个字符
+    }
+    
     NSDateFormatter* dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
     //  REMARK：格式化字符串已经有Z结尾表示时区了，这里可以不用设置。
@@ -585,6 +602,18 @@
     
     NSDateFormatter* dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy/MM/dd"];
+    return [dateFormat stringFromDate:[NSDate dateWithTimeIntervalSince1970:ts]];
+}
+
+/**
+ *  格式化：日期显示格式。REMARK：以当前时区格式化，BTS默认时间是UTC。北京时间当前时区会+8。
+ */
++ (NSString*)fmtMMddTimeShowString:(NSString*)time
+{
+    NSTimeInterval ts = [self parseBitsharesTimeString:time];
+    
+    NSDateFormatter* dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"MM/dd"];
     return [dateFormat stringFromDate:[NSDate dateWithTimeIntervalSince1970:ts]];
 }
 
@@ -667,6 +696,37 @@
         int day = (int)(seconds / 86400);
         return [NSString stringWithFormat:NSLocalizedString(@"kVestingCellPeriodDay", @"%@天"), @(day)];
     }
+}
+
+/**
+ *  格式化：精确到小时格式化。
+ */
++ (NSString*)fmtNhoursAndDays:(NSInteger)seconds
+{
+    NSInteger hours = seconds / 3600;
+    if ((hours % 24) == 0) {
+        NSInteger days = hours / 24;
+        if (days > 1){
+            return [NSString stringWithFormat:NSLocalizedString(@"kProposalLabelNDays", @"%@天"), @(days)];
+        }else{
+            return [NSString stringWithFormat:NSLocalizedString(@"kProposalLabel1Days", @"%@天"), @(days)];
+        }
+    } else {
+        //  非整数”天“，按照小时显示。
+        if (hours > 1) {
+            return [NSString stringWithFormat:NSLocalizedString(@"kProposalLabelNHours", @"%@小时"), @(hours)];
+        } else {
+            return [NSString stringWithFormat:NSLocalizedString(@"kProposalLabel1Hours", @"%@小时"), @(hours)];
+        }
+    }
+}
+
+/*
+ *  (public) 获取当前时间戳
+ */
++ (NSTimeInterval)current_ts
+{
+    return [[NSDate date] timeIntervalSince1970];
 }
 
 /**

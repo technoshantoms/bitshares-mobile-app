@@ -11,8 +11,83 @@
 #import "ChainObjectManager.h"
 #import "OrgUtils.h"
 #import "TradingPair.h"
+#import "SettingManager.h"
 
 @implementation ModelUtils
+
+/*
+ *  (public) 资产 - 是否是挖矿相关的资产
+ */
++ (BOOL)assetIsMinerAsset:(id)asset_object_or_asset_id
+{
+    assert(asset_object_or_asset_id);
+    
+    NSString* oid = [asset_object_or_asset_id isKindOfClass:[NSDictionary class]] ? [asset_object_or_asset_id objectForKey:@"id"] : asset_object_or_asset_id;
+    
+    for (id miner_item in [[SettingManager sharedSettingManager] getAppAssetMinerList]) {
+        if (oid && [oid isEqualToString:[[[miner_item objectForKey:@"price"] objectForKey:@"amount_to_sell"] objectForKey:@"asset_id"]]) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+/*
+ *  (public) 资产 - 是否是参与挖矿的资产
+ */
++ (BOOL)assetIsMinerInAsset:(id)asset_object_or_asset_id
+{
+    assert(asset_object_or_asset_id);
+    
+    NSString* oid = [asset_object_or_asset_id isKindOfClass:[NSDictionary class]] ? [asset_object_or_asset_id objectForKey:@"id"] : asset_object_or_asset_id;
+    
+    for (id miner_item in [[SettingManager sharedSettingManager] getAppAssetMinerList]) {
+        if (oid && [[miner_item objectForKey:@"miner"] boolValue] && [oid isEqualToString:[[[miner_item objectForKey:@"price"] objectForKey:@"amount_to_sell"] objectForKey:@"asset_id"]]) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+/*
+ *  (public) 资产 - 是否是退出挖矿的资产
+ */
++ (BOOL)assetIsMinerOutAsset:(id)asset_object_or_asset_id
+{
+    assert(asset_object_or_asset_id);
+    
+    NSString* oid = [asset_object_or_asset_id isKindOfClass:[NSDictionary class]] ? [asset_object_or_asset_id objectForKey:@"id"] : asset_object_or_asset_id;
+    
+    for (id miner_item in [[SettingManager sharedSettingManager] getAppAssetMinerList]) {
+        if (oid && ![[miner_item objectForKey:@"miner"] boolValue] && [oid isEqualToString:[[[miner_item objectForKey:@"price"] objectForKey:@"amount_to_sell"] objectForKey:@"asset_id"]]) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+/*
+ *  (public) 资产 - 资产是否是网关资产判断
+ */
++ (BOOL)assetIsGatewayAsset:(NSDictionary*)asset_object
+{
+    assert(asset_object);
+    id issuer = [asset_object objectForKey:@"issuer"];
+    if (issuer && ![issuer isEqualToString:@""]) {
+        id knownGatewayAccountsList = [[SettingManager sharedSettingManager] getAppKnownGatewayAccounts];
+        if (knownGatewayAccountsList && [knownGatewayAccountsList count] > 0) {
+            for (NSString* gateway_account in knownGatewayAccountsList) {
+                if ([gateway_account isEqualToString:issuer]) {
+                    return YES;
+                }
+            }
+        }
+    }
+    return NO;
+}
 
 /*
  *  (public) 资产 - 判断资产是否允许强清
@@ -97,6 +172,24 @@
 + (BOOL)assetIsCore:(id)asset
 {
     return [[asset objectForKey:@"id"] isEqualToString:[ChainObjectManager sharedChainObjectManager].grapheneCoreAssetID];
+}
+
+/*
+ *  （public) 获取智能币扩展参数
+ */
++ (NSDecimalNumber*)getBitAssetDataExtargs:(id)bitasset_data arg_name:(NSString*)arg_name precision:(NSInteger)precision
+{
+    assert(bitasset_data);
+    assert(arg_name);
+    NSInteger result = 0;
+    id ext = [bitasset_data[@"options"] objectForKey:@"extensions"];
+    if (ext) {
+        id value = [ext objectForKey:arg_name];
+        if (value) {
+            result = [value integerValue];
+        }
+    }
+    return [NSDecimalNumber decimalNumberWithMantissa:result exponent:-precision isNegative:NO];
 }
 
 /*
@@ -377,6 +470,29 @@
         return [n2 compare:n1];
     })];
     return dataArray;
+}
+
+/*
+ *  (public) 高精度计算模式控制，控制四舍五入以及小数点精度等。
+ */
++ (NSDecimalNumberHandler*)decimalHandler:(NSRoundingMode)round_mode scale:(short)scale
+{
+    return [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:round_mode
+                                                                  scale:scale
+                                                       raiseOnExactness:NO
+                                                        raiseOnOverflow:NO
+                                                       raiseOnUnderflow:NO
+                                                    raiseOnDivideByZero:NO];
+}
+
++ (NSDecimalNumberHandler*)decimalHandlerRoundUp:(short)scale
+{
+    return [self decimalHandler:NSRoundUp scale:scale];
+}
+
++ (NSDecimalNumberHandler*)decimalHandlerRoundDown:(short)scale
+{
+    return [self decimalHandler:NSRoundDown scale:scale];
 }
 
 @end
