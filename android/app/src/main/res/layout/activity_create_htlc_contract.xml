@@ -31,6 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
+                    android:tint="@color/theme01.textColorMain"
                     android:src="@drawable/ic_btn_back"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -108,9 +109,8 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center_vertical|right"
-
-
                 android:foregroundGravity="right"
+                android:tint="@color/theme01.textColorMain"
                 android:src="@drawable/ic_btn_right_arrow" />
 
         </LinearLayout>
@@ -144,9 +144,8 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center_vertical|right"
-
-
                 android:foregroundGravity="right"
+                android:tint="@color/theme01.textColorMain"
                 android:src="@drawable/ic_btn_right_arrow" />
 
         </LinearLayout>
@@ -332,6 +331,7 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical|right"
                     android:foregroundGravity="right"
+                    android:tint="@color/theme01.textColorMain"
                     android:src="@drawable/ic_btn_right_arrow" />
             </LinearLayout>
 
@@ -373,6 +373,7 @@
                         android:layout_height="20dp"
                         android:layout_gravity="center_vertical|right"
                         android:foregroundGravity="right"
+                        android:tint="@color/theme01.textColorMain"
                         android:src="@drawable/ic_btn_right_arrow" />
                 </LinearLayout>
                 <View android:layout_height="1dp" android:background="@color/theme01.bottomLineColor" android:layout_width="fill_parent"></View>
@@ -404,6 +405,7 @@
                         android:layout_height="20dp"
                         android:layout_gravity="center_vertical|right"
                         android:foregroundGravity="right"
+                        android:tint="@color/theme01.textColorMain"
                         android:src="@drawable/ic_btn_right_arrow" />
                 </LinearLayout>
                 <View android:layout_height="1dp" android:background="@color/theme01.bottomLineColor" android:layout_width="fill_parent"></View>
@@ -413,7 +415,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 

@@ -10,7 +10,107 @@ import java.math.BigDecimal
 class ModelUtils {
 
     companion object {
+        
+        /**
+         *  (public) 是否是锁仓挖矿的特殊 vesting balance 对象判断。
+         */
+        fun isLockMiningVestingObject(vesting: JSONObject): Boolean {
+            //  锁仓挖矿采用 CDD + start_claim 类型。
+            val vesting_type = vesting.getJSONArray("policy").getInt(0)
+            if (vesting_type != EBitsharesVestingPolicy.ebvp_cdd_vesting_policy.value) {
+                return false
+            }
 
+            val balance_type = vesting.optString("balance_type")
+            if (balance_type.isNotEmpty() && balance_type.toLowerCase() != "unspecified") {
+                return false
+            }
+
+            val policy_data = vesting.getJSONArray("policy").getJSONObject(1)
+            val start_claim_ts = Utils.parseBitsharesTimeString(policy_data.getString("start_claim"))
+            if (start_claim_ts <= 0) {
+                return false
+            }
+
+            if (policy_data.getInt("vesting_seconds") != 0) {
+                return false
+            }
+
+            if (policy_data.getInt("coin_seconds_earned") != 0) {
+                return false
+            }
+
+            return true
+        }
+
+        /**
+         *  (public) 资产 - 是否是挖矿相关的资产
+         */
+        fun assetIsMinerAsset(asset_object_or_asset_id: Any): Boolean {
+            val oid = if (asset_object_or_asset_id is JSONObject) {
+                asset_object_or_asset_id.optString("id", null)
+            } else {
+                asset_object_or_asset_id as? String
+            }
+            for (miner_item in SettingManager.sharedSettingManager().getAppAssetMinerList().forin<JSONObject>()) {
+                if (oid != null && oid == miner_item!!.getJSONObject("price").getJSONObject("amount_to_sell").getString("asset_id")) {
+                    return true
+                }
+            }
+            return false
+        }
+
+        /**
+         *  (public) 资产 - 是否是参与挖矿的资产
+         */
+        fun assetIsMinerInAsset(asset_object_or_asset_id: Any): Boolean {
+            val oid = if (asset_object_or_asset_id is JSONObject) {
+                asset_object_or_asset_id.optString("id", null)
+            } else {
+                asset_object_or_asset_id as? String
+            }
+            for (miner_item in SettingManager.sharedSettingManager().getAppAssetMinerList().forin<JSONObject>()) {
+                if (oid != null && miner_item!!.isTrue("miner") && oid == miner_item.getJSONObject("price").getJSONObject("amount_to_sell").getString("asset_id")) {
+                    return true
+                }
+            }
+            return false
+        }
+
+        /**
+         *  (public) 资产 - 是否是退出挖矿的资产
+         */
+        fun assetIsMinerOutAsset(asset_object_or_asset_id: Any): Boolean {
+            val oid = if (asset_object_or_asset_id is JSONObject) {
+                asset_object_or_asset_id.optString("id", null)
+            } else {
+                asset_object_or_asset_id as? String
+            }
+            for (miner_item in SettingManager.sharedSettingManager().getAppAssetMinerList().forin<JSONObject>()) {
+                if (oid != null && !miner_item!!.isTrue("miner") && oid == miner_item.getJSONObject("price").getJSONObject("amount_to_sell").getString("asset_id")) {
+                    return true
+                }
+            }
+            return false
+        }
+
+        /**
+         *  (public) 资产 - 资产是否是网关资产判断
+         */
+        fun assetIsGatewayAsset(asset_object: JSONObject): Boolean {
+            val issuer = asset_object.optString("issuer")
+            if (issuer.isNotEmpty()) {
+                val knownGatewayAccountsList = SettingManager.sharedSettingManager().getAppKnownGatewayAccounts()
+                if (knownGatewayAccountsList.length() > 0) {
+                    for (gateway_account in knownGatewayAccountsList.forin<String>()) {
+                        if (gateway_account!! == issuer) {
+                            return true
+                        }
+                    }
+                }
+            }
+            return false
+        }
 
         /**
          *  (public) 资产 - 判断资产是否允许强清
@@ -86,6 +186,21 @@ class ModelUtils {
          */
         fun assetIsCore(asset: JSONObject): Boolean {
             return asset.getString("id") == ChainObjectManager.sharedChainObjectManager().grapheneCoreAssetID
+        }
+
+        /**
+         *  （public) 获取智能币扩展参数
+         */
+        fun getBitAssetDataExtargs(bitasset_data: JSONObject, arg_name: String, precision: Int): BigDecimal {
+            var result = "0"
+            val ext = bitasset_data.getJSONObject("options").optJSONObject("extensions")
+            if (ext != null) {
+                val value = ext.optString(arg_name, null)
+                if (value != null) {
+                    result = value
+                }
+            }
+            return bigDecimalfromAmount(result, precision)
         }
 
         /**

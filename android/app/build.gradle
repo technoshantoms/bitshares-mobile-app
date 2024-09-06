@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "org.bitshares.app"
+        applicationId "plus.nbs.app"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 202009131
@@ -23,47 +23,39 @@ android {
         //  默认值
         buildConfigField "boolean", "kAppModuleEnableTabMarket", "true"
         buildConfigField "boolean", "kAppModuleEnableTabDebt", "true"
-        buildConfigField "boolean", "kAppModuleEnableOTC", "true"
-        buildConfigField "boolean", "kAppModuleEnableGateway", "true"
+        buildConfigField "boolean", "kAppModuleEnableOTC", "false"
+//        buildConfigField "boolean", "kAppModuleEnableGateway", "false"
         buildConfigField "boolean", "kAppCheckUpdate", "true"
 
         buildConfigField "String", "kAppCommunityFaucetAddress", "\"\""
-        buildConfigField "String", "kAppConfigFile", "\"fowallet_config.json\""
+        buildConfigField "String", "kAppConfigFile", "\"fowallet_config_nbs_testnet.json\""
 
         //  不区分维度
         flavorDimensions "default"
     }
     productFlavors {
-        btspp {
+        //  for nbs testnet
+        nbstest {
             //  0:iOS企业版 1:AppStore版 10:btspp 20:community(bbf) 100:baichenglian
             buildConfigField "int", "kAppChannelID", "10"
-            buildConfigField "boolean", "kUseCommunityFaucet", "false"
-            buildConfigField "String", "kAppConfigFile", "\"fowallet_config_btspp.json\""
-            //  TODO: test net
-//            buildConfigField "String", "kAppConfigFile", "\"fowallet_config_testnet.json\""
-            //  TODO:2.9 test otc
-//            buildConfigField "String", "kAppConfigFile", "\"fowallet_config_otctest.json\""
-//            buildConfigField "boolean", "kAppModuleEnableTabDebt", "false"
-        }
-        //  for community_bbf
-        bitshares {
-            buildConfigField "int", "kAppChannelID", "20"
-//            buildConfigField "boolean", "kAppModuleEnableOTC", "false"
+            buildConfigField "boolean", "kAppModuleEnableOTC", "true"
+//            buildConfigField "boolean", "kAppModuleEnableGateway", "false"
+            buildConfigField "String", "kAppConfigFile", "\"fowallet_config_nbs_testnet.json\""
             buildConfigField "boolean", "kUseCommunityFaucet", "true"
-            buildConfigField "String", "kAppCommunityFaucetAddress", "\"https://faucet.bitshares.eu/onboarding/api/v1/accounts\""
+            buildConfigField "String", "kAppCommunityFaucetAddress", "\"https://testfaucet.nbs.life/\""
+            //  app-settings
+            buildConfigField "String", "kAppOnChainSettingsAccount", "\"1.2.162\""
         }
-        baichenglian {
-            applicationId "cn.btser.shop"
-            versionCode 201910211
-            versionName "1.1"
-
-            buildConfigField "boolean", "kAppModuleEnableTabMarket", "false"
-            buildConfigField "boolean", "kAppModuleEnableTabDebt", "false"
-            buildConfigField "boolean", "kAppModuleEnableGateway", "false"
-            buildConfigField "boolean", "kAppCheckUpdate", "false"
-
-            buildConfigField "int", "kAppChannelID", "100"
+        //  for nbs mainnet
+        nbsmain {
+            buildConfigField "int", "kAppChannelID", "20"
+            buildConfigField "boolean", "kAppModuleEnableOTC", "true"
+//            buildConfigField "boolean", "kAppModuleEnableGateway", "false"
+            buildConfigField "String", "kAppConfigFile", "\"fowallet_config_nbs_mainnet.json\""
             buildConfigField "boolean", "kUseCommunityFaucet", "false"
+            buildConfigField "String", "kAppCommunityFaucetAddress", "\"https://faucet.nbs.life/\""
+            //  app-settings
+            buildConfigField "String", "kAppOnChainSettingsAccount", "\"1.2.4755\""
         }
     }
     buildTypes {
@@ -96,4 +88,6 @@ dependencies {
     implementation files('libs/x86.jar')
     //  for flurry
     implementation 'com.flurry.android:analytics:11.6.0@aar'
+    //  for notice
+    implementation 'com.sunfusheng:MarqueeView:1.4.1'
 }

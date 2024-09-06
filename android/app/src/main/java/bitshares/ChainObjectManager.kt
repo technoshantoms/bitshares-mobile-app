@@ -281,6 +281,13 @@ class ChainObjectManager {
     }
 
     /**
+     *  (public) 获取APP中各种URL配置
+     */
+    fun getAppEmbeddedUrl(url_key: String, lang_key: String): String {
+        return getDefaultParameters().getJSONObject("app_urls").getJSONObject(url_key).getString(lang_key)
+    }
+
+    /**
      *  (public) 获取APP配置文件中出现的所有资产符号。初始化时需要查询所有依赖的资产信息。
      */
     fun getConfigDependenceAssetSymbols(): JSONArray {
@@ -289,7 +296,7 @@ class ChainObjectManager {
         val symbols = JSONObject()
 
         //  智能资产
-        for (sym in getMainSmartAssetList().forin<String>()) {
+        for (sym in SettingManager.sharedSettingManager().getAppMainSmartAssetList().forin<String>()) {
             symbols.put(sym!!, true)
         }
 
@@ -362,10 +369,17 @@ class ChainObjectManager {
     }
 
     /**
+     *  (public) 获取默认的记账单位，列表的第一个。
+     */
+    fun getDefaultEstimateUnitSymbol(): String {
+        return getEstimateUnitList().getJSONObject(0).getString("symbol")
+    }
+
+    /**
      *  (public) 根据计价货币symbol获取计价单位配置信息
      */
-    fun getEstimateUnitBySymbol(symbol: String): JSONObject {
-        return _estimate_unit_hash[symbol]!!
+    fun getEstimateUnitBySymbol(symbol: String): JSONObject? {
+        return _estimate_unit_hash[symbol]
     }
 
     /**
@@ -383,7 +397,7 @@ class ChainObjectManager {
         if (_assetBasePriority == null) {
             val asset_base_priority = JSONObject()
             var max_priority = 1000
-            //  REMARK：优先级 从 CNY 到 BTS 逐渐降低，其他非市场 base 的资产优先级默认为 0。
+            //  1、REMARK：优先级 从 CNY 到 BTS 逐渐降低，其他非市场 base 的资产优先级默认为 0。
             val default_markets = getDefaultMarketInfos()
             for (i in 0 until default_markets.length()) {
                 val market = default_markets.getJSONObject(i)
@@ -391,6 +405,15 @@ class ChainObjectManager {
                 asset_base_priority.put(symbol, max_priority)
                 max_priority -= 1
             }
+
+            //  2、合并动态设置
+            val common_asset_base_priority = SettingManager.sharedSettingManager().getAppAssetBasePriority()
+            if (common_asset_base_priority.length() > 0) {
+                common_asset_base_priority.keys().forEach { asset_symbol ->
+                    asset_base_priority.put(asset_symbol, common_asset_base_priority.getInt(asset_symbol))
+                }
+            }
+
             _assetBasePriority = asset_base_priority
         }
         return _assetBasePriority!!
@@ -782,12 +805,15 @@ class ChainObjectManager {
                 //  其他资产和 BTS 资产进行兑换
                 val core_exchange_rate = fee_asset.optJSONObject("options")?.optJSONObject("core_exchange_rate")
                 //  没有 core_exchange_rate 信息，则不能作为手续费。
-                if (core_exchange_rate == null) {
+                if (core_exchange_rate == null || ModelUtils.isNullPrice(core_exchange_rate)) {
                     continue
                 }
 
                 val core_base = core_exchange_rate.getJSONObject("base")
                 val core_quote = core_exchange_rate.getJSONObject("quote")
+                if (core_base.getString("amount").toLong() == 0L && core_quote.getString("amount").toLong() == 0L) {
+                    continue
+                }
 
                 var fee_amount: Any? = null
                 var bts_amount: Any? = null
@@ -848,14 +874,19 @@ class ChainObjectManager {
 
 
     /**
-     *  (public) 石墨烯网络初始化，优先调用。重要。
+     *  (public) 初始化部分石墨烯网络参数 和 APP链端配置，优先调用。重要。
      */
     fun grapheneNetworkInit(): Promise {
         val conn = GrapheneConnectionManager.sharedGrapheneConnectionManager().any_connection()
-        return conn.async_exec_db("get_chain_properties").then { chain_properties: Any? ->
-            val json = chain_properties as JSONObject
+
+        val p1 = conn.async_exec_db("get_chain_properties")
+        val p2 = SettingManager.sharedSettingManager().queryAppSettingsOnChain()
+
+        return Promise.all(p1, p2).then {
+            val data_array = it as JSONArray
+            val chain_properties = data_array.getJSONObject(0)
             //  石墨烯网络区块链ID和BTS主网链ID不同，则为测试网络，不判断核心资产名字。因为测试网络资产名字也可能为BTS。
-            val chain_id = json.optString("chain_id")
+            val chain_id = chain_properties.optString("chain_id")
             isTestNetwork = chain_id == null || chain_id.toString() != BTS_NETWORK_CHAIN_ID
             grapheneChainID = chain_id.toString()
             if (isTestNetwork) {
@@ -871,7 +902,6 @@ class ChainObjectManager {
                 return@then true
             }
         }
-
     }
 
 
@@ -1991,5 +2021,32 @@ class ChainObjectManager {
         }
     }
 
+    /**
+     * (public) 查询账号链上自定义存储的数据。
+     */
+    fun queryAccountStorageInfo(account_name_or_id: String, catalog: String): Promise {
+        //  REMARK：API节点不支持会报错
+        val conn = GrapheneConnectionManager.sharedGrapheneConnectionManager().any_connection()
+        return conn.async_exec_custom_operations("get_storage_info", jsonArrayfrom(account_name_or_id, catalog))
+    }
+
+    /**
+     * (public) 查询账号所有量化机器人数据。
+     */
+    fun queryAccountAllBotsData(account_id: String): Promise {
+        return queryAccountStorageInfo(account_id, kAppStorageCatalogBotsGridBots).then {
+            val resultHash = JSONObject()
+            val data_array = it as? JSONArray
+            if (data_array != null) {
+                for (storage_item in data_array.forin<JSONObject>()) {
+                    val bots_key = storage_item!!.optString("key")
+                    if (bots_key.isNotEmpty()) {
+                        resultHash.put(bots_key, storage_item)
+                    }
+                }
+            }
+            return@then resultHash
+        }
+    }
 
 }

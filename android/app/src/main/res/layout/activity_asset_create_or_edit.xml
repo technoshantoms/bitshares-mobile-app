@@ -28,6 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
+                    android:tint="@color/theme01.textColorMain"
                     android:src="@drawable/ic_btn_back"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -198,6 +199,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                                 
                         </LinearLayout>
@@ -245,6 +247,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -289,6 +292,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -367,6 +371,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -432,6 +437,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
 
                         </LinearLayout>
@@ -473,6 +479,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -513,6 +520,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -574,6 +582,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -616,6 +625,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
 
                         </LinearLayout>
@@ -659,6 +669,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -701,6 +712,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -743,6 +755,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -786,6 +799,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -835,6 +849,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -883,6 +898,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -931,6 +947,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -997,6 +1014,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -1037,6 +1055,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -1083,6 +1102,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -1129,6 +1149,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -1175,6 +1196,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
@@ -1221,11 +1243,250 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
                                 android:src="@drawable/ic_btn_right_arrow" />
                         </LinearLayout>
                     </LinearLayout>
                     <View 
                         android:id="@+id/layout_smart_max_settle_volume_line"
+                        android:layout_marginTop="5dp" 
+                        android:layout_height="1dp" 
+                        android:background="@color/theme01.bottomLineColor" 
+                        android:layout_width="fill_parent">
+                    </View>
+
+                    <!-- 智能币信息：爆仓手续费 -->
+                    <LinearLayout
+                        android:id="@+id/layout_smart_margin_call_fee_ratio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:textSize="12dp"
+                            android:textColor="@color/theme01.textColorNormal"
+                            android:text="@string/kVcAssetMgrCellTitleSmartMarginCallFeeRatio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:gravity="center_vertical|right"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tv_smart_margin_call_fee_ratio"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="5dp"
+                                android:textSize="12dp"
+                                android:textColor="@color/theme01.textColorMain"
+                                android:text="@string/kVcAssetMgrCellValueNotSet"/>
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
+                                android:src="@drawable/ic_btn_right_arrow" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <View 
+                        android:id="@+id/layout_smart_margin_call_fee_ratio_line"
+                        android:layout_marginTop="5dp" 
+                        android:layout_height="1dp" 
+                        android:background="@color/theme01.bottomLineColor" 
+                        android:layout_width="fill_parent">
+                    </View>
+
+                    <!-- 智能币信息：强清手续费 -->
+                    <LinearLayout
+                        android:id="@+id/layout_smart_force_settle_fee_percent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:textSize="12dp"
+                            android:textColor="@color/theme01.textColorNormal"
+                            android:text="@string/kVcAssetMgrCellTitleSmartForceSettleFeePercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:gravity="center_vertical|right"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tv_smart_force_settle_fee_percent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="5dp"
+                                android:textSize="12dp"
+                                android:textColor="@color/theme01.textColorMain"
+                                android:text="@string/kVcAssetMgrCellValueNotSet"/>
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
+                                android:src="@drawable/ic_btn_right_arrow" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <View 
+                        android:id="@+id/layout_smart_force_settle_fee_percent_line"
+                        android:layout_marginTop="5dp" 
+                        android:layout_height="1dp" 
+                        android:background="@color/theme01.bottomLineColor" 
+                        android:layout_width="fill_parent">
+                    </View>
+
+                    <!-- 智能币信息：ICR -->
+                    <LinearLayout
+                        android:id="@+id/layout_smart_icr_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:textSize="12dp"
+                            android:textColor="@color/theme01.textColorNormal"
+                            android:text="@string/kVcAssetMgrCellTitleSmartICRValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:gravity="center_vertical|right"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tv_smart_icr_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="5dp"
+                                android:textSize="12dp"
+                                android:textColor="@color/theme01.textColorMain"
+                                android:text="@string/kVcAssetMgrCellValueNotSet"/>
+
+                            <ImageView
+                                android:id="@+id/img_arrow_smart_icr_value"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
+                                android:src="@drawable/ic_btn_right_arrow" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <View 
+                        android:id="@+id/layout_smart_icr_value_line"
+                        android:layout_marginTop="5dp" 
+                        android:layout_height="1dp" 
+                        android:background="@color/theme01.bottomLineColor" 
+                        android:layout_width="fill_parent">
+                    </View>
+
+                    <!-- 智能币信息：MCR -->
+                    <LinearLayout
+                        android:id="@+id/layout_smart_mcr_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:textSize="12dp"
+                            android:textColor="@color/theme01.textColorNormal"
+                            android:text="@string/kVcAssetMgrCellTitleSmartMCRValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:gravity="center_vertical|right"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tv_smart_mcr_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="5dp"
+                                android:textSize="12dp"
+                                android:textColor="@color/theme01.textColorMain"
+                                android:text="@string/kVcAssetMgrCellValueNotSet"/>
+
+                            <ImageView
+                                android:id="@+id/img_arrow_smart_mcr_value"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
+                                android:src="@drawable/ic_btn_right_arrow" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <View 
+                        android:id="@+id/layout_smart_mcr_value_line"
+                        android:layout_marginTop="5dp" 
+                        android:layout_height="1dp" 
+                        android:background="@color/theme01.bottomLineColor" 
+                        android:layout_width="fill_parent">
+                    </View>
+
+                    <!-- 智能币信息：MSSR -->
+                    <LinearLayout
+                        android:id="@+id/layout_smart_mssr_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:textSize="12dp"
+                            android:textColor="@color/theme01.textColorNormal"
+                            android:text="@string/kVcAssetMgrCellTitleSmartMSSRValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:gravity="center_vertical|right"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tv_smart_mssr_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:gravity="center_vertical"
+                                android:layout_marginLeft="5dp"
+                                android:textSize="12dp"
+                                android:textColor="@color/theme01.textColorMain"
+                                android:text="@string/kVcAssetMgrCellValueNotSet"/>
+
+                            <ImageView
+                                android:id="@+id/img_arrow_smart_mssr_value"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:foregroundGravity="right"
+                                android:tint="@color/theme01.textColorMain"
+                                android:src="@drawable/ic_btn_right_arrow" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <View 
+                        android:id="@+id/layout_smart_mssr_value_line"
                         android:layout_marginTop="5dp" 
                         android:layout_height="1dp" 
                         android:background="@color/theme01.bottomLineColor" 
@@ -1238,7 +1499,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@color/colorPrimary"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal">
                     <Button
@@ -1256,12 +1516,7 @@
                     android:id="@+id/layout_tips_info_segment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:singleLine="false"
-                    android:textSize="12dp"
-                    android:textColor="@color/theme01.textColorMain"
-                    android:padding="5dp"
-                    android:background="@color/theme01.textColorGray"
+                    style="@style/kUiTipsStyle"
                     android:text=" -- "
                     />
 

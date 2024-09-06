@@ -3,7 +3,6 @@ package bitshares
 import android.app.Activity
 import android.content.Context
 import com.btsplusplus.fowallet.*
-import com.fowallet.walletcore.bts.ChainObjectManager
 import com.fowallet.walletcore.bts.WalletManager
 import org.json.JSONArray
 import org.json.JSONObject
@@ -867,34 +866,15 @@ class OtcManager {
      *  (public) 查询动态配置信息
      */
     fun queryConfig(): Promise {
-        val p = Promise()
-        //  TODO:2.9 asste name encode
-        ChainObjectManager.sharedChainObjectManager().queryAssetData("CCTEST").then {
-            var config: JSONObject? = null
-            val asset_data = it as? JSONObject
-            if (asset_data != null) {
-                val json = asset_data.getJSONObject("options").getString("description").to_json_object()
-                val main = json?.optString("main", null)
-                if (main != null && main.isNotEmpty() && main.length % 2 == 0) {
-                    config = main.hexDecode().utf8String().to_json_object()
-                }
+        server_config = SettingManager.sharedSettingManager().getAppCommonSettings("otc_config_info") as? JSONObject
+        server_config?.let { config ->
+            //  更新节点URL
+            val api = config.optJSONObject("urls")?.optString("api", null)
+            if (api != null && api.isNotEmpty()) {
+                _base_api = api.toString()
             }
-            if (config != null) {
-                //  更新节点URL
-                val api = config.optJSONObject("urls")?.optString("api", null)
-                if (api != null && api.isNotEmpty()) {
-                    _base_api = api.toString()
-                }
-                //  更新配置
-                server_config = config
-            }
-            p.resolve(server_config)
-            return@then null
-        }.catch {
-            //  查询失败，返回之前的数据。
-            p.resolve(server_config)
         }
-        return p
+        return Promise._resolve(server_config)
     }
 
     /**
@@ -1670,7 +1650,7 @@ class OtcManager {
                     return@then null
                 }
             }
-            
+
             if (merchant_detail != null) {
                 // `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态:0=默认,0=未激活,1=已激活,2=取消激活,3=冻结',
                 //  TODO:2.9 args progressInfo:nil

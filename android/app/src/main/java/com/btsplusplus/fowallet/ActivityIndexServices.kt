@@ -27,10 +27,10 @@ class ActivityIndexServices : BtsppActivity() {
         setFullScreen()
 
         // 设置底部导航栏样式
-        setBottomNavigationStyle(2)
+        setBottomNavigationStyle(3)
 
         //  设置模块可见性
-        if (ChainObjectManager.sharedChainObjectManager().getMainSmartAssetList().length() > 0) {
+        if (SettingManager.sharedSettingManager().getAppMainSmartAssetList().length() > 0) {
             layout_smart_coin.visibility = View.VISIBLE
         } else {
             layout_smart_coin.visibility = View.GONE
@@ -66,7 +66,13 @@ class ActivityIndexServices : BtsppActivity() {
             layout_group_otc.visibility = View.GONE
         }
 
-        if (BuildConfig.kAppModuleEnableGateway) {
+        val enabled_gateway_list = JSONArray()
+        for (gateway_config in SettingManager.sharedSettingManager().getAppKnownGatewayList().forin<JSONObject>()) {
+            if (gateway_config != null && !gateway_config.isTrue("disabled")) {
+                enabled_gateway_list.put(gateway_config)
+            }
+        }
+        if (enabled_gateway_list.length() > 0) {
             layout_recharge_and_withdraw_of_service.visibility = View.VISIBLE
         } else {
             layout_recharge_and_withdraw_of_service.visibility = View.GONE
@@ -94,7 +100,7 @@ class ActivityIndexServices : BtsppActivity() {
             goTo(ActivityAccountQueryBase::class.java, true)
         }
 
-        if (ChainObjectManager.sharedChainObjectManager().getMainSmartAssetList().length() > 0) {
+        if (SettingManager.sharedSettingManager().getAppMainSmartAssetList().length() > 0) {
             layout_smart_coin.setOnClickListener {
                 goTo(ActivityAssetInfos::class.java, true)
             }
@@ -140,7 +146,7 @@ class ActivityIndexServices : BtsppActivity() {
             }
         }
 
-        if (BuildConfig.kAppModuleEnableGateway) {
+        if (enabled_gateway_list.length() > 0) {
             layout_recharge_and_withdraw_of_service.setOnClickListener {
                 guardWalletExist { goTo(ActivityDepositAndWithdraw::class.java, true) }
             }
@@ -152,7 +158,7 @@ class ActivityIndexServices : BtsppActivity() {
 
         layout_bts_explorer.setOnClickListener {
             //  TODO:插件配置url
-            openURL("https://bts.ai?lang=${resources.getString(R.string.btsaiLangKey)}")
+            openURL("https://explorer.nbs.plus/?lang=${resources.getString(R.string.btsaiLangKey)}")
         }
     }
 

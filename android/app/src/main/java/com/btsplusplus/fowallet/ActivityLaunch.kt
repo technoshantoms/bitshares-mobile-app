@@ -23,7 +23,7 @@ class ActivityLaunch : BtsppActivity() {
         fun checkAppUpdate(): Promise {
             if (BuildConfig.kAppCheckUpdate) {
                 val p = Promise()
-                val version_url = "https://btspp.io/app/android/${BuildConfig.kAppChannelID}_${Utils.appVersionName()}/version.json?t=${Date().time}"
+                val version_url = "https://www.nbsplusplus.com/app/android/${BuildConfig.kAppChannelID}_${Utils.appVersionName()}/version.json?t=${Date().time}"
                 OrgUtils.asyncJsonGet(version_url).then {
                     p.resolve(it as? JSONObject)
                     return@then null
@@ -41,7 +41,7 @@ class ActivityLaunch : BtsppActivity() {
         super.onCreate(savedInstanceState)
 
         //  初始化Flurry
-        FlurryAgent.Builder().withLogEnabled(true).build(this, "H45RRHMWCPMKZNNKR5SR")
+        FlurryAgent.Builder().withLogEnabled(true).build(this, "4G43QGYZRFMSTD7KMXNX")
 
         //  初始化启动界面
         setFullScreen()
@@ -174,6 +174,8 @@ class ActivityLaunch : BtsppActivity() {
                         }
                         //  初始化OTC数据
                         put("kQueryConfig", OtcManager.sharedOtcManager().queryConfig())
+                        //  初始化公告
+                        put("kInitAppAnnouncement", ScheduleManager.sharedScheduleManager().queryAppAnnouncement())
                     }
                     return@then Promise.map(promise_map).then {
                         //  更新全局属性

@@ -1,6 +1,13 @@
 package bitshares
 
 /**
+ *  石墨烯 custom OP 中数据子类型定义
+ */
+enum class EBitsharesCustomDataType(val value: Int) {
+    ebcdt_account_map(0),   //  账号自定义数据存储（插件）
+}
+
+/**
  *  账号模式，密码语言枚举。
  */
 enum class EBitsharesAccountPasswordLang(val value: Int) {
@@ -34,15 +41,20 @@ enum class EBitsharesAssetOpKind(val value: Int) {
     ebaok_publish_feed(9),              //  发布喂价（仅Smart资产）
     ebaok_update_feed_producers(10),    //  更新喂价人员（仅Smart资产）
     ebaok_update_bitasset(11),          //  编辑智能币相关信息（仅Smart资产）
+    ebaok_claim_collateral_fees(12),    //  提取清算手续费和爆仓手续费（仅Smart资产）
 
     //  资产持有者的操作
     ebaok_transfer(100),                //  转账（所有资产）
     ebaok_trade(101),                   //  交易（所有资产）
-    ebaok_reserve(102),                 //  资产销毁（仅UIA资产）
-    ebaok_settle(103),                  //  资产清算（仅Smart资产）
-    ebaok_call_order_update(104),       //  调整债仓（仅Smart资产）
-    ebaok_stake_vote(105),              //  锁仓投票（仅BTS）
-    ebaok_more(106),                    //  虚拟按钮：更多
+    ebaok_miner(102),                   //  参与挖矿（仅针对NBS和CNY）
+    ebaok_fast_swap(103),               //  退出挖矿（仅针对MINER和SCNY）
+    ebaok_gateway_deposit(104),         //  充币（仅针对任意网关资产）
+    ebaok_gateway_withdrawal(105),      //  提币（仅针对任意网关资产）
+    ebaok_reserve(106),                 //  资产销毁（仅UIA资产）
+    ebaok_settle(107),                  //  资产清算（仅Smart资产）
+    ebaok_call_order_update(108),       //  调整债仓（仅Smart资产）
+    ebaok_stake_vote(109),              //  锁仓投票（仅BTS）
+    ebaok_more(110),                    //  虚拟按钮：更多
 }
 
 /**
@@ -58,6 +70,26 @@ enum class EBitsharesAssetFlags(val value: Int) {
     ebat_disable_confidential(0x40),    //  禁止隐私交易
     ebat_witness_fed_asset(0x80),       //  允许见证人提供喂价（和理事会喂价不可同时激活）
     ebat_committee_fed_asset(0x100),    //  允许理事会成员提供喂价（和见证人喂价不可同时激活）
+
+    ///@}
+    /// @note If one of these bits is set in asset issuer permissions,
+    ///       it means the asset issuer (or owner for bitassets) does NOT have the permission to update
+    ///       the corresponding flag, parameters or perform certain actions.
+    ///       This is to be compatible with old client software.
+    ///@{
+    ebat_lock_max_supply(0x200),        ///< the max supply of the asset can not be updated
+    ebat_disable_new_supply(0x400),     ///< unable to create new supply for the asset
+    /// @note These parameters are for issuer permission only.
+    ///       For each parameter, if it is set in issuer permission,
+    ///       it means the bitasset owner can not update the corresponding parameter.
+    ///       In this case, if the value of the parameter was set by the bitasset owner, it can not be updated;
+    ///       if no value was set by the owner, the value can still be updated by the feed producers.
+    ///@{
+    ebat_disable_mcr_update(0x800),     ///< the bitasset owner can not update MCR, permisison only
+    ebat_disable_icr_update(0x1000),    ///< the bitasset owner can not update ICR, permisison only
+    ebat_disable_mssr_update(0x2000),   ///< the bitasset owner can not update MSSR, permisison only
+    ///@}
+    ///@}
 
     //  UIA资产默认权限mask
     ebat_issuer_permission_mask_uia(ebat_charge_market_fee.value.or(ebat_white_list.value).or(ebat_override_authority.value).or(ebat_transfer_restricted.value).or(ebat_disable_confidential.value)),
@@ -226,7 +258,7 @@ enum class EBitsharesFeedPublisherType(val value: Int) {
     ebfpt_custom(2),             //  指定喂价者
 }
 
-const val BTS_ADDRESS_PREFIX: String = "BTS"
+const val BTS_ADDRESS_PREFIX: String = "NBS"
 
 //  BTS公钥地址前缀长度 = strlen(BTS_ADDRESS_PREFIX)
 const val BTS_ADDRESS_PREFIX_LENGTH: Int = 3
@@ -236,10 +268,10 @@ const val BTS_CHAIN_EXPIRE_IN_SECS: Int = 15
 
 //  TODO:4.0 大部分参数可通过 get_config 接口返回。
 //  BTS主网公链ID（正式网络）
-const val BTS_NETWORK_CHAIN_ID: String = "4018d7844c78f6a6c41c6a552b898022310fc5dec06da467ee7905a8dad512c8"
+const val BTS_NETWORK_CHAIN_ID: String = "cd931cb96d657ff0ef0226f7ae9d25175b3cc96a84490a674ed36170830324e7"
 
 //  BTS主网核心资产名称（正式网络）
-const val BTS_NETWORK_CORE_ASSET: String = "BTS"
+const val BTS_NETWORK_CORE_ASSET: String = "NBS"
 
 //  BTS主网核心资产ID号
 const val BTS_NETWORK_CORE_ASSET_ID: String = "1.3.0"
@@ -259,13 +291,19 @@ const val BTS_GRAPHENE_TEMP_ACCOUNT = "1.2.4"
 //  5:代理给自己
 const val BTS_GRAPHENE_PROXY_TO_SELF = "1.2.5"
 
-//  黑名单意见账号：btspp-team
-const val BTS_GRAPHENE_ACCOUNT_BTSPP_TEAM = "1.2.1031560"
+//  黑名单意见账号：committee-account
+const val BTS_GRAPHENE_ACCOUNT_BTSPP_TEAM = "1.2.0"
 
 //  资产最大供应量
 const val GRAPHENE_MAX_SHARE_SUPPLY = 1000000000000000L
 const val GRAPHENE_100_PERCENT = 10000
 const val GRAPHENE_1_PERCENT = (GRAPHENE_100_PERCENT / 100)
+
+const val GRAPHENE_COLLATERAL_RATIO_DENOM = 1000
+const val GRAPHENE_MIN_COLLATERAL_RATIO = 1001  ///< lower than this could result in divide by 0
+const val GRAPHENE_MAX_COLLATERAL_RATIO = 32000 ///< higher than this is unnecessary and may exceed int16 storage
+const val GRAPHENE_DEFAULT_MAINTENANCE_COLLATERAL_RATIO = 1750  ///< Call when collateral only pays off 175% the debt
+const val GRAPHENE_DEFAULT_MAX_SHORT_SQUEEZE_RATIO = 1500  ///< Stop calling when collateral only pays off 150% of the debt
 
 //  BTS网络动态全局信息对象ID号
 //  格式：
@@ -285,6 +323,21 @@ const val GRAPHENE_1_PERCENT = (GRAPHENE_100_PERCENT / 100)
 //        "last_irreversible_block_num"=>28508796}}
 const val BTS_DYNAMIC_GLOBAL_PROPERTIES_ID: String = "2.1.0"
 
+/*
+ *  链端数据存在KEY和类别定义
+ */
+
+//  类别：APP设置
+const val kAppStorageCatalogAppSetings = "app.settings"
+
+//  类别：网格机器人的类别
+const val kAppStorageCatalogBotsGridBots = "system.bots.grid_bots"
+
+//  KEY：APP设置 > 流动性池默认列表
+const val kAppStorageKeyAppSetings_LpMainList = "liquidity.pool.mainlist"
+
+//  KEY：APP设置 > 通用配置
+const val kAppStorageKeyAppSetings_CommonVer01 = "common.settings.ver.1"
 
 /**
  *  各种交易操作枚举定义

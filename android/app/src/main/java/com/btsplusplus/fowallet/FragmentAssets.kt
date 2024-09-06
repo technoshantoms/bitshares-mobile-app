@@ -169,9 +169,12 @@ class FragmentAssets : BtsppFragment() {
         //  继续初始化
         _showAllAssets = _assetDataArray.size <= kAppUserAssetDefaultShowNum
 
+        //  默认记账单位
+        val defaultEstimateAsset = chainMgr.getDefaultEstimateUnitSymbol()
+
         //  这个是显示计价单位
         _displayEstimateAsset = SettingManager.sharedSettingManager().getEstimateAssetSymbol()
-        _needSecondExchange = _displayEstimateAsset != kAppUserAssetCoreEstimateAsset
+        _needSecondExchange = _displayEstimateAsset != defaultEstimateAsset
         //  REMARK：
         //  1、所有资产对CNY进行估价，因为如果其他资产直接对USD等计价可能导致没有匹配的交易对，估值误差较大。比如 SEED/CNY 有估值，SEED/JPY 等直接计较则没估值。
         //  2、如果记账单位为USD等、则把CNY计价再转换为USD计价。
@@ -179,14 +182,14 @@ class FragmentAssets : BtsppFragment() {
         for (asset in _assetDataArray) {
             val quote = asset.getString("name")
             //  记账单位资产，本身不查询。即：CNY/CNY 不查询。
-            if (quote == kAppUserAssetCoreEstimateAsset) {
+            if (quote == defaultEstimateAsset) {
                 continue
             }
-            pairs_list.put(jsonObjectfromKVS("base", kAppUserAssetCoreEstimateAsset, "quote", quote))
+            pairs_list.put(jsonObjectfromKVS("base", defaultEstimateAsset, "quote", quote))
         }
         //  添加 二次兑换系数 查询 CNY到USD 的兑换系数 注意：这里以 _displayEstimateAsset 为 base 获取 ticker 数据。
         if (_needSecondExchange) {
-            pairs_list.put(jsonObjectfromKVS("base", _displayEstimateAsset, "quote", kAppUserAssetCoreEstimateAsset))
+            pairs_list.put(jsonObjectfromKVS("base", _displayEstimateAsset, "quote", defaultEstimateAsset))
         }
         ChainObjectManager.sharedChainObjectManager().queryTickerDataByBaseQuoteSymbolArray(pairs_list).then {
             onEstimateDataReached()
@@ -200,13 +203,16 @@ class FragmentAssets : BtsppFragment() {
         val chainMgr = ChainObjectManager.sharedChainObjectManager()
         var total_estimate_value: Double = 0.0
 
+        //  默认记账单位
+        val defaultEstimateAsset = chainMgr.getDefaultEstimateUnitSymbol()
+
         //  显示精度（以记账单位的精度为准）
         val display_precision = chainMgr.getAssetBySymbol(_displayEstimateAsset).getInt("precision")
 
         //  计算2次兑换比例，如果核心兑换和显示兑换资产不同，则需要2次兑换。
         var fSecondExchangeRate: Double = 1.0
         if (_needSecondExchange) {
-            val ticker = chainMgr.getTickerData(_displayEstimateAsset, kAppUserAssetCoreEstimateAsset)!!
+            val ticker = chainMgr.getTickerData(_displayEstimateAsset, defaultEstimateAsset)!!
             fSecondExchangeRate = ticker.getString("latest").toDouble()
         }
 
@@ -214,7 +220,7 @@ class FragmentAssets : BtsppFragment() {
         for (asset in _assetDataArray) {
             val quote = asset.getString("name")
             //  如果当前资产为基准资产则特殊计算
-            if (quote == kAppUserAssetCoreEstimateAsset) {
+            if (quote == defaultEstimateAsset) {
                 //  基准资产的估算就是资产自身
                 //  REMARK：评估资产总和 = 可用 + 抵押 + 冻结 - 负债。
                 val v1 = asset.getString("balance").toDouble()
@@ -234,7 +240,7 @@ class FragmentAssets : BtsppFragment() {
             } else {
                 //  计算资产相对于基准资产（CNY）的价值
                 //  REMARK：评估资产总和 = 可用 + 抵押 + 冻结 - 负债。
-                val ticker = chainMgr.getTickerData(kAppUserAssetCoreEstimateAsset, quote)!!
+                val ticker = chainMgr.getTickerData(defaultEstimateAsset, quote)!!
                 val v1 = asset.getString("balance").toDouble()
                 val v2 = asset.optString("call_order_value", "0").toDouble()
                 val v3 = asset.optString("limit_order_value", "0").toDouble()
@@ -294,6 +300,7 @@ class FragmentAssets : BtsppFragment() {
         val tv1 = TextView(ctx)
         tv1.text = data.getString("name")
         tv1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13.0f)
+        tv1.paint.isFakeBoldText = true
         tv1.setTextColor(resources.getColor(R.color.theme01_textColorMain))
         tv1.gravity = Gravity.CENTER_VERTICAL
         tv1.setPadding(0, 0, toDp(4.0f), 0)
@@ -306,7 +313,7 @@ class FragmentAssets : BtsppFragment() {
             val tv2 = TextView(ctx)
             tv2.text = if (isCore) "Core" else if (isSmart) "Smart" else "Prediction"
             tv2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 11.0f)
-            tv2.setTextColor(resources.getColor(R.color.theme01_textColorMain))
+            tv2.setTextColor(resources.getColor(R.color.theme01_textColorFlag))
             tv2.gravity = Gravity.CENTER_VERTICAL
             tv2.setPadding(4.dp, 1.dp, 4.dp, 1.dp)
             tv2.background = resources.getDrawable(R.drawable.border_text_view)
@@ -321,7 +328,7 @@ class FragmentAssets : BtsppFragment() {
         } else {
             tv3.text = "≈ ${estimate_value}${SettingManager.sharedSettingManager().getEstimateAssetSymbol()}"
             if (data.getDouble("estimate_value_real") >= 0) {
-                tv3.setTextColor(resources.getColor(R.color.theme01_textColorMain))
+                tv3.setTextColor(resources.getColor(R.color.theme01_textColorGray))
             } else {
                 tv3.setTextColor(resources.getColor(R.color.theme01_tintColor))
             }
@@ -412,13 +419,31 @@ class FragmentAssets : BtsppFragment() {
 
             //  TODO:4.0 后续可扩展【更多】按钮
             val actions = jsonArrayfrom(EBitsharesAssetOpKind.ebaok_transfer, EBitsharesAssetOpKind.ebaok_trade)
-            if (isSmart || isPredictionMarket) {
-                actions.put(EBitsharesAssetOpKind.ebaok_settle)
+
+            //  网关资产判断，如果是网关资产，则添加 充币和提币，去掉其他 action。
+            val asset_id = data.getString("id")
+            val curr_asset = ChainObjectManager.sharedChainObjectManager().getChainObjectByID(asset_id)
+            if (ModelUtils.assetIsGatewayAsset(curr_asset)) {
+                //  【充币】和【提币】
+                actions.put(EBitsharesAssetOpKind.ebaok_gateway_deposit)
+                actions.put(EBitsharesAssetOpKind.ebaok_gateway_withdrawal)
             } else {
-                actions.put(EBitsharesAssetOpKind.ebaok_reserve)
-            }
-            if (isCore) {
-                actions.put(EBitsharesAssetOpKind.ebaok_stake_vote)
+                //  【挖矿】和【闪兑】
+                if (ModelUtils.assetIsMinerInAsset(asset_id)) {
+                    actions.put(EBitsharesAssetOpKind.ebaok_miner)
+                } else if (ModelUtils.assetIsMinerOutAsset(asset_id)) {
+                    actions.put(EBitsharesAssetOpKind.ebaok_fast_swap)
+                }
+
+                if (isSmart || isPredictionMarket) {
+                    actions.put(EBitsharesAssetOpKind.ebaok_settle)
+                } else {
+                    actions.put(EBitsharesAssetOpKind.ebaok_reserve)
+                }
+                //  todo nbs: remote state
+//            if (isCore) {
+//                actions.put(EBitsharesAssetOpKind.ebaok_stake_vote)
+//            }
             }
 
             ly3 = LinearLayout(ctx)
@@ -438,6 +463,10 @@ class FragmentAssets : BtsppFragment() {
                 when (action!!) {
                     EBitsharesAssetOpKind.ebaok_transfer -> tv7.text = R.string.kVcActivityTypeTransfer.xmlstring(ctx)
                     EBitsharesAssetOpKind.ebaok_trade -> tv7.text = R.string.kVcAssetBtnTrade.xmlstring(ctx)
+                    EBitsharesAssetOpKind.ebaok_miner -> tv7.text = resources.getString(R.string.kVcAssetBtnMiner)
+                    EBitsharesAssetOpKind.ebaok_fast_swap -> tv7.text = resources.getString(R.string.kVcAssetBtnFastSwap)
+                    EBitsharesAssetOpKind.ebaok_gateway_deposit -> tv7.text = resources.getString(R.string.kVcAssetBtnGatewayDeposit)
+                    EBitsharesAssetOpKind.ebaok_gateway_withdrawal -> tv7.text = resources.getString(R.string.kVcAssetBtnGatewayWithdrawal)
                     EBitsharesAssetOpKind.ebaok_settle -> tv7.text = R.string.kVcAssetBtnSettle.xmlstring(ctx)
                     EBitsharesAssetOpKind.ebaok_reserve -> tv7.text = R.string.kVcAssetBtnReserve.xmlstring(ctx)
                     EBitsharesAssetOpKind.ebaok_stake_vote -> tv7.text = R.string.kVcAssetBtnStakeVote.xmlstring(ctx)
@@ -445,7 +474,7 @@ class FragmentAssets : BtsppFragment() {
                     else -> assert(false)
                 }
                 tv7.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14.0f)
-                tv7.setTextColor(resources.getColor(R.color.theme01_color03))
+                tv7.setTextColor(resources.getColor(R.color.theme01_textColorHighlight))
                 tv7.gravity = Gravity.CENTER_VERTICAL or Gravity.CENTER
                 tv7.layoutParams = layout_tv7
                 tv7.tag = action
@@ -461,13 +490,7 @@ class FragmentAssets : BtsppFragment() {
 
         }
 
-        // 线
-        val lv_line = View(ctx)
-        val layout_line = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, toDp(1.0f))
-        lv_line.setBackgroundColor(resources.getColor(R.color.theme01_bottomLineColor))
-        lv_line.layoutParams = layout_line
-        layout_line.setMargins(0, 0, 0, toDp(6f))
-
+        //  线
         container.addView(ly1)
         container.addView(ly2)
         for (ly in dynamic_layout_list) {
@@ -476,13 +499,17 @@ class FragmentAssets : BtsppFragment() {
         if (ly3 != null) {
             container.addView(ly3)
         }
-        container.addView(lv_line)
+        container.addView(ViewLine(ctx, margin_bottom = 6.dp))
     }
 
     private fun onActionButtonClicked(clicked_asset_id: String, tag: EBitsharesAssetOpKind) {
         when (tag) {
             EBitsharesAssetOpKind.ebaok_transfer -> _onTransferClicked(tag, clicked_asset_id)
             EBitsharesAssetOpKind.ebaok_trade -> _onTradeClicked(tag, clicked_asset_id)
+            EBitsharesAssetOpKind.ebaok_miner, EBitsharesAssetOpKind.ebaok_fast_swap -> _onAssetMinerClicked(tag, clicked_asset_id)
+            EBitsharesAssetOpKind.ebaok_gateway_deposit, EBitsharesAssetOpKind.ebaok_gateway_withdrawal -> {
+                activity!!.goTo(ActivityDepositAndWithdraw::class.java, true)
+            }
             EBitsharesAssetOpKind.ebaok_settle -> _onAssetSettleClicked(tag, clicked_asset_id)
             EBitsharesAssetOpKind.ebaok_reserve -> {
                 val value = resources.getString(R.string.kVcAssetOpReserveEntrySafeTips)
@@ -494,6 +521,35 @@ class FragmentAssets : BtsppFragment() {
             }
             EBitsharesAssetOpKind.ebaok_stake_vote -> _onAssetStakeVoteClicked(tag, clicked_asset_id)
             else -> assert(false)
+        }
+    }
+
+    /**
+     *  操作 - 资产参与挖矿/退出挖矿
+     */
+    private fun _onAssetMinerClicked(tag: EBitsharesAssetOpKind, clicked_asset_id: String) {
+        val chainMgr = ChainObjectManager.sharedChainObjectManager()
+        val clicked_asset = chainMgr.getChainObjectByID(clicked_asset_id)
+        val oid = clicked_asset.getString("id")
+
+        val miner_item = SettingManager.sharedSettingManager().getAppAssetMinerItem(oid)!!
+
+        val min_to_receive_asset_id = miner_item.getJSONObject("price").getJSONObject("min_to_receive").getString("asset_id")
+
+        val p1 = chainMgr.queryFullAccountInfo(_full_account_data.getJSONObject("account").getString("id"))
+        val p2 = chainMgr.queryAllGrapheneObjects(jsonArrayfrom(min_to_receive_asset_id))
+
+        val self = this
+        activity!!.let { ctx ->
+            VcUtils.simpleRequest(ctx, Promise.all(p1, p2)) {
+                val data_array = it as JSONArray
+                val full_account = data_array.getJSONObject(0)
+                ctx.goTo(ActivityAssetOpMiner::class.java, true, args = JSONObject().apply {
+                    put("miner_item", miner_item)
+                    put("full_account", full_account)
+                    put("title", if (miner_item.isTrue("miner")) self.resources.getString(R.string.kVcTitleAssetOpMinerIn) else self.resources.getString(R.string.kVcTitleAssetOpMinerOut))
+                })
+            }
         }
     }
 
@@ -543,6 +599,9 @@ class FragmentAssets : BtsppFragment() {
                     }
                 }
 
+                //  获取强清手续费
+                val str_force_settle_fee_percent = String.format("%s%%", ModelUtils.getBitAssetDataExtargs(newBitassetData, "force_settle_fee_percent", 2))
+
                 val settleMsgTips = if (hasAlreadyGlobalSettled) {
                     val n_price = OrgUtils.calcPriceFromPriceObject(newBitassetData.getJSONObject("settlement_price"),
                             newAsset.getString("id"),
@@ -550,7 +609,7 @@ class FragmentAssets : BtsppFragment() {
                     val global_settle_price = String.format("%s %s/%s", OrgUtils.formatFloatValue(n_price!!.toDouble(), backing_asset.getInt("precision"), has_comma = false),
                             backing_asset.getString("symbol"), newAsset.getString("symbol"))
 
-                    String.format(resources.getString(R.string.kVcAssetOpSettleUiTipsAlreadyGs), global_settle_price)
+                    String.format(resources.getString(R.string.kVcAssetOpSettleUiTipsAlreadyGs), global_settle_price, str_force_settle_fee_percent)
                 } else {
                     val options = newBitassetData.getJSONObject("options")
                     val force_settlement_delay_sec = options.getInt("force_settlement_delay_sec")
@@ -559,7 +618,7 @@ class FragmentAssets : BtsppFragment() {
                     val n_force_settlement_offset_percent = bigDecimalfromAmount(options.getString("force_settlement_offset_percent"), 4)
                     val n_final = n_force_settlement_offset_percent.add(BigDecimal.ONE)
 
-                    String.format(resources.getString(R.string.kVcAssetOpSettleUiTips), s_delay_hour, n_final.toPriceAmountString())
+                    String.format(resources.getString(R.string.kVcAssetOpSettleUiTips), s_delay_hour, n_final.toPriceAmountString(), str_force_settle_fee_percent)
                 }
                 //  转到清算界面
                 val result_promise = Promise()
@@ -685,13 +744,13 @@ class FragmentAssets : BtsppFragment() {
         var quote_symbol = quote.getString("symbol")
         if (base_symbol == quote_symbol) {
             //  特殊处理
-            if (quote_symbol == "BTS") {
+            if (quote_symbol == chainMgr.grapheneAssetSymbol) {
                 //  修改 base
-                base_symbol = "CNY"
+                base_symbol = chainMgr.getDefaultParameters().getString("core_default_exchange_asset")
                 base = chainMgr.getAssetBySymbol(base_symbol)
             } else {
                 //  修改 quote
-                quote_symbol = "BTS"
+                quote_symbol = chainMgr.grapheneAssetSymbol
                 quote = chainMgr.getAssetBySymbol(quote_symbol)
             }
         }
@@ -719,7 +778,7 @@ class FragmentAssets : BtsppFragment() {
                 val viewAll = TextView(_ctx!!)
                 viewAll.text = _ctx!!.resources.getString(R.string.kVcAssetViewAllAssets)
                 viewAll.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15.0f)
-                viewAll.setTextColor(resources.getColor(R.color.theme01_color03))
+                viewAll.setTextColor(resources.getColor(R.color.theme01_textColorHighlight))
                 viewAll.gravity = Gravity.CENTER or Gravity.CENTER_VERTICAL
                 val viewAll_layout_param = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, toDp(40f))
                 viewAll_layout_param.gravity = Gravity.CENTER or Gravity.CENTER_VERTICAL

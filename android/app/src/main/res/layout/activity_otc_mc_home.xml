@@ -30,6 +30,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
+                    android:tint="@color/theme01.textColorMain"
                     android:src="@drawable/ic_btn_back"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -83,7 +84,7 @@
                             android:id="@+id/tv_mc_first_name_from_otc_mc_home"
                             android:layout_gravity="center_vertical"
                             android:textSize="17dp"
-                            android:textColor="@color/theme01.textColorMain"
+                            android:textColor="@color/theme01.textColorFlag"
                             android:text=""
                             android:layout_width="32dp"
                             android:layout_height="32dp" />
@@ -120,9 +121,9 @@
                                     android:paddingBottom="1dp"
                                     android:paddingLeft="4dp"
                                     android:paddingRight="4dp"
-                                    android:background="@color/theme01.textColorHighlight"
-                                    android:textSize="8dp"
-                                    android:textColor="@color/theme01.textColorMain"
+                                    android:background="@drawable/border_text_view"
+                                    android:textSize="11dp"
+                                    android:textColor="@color/theme01.textColorFlag"
                                     android:text="已认证"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
@@ -146,6 +147,7 @@
                         android:layout_height="20dp"
                         android:foregroundGravity="right"
                         android:layout_gravity="center_vertical|right"
+                        android:tint="@color/theme01.textColorMain"
                         android:src="@drawable/ic_btn_right_arrow" />
                 </LinearLayout>
 
@@ -186,6 +188,7 @@
                         android:layout_height="20dp"
                         android:foregroundGravity="right"
                         android:layout_gravity="center_vertical|right"
+                        android:tint="@color/theme01.textColorMain"
                         android:src="@drawable/ic_btn_right_arrow" />
                 </LinearLayout>
                 <!-- <View android:layout_marginTop="5dp" android:layout_height="1dp" android:background="@color/theme01.bottomLineColor" android:layout_width="fill_parent"></View> -->
@@ -224,6 +227,7 @@
                         android:layout_height="20dp"
                         android:foregroundGravity="right"
                         android:layout_gravity="center_vertical|right"
+                        android:tint="@color/theme01.textColorMain"
                         android:src="@drawable/ic_btn_right_arrow" />
                 </LinearLayout>
                 <!-- <View android:layout_marginTop="5dp" android:layout_height="1dp" android:background="@color/theme01.bottomLineColor" android:layout_width="fill_parent"></View> -->
@@ -262,6 +266,7 @@
                         android:layout_height="20dp"
                         android:foregroundGravity="right"
                         android:layout_gravity="center_vertical|right"
+                        android:tint="@color/theme01.textColorMain"
                         android:src="@drawable/ic_btn_right_arrow" />
                 </LinearLayout>
                 <!-- <View android:layout_marginTop="5dp" android:layout_height="1dp" android:background="@color/theme01.bottomLineColor" android:layout_width="fill_parent"></View> -->
@@ -300,6 +305,7 @@
                         android:layout_height="20dp"
                         android:foregroundGravity="right"
                         android:layout_gravity="center_vertical|right"
+                        android:tint="@color/theme01.textColorMain"
                         android:src="@drawable/ic_btn_right_arrow" />
                 </LinearLayout>
                 <!-- <View android:layout_marginTop="5dp" android:layout_height="1dp" android:background="@color/theme01.bottomLineColor" android:layout_width="fill_parent"></View> -->
@@ -340,6 +346,7 @@
                         android:layout_height="20dp"
                         android:foregroundGravity="right"
                         android:layout_gravity="center_vertical|right"
+                        android:tint="@color/theme01.textColorMain"
                         android:src="@drawable/ic_btn_right_arrow" />
                 </LinearLayout>
                 <!-- <View android:layout_marginTop="5dp" android:layout_height="1dp" android:background="@color/theme01.bottomLineColor" android:layout_width="fill_parent"></View> -->

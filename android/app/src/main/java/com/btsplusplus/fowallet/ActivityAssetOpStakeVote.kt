@@ -16,11 +16,11 @@ import org.json.JSONObject
 import java.math.BigDecimal
 
 //  #ticket.hpp
-const val liquid            = 0
-const val lock_180_days     = 1
-const val lock_360_days     = 2
-const val lock_720_days     = 3
-const val lock_forever      = 4
+const val liquid = 0
+const val lock_180_days = 1
+const val lock_360_days = 2
+const val lock_720_days = 3
+const val lock_forever = 4
 const val TICKET_TYPE_COUNT = 5
 
 class ActivityAssetOpStakeVote : BtsppActivity() {
@@ -121,7 +121,7 @@ class ActivityAssetOpStakeVote : BtsppActivity() {
             iv_select_asset_right_arrow.visibility = View.VISIBLE
 
             //  事件 - 选择资产
-            iv_select_asset_right_arrow.setColorFilter(resources.getColor(R.color.theme01_textColorGray))
+            iv_select_asset_right_arrow.setColorFilter(resources.getColor(R.color.theme01_textColorMain))
             layout_select_asset_from_assets_op_common.setOnClickListener { onSelectAsset() }
         } else {
             tv_asset_symbol.setTextColor(resources.getColor(R.color.theme01_textColorGray))

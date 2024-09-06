@@ -1,6 +1,8 @@
 package bitshares
 
+import com.btsplusplus.fowallet.BuildConfig
 import com.fowallet.walletcore.bts.ChainObjectManager
+import org.json.JSONArray
 import org.json.JSONObject
 
 class SettingManager {
@@ -38,6 +40,10 @@ class SettingManager {
     //    },
     var serverConfig: JSONObject? = null
 
+    //  链上配置数据
+    private var _haveOnChainAppSettings = false                             //  是否存在链上配置数据 默认: false
+    private var _onChainAppSettings = JSONObject()                          //  链上设置数据
+
     constructor()
 
     /**
@@ -48,17 +54,19 @@ class SettingManager {
         val value = settings.optString(kSettingKey_EstimateAssetSymbol)
         //  初始化默认值（CNY）
         if (value == null || value == "") {
-            settings.put(kSettingKey_EstimateAssetSymbol, "CNY")
+            val default_value = ChainObjectManager.sharedChainObjectManager().getDefaultEstimateUnitSymbol()
+            settings.put(kSettingKey_EstimateAssetSymbol, default_value)
             _save_setting_hash(settings)
-            return "CNY"
+            return default_value
         }
 
         //  REMARK：如果设置界面保存的计价货币 symbol 在配置的计价列表移除了，则恢复默认值。
         val currency = ChainObjectManager.sharedChainObjectManager().getEstimateUnitBySymbol(value)
         if (currency == null) {
-            settings.put(kSettingKey_EstimateAssetSymbol, "CNY")
+            val default_value = ChainObjectManager.sharedChainObjectManager().getDefaultEstimateUnitSymbol()
+            settings.put(kSettingKey_EstimateAssetSymbol, default_value)
             _save_setting_hash(settings)
-            return "CNY"
+            return default_value
         }
         assert(currency.getString("symbol") == value)
         return value
@@ -139,5 +147,218 @@ class SettingManager {
     private fun _save_setting_hash(setting: JSONObject) {
         val fullname = OrgUtils.makeFullPathByAppStorage(kAppCacheNameUserSettingByApp)
         OrgUtils.write_file_from_json(fullname, setting)
+    }
+
+    //  app settings on chain
+
+    /**
+     *  (public) 查询所有链上配置信息
+     */
+    fun queryAppSettingsOnChain(): Promise {
+        if (BuildConfig.kAppOnChainSettingsAccount.isEmpty()) {
+            //  链上设置账号为空
+            _queryAppSettingsOnChainResponsed(null)
+            return Promise._resolve(_haveOnChainAppSettings)
+        } else {
+            //  已定义：链上设置账号，查询链上信息。
+            return ChainObjectManager.sharedChainObjectManager().queryAccountStorageInfo(BuildConfig.kAppOnChainSettingsAccount, kAppStorageCatalogAppSetings).then {
+                _queryAppSettingsOnChainResponsed(it as? JSONArray)
+                return@then _haveOnChainAppSettings
+            }
+        }
+    }
+
+    private fun _queryAppSettingsOnChainResponsed(data_array: JSONArray?) {
+        _onChainAppSettings = JSONObject()
+
+        if (data_array == null || data_array.length() <= 0) {
+            _haveOnChainAppSettings = false
+            return
+        }
+
+        _haveOnChainAppSettings = true
+        data_array.forEach<JSONObject> { item ->
+            val key = item!!.getString("key")
+            _onChainAppSettings.put(key, item)
+        }
+    }
+
+    /**
+     *  (public) 获取APP链上设置数据
+     */
+    fun getOnChainAppSetting(key: String): Any? {
+        if (_haveOnChainAppSettings) {
+            val storage_object = _onChainAppSettings.optJSONObject(key)
+            return storage_object?.opt("value")
+        }
+        return null
+    }
+
+    /**
+     *  (public) 获取设置 - 智能币配置列表
+     */
+    fun getAppMainSmartAssetList(): JSONArray {
+        val list = getAppCommonSettings("asset_smart_mainlist") as? JSONArray
+        if (list != null && list.length() > 0) {
+            return list
+        }
+        return ChainObjectManager.sharedChainObjectManager().getMainSmartAssetList()
+    }
+
+    /**
+     *  (public) 获取设置 - 网关列表信息
+     */
+    fun getAppKnownGatewayList(): JSONArray {
+        val list = getAppCommonSettings("gateways") as? JSONArray
+        if (list != null && list.length() > 0) {
+            return list
+        }
+        return JSONArray()
+    }
+
+    /**
+     *  (public) 获取设置 - 已知网关资产发行账号列表
+     */
+    fun getAppKnownGatewayAccounts(): JSONArray {
+        val list = getAppCommonSettings("known_gateway_accounts") as? JSONArray
+        if (list != null && list.length() > 0) {
+            return list
+        }
+        return JSONArray()
+    }
+
+    /**
+     *  (public) 获取设置 - 已知交易所充值账号列表
+     */
+    fun getAppKnownCexDepositAccounts(): JSONArray {
+        val list = getAppCommonSettings("known_cex_deposit_accounts") as? JSONArray
+        if (list != null && list.length() > 0) {
+            return list
+        }
+        return JSONArray()
+    }
+
+    /**
+     *  (public) 获取设置 - 是否启用网格机器人模块
+     */
+    fun isAppEnableModuleGridBots(): Boolean {
+        val grid_bots_trader = getAppParameters("grid_bots_trader") as? String
+        if (grid_bots_trader == null || grid_bots_trader.isEmpty()) {
+            return false
+        }
+        return true
+    }
+
+    /**
+     *  (public) 获取设置 - 获取网格机器人授权账号
+     */
+    fun getAppGridBotsTraderAccount(): String {
+        assert(isAppEnableModuleGridBots())
+        return getAppParameters("grid_bots_trader") as String
+    }
+
+    /**
+     *  (public) 获取设置 - 获取真锁仓挖矿的资产列表
+     */
+    fun getAppLockAssetList(): JSONArray {
+        val list = getAppCommonSettings("lock_list") as? JSONArray
+        if (list != null && list.length() > 0) {
+            return list
+        }
+        return JSONArray()
+    }
+
+    /**
+     *  (public) 获取设置 - 真锁仓挖矿条目
+     */
+    fun getAppAssetLockItem(asset_id: String?): JSONObject? {
+        for (lock_item in getAppLockAssetList().forin<JSONObject>()) {
+            if (asset_id != null && asset_id == lock_item!!.optString("asset_id")) {
+                return lock_item
+            }
+        }
+        return null
+    }
+
+    /**
+     *  (public) 获取设置 - 挖矿资产列表（快速兑换列表）
+     */
+    fun getAppAssetMinerList(): JSONArray {
+        val list = getAppCommonSettings("miner_list") as? JSONArray
+        if (list != null && list.length() > 0) {
+            return list
+        }
+        return JSONArray()
+    }
+
+    /**
+     *  (public) 获取设置 - 挖矿配置条目
+     */
+    fun getAppAssetMinerItem(asset_id: String?): JSONObject? {
+        for (miner_item in getAppAssetMinerList().forin<JSONObject>()) {
+            if (asset_id != null && asset_id == miner_item!!.getJSONObject("price").getJSONObject("amount_to_sell").getString("asset_id")) {
+                return miner_item
+            }
+        }
+        return null
+    }
+
+    /**
+     *  (public) 获取设置 - 资产作为 base 的优先级
+     */
+    fun getAppAssetBasePriority(): JSONObject {
+        val asset_base_priority = getAppCommonSettings("asset_base_priority") as? JSONObject
+        if (asset_base_priority != null && asset_base_priority.length() > 0) {
+            return asset_base_priority
+        }
+        return JSONObject()
+    }
+    
+    /**
+     *  (public) 获取设置 - 读取通用配置
+     */
+    fun getAppCommonSettings(common_key: String): Any? {
+        val common_hash = getOnChainAppSetting(kAppStorageKeyAppSetings_CommonVer01) as? JSONObject
+        if (common_hash == null || common_hash.length() <= 0) {
+            return null
+        }
+        return common_hash.opt(common_key)
+    }
+
+    /**
+     *  (public) 获取设置 - 读取URL配置
+     */
+    fun getAppUrls(url_key: String): String? {
+        val urls = getAppCommonSettings("urls") as? JSONObject
+        if (urls == null || urls.length() <= 0) {
+            return null
+        }
+        return urls.optString(url_key, null)
+    }
+
+    /**
+     *  (public) 获取设置 - 读取动态参数
+     */
+    fun getAppParameters(parameter_key: String): Any? {
+        val parameters = getAppCommonSettings("parameters") as? JSONObject
+        if (parameters == null || parameters.length() <= 0) {
+            return null
+        }
+        return parameters.opt(parameter_key)
+    }
+
+    fun getAppParameters(): JSONObject? {
+        return getAppCommonSettings("parameters") as? JSONObject
+    }
+
+    /**
+     *  (public) 获取设置 - 读取动态参数 - 是否 TRUE 判断
+     */
+    fun isAppParametersTrue(parameter_key: String): Boolean {
+        val parameters = getAppCommonSettings("parameters") as? JSONObject
+        if (parameters == null || parameters.length() <= 0) {
+            return false
+        }
+        return parameters.isTrue(parameter_key)
     }
 }

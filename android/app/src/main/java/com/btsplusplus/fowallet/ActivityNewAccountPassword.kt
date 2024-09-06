@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import bitshares.EBitsharesAccountPasswordLang
 import bitshares.LLAYOUT_WARP
+import bitshares.Utils
 import com.btsplusplus.fowallet.utils.kAppBlindAccountBrainKeyCheckSumPrefix
 import com.fowallet.walletcore.bts.WalletManager
 import kotlinx.android.synthetic.main.activity_new_account_password.*
@@ -23,7 +24,7 @@ class ActivityNewAccountPassword : BtsppActivity() {
 
     private var _currPasswordLang = EBitsharesAccountPasswordLang.ebap_lang_zh
     private var _currPasswordWords = mutableListOf<String>()
-    private var _new_account_name: String? = null
+    private var _args: JSONObject? = null
     private var _scene = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +39,7 @@ class ActivityNewAccountPassword : BtsppActivity() {
         //  获取参数
         val args = btspp_args_as_JSONObject()
         _scene = args.getInt("scene")
-        _new_account_name = args.optString("args", null)
+        _args = args.optJSONObject("args")
         findViewById<TextView>(R.id.title).text = args.getString("title")
 
         //  初始化数据
@@ -58,6 +59,9 @@ class ActivityNewAccountPassword : BtsppActivity() {
 
         //  事件 - 切换语言
         tv_toggle_password_lang.setOnClickListener { onTogglePasswordLang() }
+
+        //  事件 - 复制密码
+        btn_copy_password.setOnClickListener { onCopyButtonClicked() }
 
         //  事件 - 返回
         layout_back_from_new_account_password.setOnClickListener { finish() }
@@ -162,6 +166,20 @@ class ActivityNewAccountPassword : BtsppActivity() {
     }
 
     /**
+     *  (private) 事件 - 复制密码
+     */
+    private fun onCopyButtonClicked() {
+        alerShowMessageConfirm(resources.getString(R.string.kVcHtlcMessageTipsTitle), resources.getString(R.string.kEditPasswordCopyConfirmAsk)).then {
+            if (it != null && it as Boolean) {
+                if (Utils.copyToClipboard(this, _currPasswordWords.joinToString(""))) {
+                    showToast(resources.getString(R.string.kVcDWTipsCopyOK))
+                }
+            }
+            return@then null
+        }
+    }
+
+    /**
      *  (private) 事件 - 点击下一步
      */
     private fun onNextButtonClick() {
@@ -172,7 +190,7 @@ class ActivityNewAccountPassword : BtsppActivity() {
                     goTo(ActivityNewAccountPasswordConfirm::class.java, true, args = JSONObject().apply {
                         put("current_password", _currPasswordWords.joinToString(""))
                         put("pass_lang", _currPasswordLang)
-                        put("args", _new_account_name)
+                        put("args", _args)
                         put("scene", _scene)
                     })
                 }

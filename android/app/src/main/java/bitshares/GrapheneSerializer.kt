@@ -65,7 +65,14 @@ open class T_Base_companion {
         T_account_update.register_subfields()
         T_account_upgrade.register_subfields()
         T_account_transfer.register_subfields()
+        T_linear_vesting_policy_initializer.register_subfields()
+        T_cdd_vesting_policy_initializer.register_subfields()
+        T_vesting_balance_create.register_subfields()
         T_vesting_balance_withdraw.register_subfields()
+
+        T_custom.register_subfields()
+        T_account_storage_map.register_subfields()
+        T_custom_plugin_operation.register_subfields()
 
         T_op_wrapper.register_subfields()
 
@@ -953,6 +960,40 @@ class T_account_transfer : T_Base() {
     }
 }
 
+class T_linear_vesting_policy_initializer : T_Base() {
+    companion object : T_Base_companion() {
+        override fun register_subfields() {
+            add_field("begin_timestamp", T_time_point_sec)
+            add_field("vesting_cliff_seconds", T_uint32)
+            add_field("vesting_duration_seconds", T_uint32)
+        }
+    }
+}
+
+class T_cdd_vesting_policy_initializer : T_Base() {
+    companion object : T_Base_companion() {
+        override fun register_subfields() {
+            add_field("start_claim", T_time_point_sec)
+            add_field("vesting_seconds", T_uint32)
+        }
+    }
+}
+
+class T_vesting_balance_create : T_Base() {
+    companion object : T_Base_companion() {
+        override fun register_subfields() {
+            add_field("fee", T_asset)
+            add_field("creator", Tm_protocol_id_type(EBitsharesObjectType.ebot_account))
+            add_field("owner", Tm_protocol_id_type(EBitsharesObjectType.ebot_account))
+            add_field("amount", T_asset)
+            add_field("policy", Tm_static_variant(JSONArray().apply {
+                put(T_linear_vesting_policy_initializer)
+                put(T_cdd_vesting_policy_initializer)
+            }))
+        }
+    }
+}
+
 class T_vesting_balance_withdraw : T_Base() {
     companion object : T_Base_companion() {
         override fun register_subfields() {
@@ -960,6 +1001,38 @@ class T_vesting_balance_withdraw : T_Base() {
             add_field("vesting_balance", Tm_protocol_id_type(EBitsharesObjectType.ebot_vesting_balance))
             add_field("owner", Tm_protocol_id_type(EBitsharesObjectType.ebot_account))
             add_field("amount", T_asset)
+        }
+    }
+}
+
+class T_custom : T_Base() {
+    companion object : T_Base_companion() {
+        override fun register_subfields() {
+            add_field("fee", T_asset)
+            add_field("payer", Tm_protocol_id_type(EBitsharesObjectType.ebot_account))
+            add_field("required_auths", Tm_set(Tm_protocol_id_type(EBitsharesObjectType.ebot_account)))
+            add_field("id", T_uint16)
+            add_field("data", Tm_bytes())
+        }
+    }
+}
+
+class T_account_storage_map : T_Base() {
+    companion object : T_Base_companion() {
+        override fun register_subfields() {
+            add_field("remove", T_bool)
+            add_field("catalog", T_string)
+            add_field("key_values", Tm_map(T_string, Tm_optional(T_string)))
+        }
+    }
+}
+
+class T_custom_plugin_operation : T_Base() {
+    companion object : T_Base_companion() {
+        override fun register_subfields() {
+            add_field("data", Tm_static_variant(JSONArray().apply {
+                put(T_account_storage_map)
+            }))
         }
     }
 }
@@ -1060,7 +1133,33 @@ class T_bitasset_options : T_Base() {
             add_field("force_settlement_offset_percent", T_uint16)
             add_field("maximum_force_settlement_volume", T_uint16)
             add_field("short_backing_asset", Tm_protocol_id_type(EBitsharesObjectType.ebot_asset))
-            add_field("extensions", Tm_set(T_future_extensions))
+            add_field("extensions", Tm_extension(JSONArray().apply {
+                //  BSIP-77
+                put(JSONObject().apply {
+                    put("name", "initial_collateral_ratio")
+                    put("type", T_uint16)
+                })
+                //  BSIP-75
+                put(JSONObject().apply {
+                    put("name", "maintenance_collateral_ratio")
+                    put("type", T_uint16)
+                })
+                //  BSIP-75
+                put(JSONObject().apply {
+                    put("name", "maximum_short_squeeze_ratio")
+                    put("type", T_uint16)
+                })
+                //  BSIP 74
+                put(JSONObject().apply {
+                    put("name", "margin_call_fee_ratio")
+                    put("type", T_uint16)
+                })
+                //  BSIP-87
+                put(JSONObject().apply {
+                    put("name", "force_settle_fee_percent")
+                    put("type", T_uint16)
+                })
+            }))
         }
     }
 }
@@ -1194,7 +1293,12 @@ class T_asset_claim_fees : T_Base() {
             add_field("fee", T_asset)
             add_field("issuer", Tm_protocol_id_type(EBitsharesObjectType.ebot_account))
             add_field("amount_to_claim", T_asset)                           //  amount_to_claim.asset_id->issuer must == issuer
-            add_field("extensions", Tm_set(T_future_extensions))
+            add_field("extensions", Tm_extension(JSONArray().apply {
+                put(JSONObject().apply {
+                    put("name", "claim_from_asset_id")
+                    put("type", Tm_protocol_id_type(EBitsharesObjectType.ebot_asset))
+                })
+            }))
         }
     }
 }
@@ -1443,7 +1547,9 @@ class T_operation : T_Base() {
                 EBitsharesOperations.ebo_account_update.value -> T_account_update
                 EBitsharesOperations.ebo_account_upgrade.value -> T_account_upgrade
                 EBitsharesOperations.ebo_account_transfer.value -> T_account_transfer
+                EBitsharesOperations.ebo_vesting_balance_create.value -> T_vesting_balance_create
                 EBitsharesOperations.ebo_vesting_balance_withdraw.value -> T_vesting_balance_withdraw
+                EBitsharesOperations.ebo_custom.value -> T_custom
                 EBitsharesOperations.ebo_proposal_create.value -> T_proposal_create
                 EBitsharesOperations.ebo_proposal_update.value -> T_proposal_update
                 EBitsharesOperations.ebo_proposal_delete.value -> T_proposal_delete

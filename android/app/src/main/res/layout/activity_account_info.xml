@@ -32,6 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
+                    android:tint="@color/theme01.textColorMain"
                     android:src="@drawable/ic_btn_back"/>
                 <TextView
                     style="@style/kNavigationBarTextStyle"
@@ -61,7 +62,7 @@
             app:tabTextAppearance="@style/CommonTabTextStyle"
             app:tabIndicatorColor="@color/theme01.tintColor"
             app:tabRippleColor="#aaaaaa"
-            app:tabTextColor="#ffffff">
+            app:tabTextColor="@color/theme01.textColorMain">
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"

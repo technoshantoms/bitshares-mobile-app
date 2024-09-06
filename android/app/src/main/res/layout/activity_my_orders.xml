@@ -30,6 +30,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
+                    android:tint="@color/theme01.textColorMain"
                     android:src="@drawable/ic_btn_back"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -50,6 +51,17 @@
                 android:text="@string/kVcTitleOrderManagement"
                 style="@style/kNavigationBarTextStyle" />
 
+            <Button
+                android:id="@+id/btn_create_bots"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                style="@style/kNavigationBarTextStyle"
+                android:background="#00000000"
+                android:text="+"
+                android:textSize="22dp"
+                android:layout_marginRight="10dp"  />
+
         </FrameLayout>
 
         <android.support.design.widget.TabLayout
@@ -59,7 +71,7 @@
             app:tabTextAppearance="@style/KPageTabTextStyle"
             app:tabIndicatorColor="#ff0000"
             app:tabRippleColor="#aaaaaa"
-            app:tabTextColor="#ffffff">
+            app:tabTextColor="@color/theme01.textColorMain">
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
@@ -75,7 +87,13 @@
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="清算单" />
+                android:text="@string/kVcOrderPageSettleOrders" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tab_item_grid_orders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/kVcOrderPageGridOrders" />
 
         </android.support.design.widget.TabLayout>
 

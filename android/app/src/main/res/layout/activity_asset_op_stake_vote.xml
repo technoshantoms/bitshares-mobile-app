@@ -29,6 +29,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
+                    android:tint="@color/theme01.textColorMain"
                     android:src="@drawable/ic_btn_back"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -92,6 +93,7 @@
                     android:layout_gravity="center_vertical|right"
                     android:layout_weight="1"
                     android:foregroundGravity="right"
+                    android:tint="@color/theme01.textColorMain"
                     android:src="@drawable/ic_btn_right_arrow" />
 
             </LinearLayout>
@@ -133,6 +135,7 @@
                     android:layout_gravity="center_vertical|right"
                     android:layout_weight="1"
                     android:foregroundGravity="right"
+                    android:tint="@color/theme01.textColorMain"
                     android:src="@drawable/ic_btn_right_arrow" />
 
             </LinearLayout>
@@ -220,7 +223,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@color/colorPrimary"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
@@ -238,13 +240,8 @@
                 android:id="@+id/tv_ui_msg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:singleLine="false"
-                android:textSize="12dp"
-                android:textColor="@color/theme01.textColorMain"
-                android:padding="5dp"
-                android:background="@color/theme01.textColorGray"
                 android:text="tips msg"
+                style="@style/kUiTipsStyle"
                 />
 
         </LinearLayout>

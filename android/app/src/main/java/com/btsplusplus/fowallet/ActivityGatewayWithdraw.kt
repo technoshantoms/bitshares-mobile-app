@@ -2,6 +2,7 @@ package com.btsplusplus.fowallet
 
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -234,7 +235,7 @@ class ActivityGatewayWithdraw : BtsppActivity() {
         }
 
         //  提币按钮
-        val tv_button_withdraw = TextViewEx(ctx, resources.getString(R.string.kVcDWWithdrawSubmitButton), gravity = Gravity.CENTER, width = LLAYOUT_MATCH, height = 32.dp, margin_top = 10.dp)
+        val tv_button_withdraw = TextViewEx(ctx, resources.getString(R.string.kVcDWWithdrawSubmitButton), gravity = Gravity.CENTER, width = LLAYOUT_MATCH, height = 32.dp, margin_top = 10.dp, color = R.color.theme01_mainButtonTextColor)
         tv_button_withdraw.setBackgroundColor(resources.getColor(R.color.theme01_mainButtonBackColor))
         tv_button_withdraw.setOnClickListener { gotoWithdrawCore() }
 
@@ -255,6 +256,15 @@ class ActivityGatewayWithdraw : BtsppActivity() {
             aux_data_uilist.forEach<LinearLayout> { addView(it!!) }
             addView(layout_min_withdraw_in_account)
             addView(tv_button_withdraw)
+        }
+
+        //  提示信息
+        val withdrawlTips = _withdrawAssetItem.optString("withdrawlTips")
+        if (withdrawlTips.isNotEmpty()) {
+            tv_ui_msg.text = withdrawlTips
+            tv_ui_msg.visibility = View.VISIBLE
+        } else {
+            tv_ui_msg.visibility = View.GONE
         }
     }
 

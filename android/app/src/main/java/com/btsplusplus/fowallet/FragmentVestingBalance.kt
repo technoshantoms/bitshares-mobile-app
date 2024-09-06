@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import bitshares.*
 import com.btsplusplus.fowallet.ViewEx.TextViewEx
+import com.btsplusplus.fowallet.utils.ModelUtils
 import com.fowallet.walletcore.bts.BitsharesClientManager
 import com.fowallet.walletcore.bts.ChainObjectManager
 import com.fowallet.walletcore.bts.WalletManager
@@ -117,6 +118,10 @@ class FragmentVestingBalance : BtsppFragment() {
             for (it in data_array.forin<JSONObject>()) {
                 val vesting = it!!
                 val oid = vesting.getString("id")
+                //  该界面仅显示普通 vesting balance，略过锁仓挖矿的 vesting balance 对象。
+                if (ModelUtils.isLockMiningVestingObject(vesting)) {
+                    continue
+                }
                 //  略过总金额为 0 的待解冻金额对象。
                 if (vesting.getJSONObject("balance").getString("amount").toLong() == 0L) {
                     continue
@@ -125,6 +130,7 @@ class FragmentVestingBalance : BtsppFragment() {
                 //  cdd_vesting_policy = 1,
                 //  instant_vesting_policy = 2,
                 when (vesting.getJSONArray("policy").getInt(0)) {
+                    EBitsharesVestingPolicy.ebvp_linear_vesting_policy.value,
                     EBitsharesVestingPolicy.ebvp_cdd_vesting_policy.value,
                     EBitsharesVestingPolicy.ebvp_instant_vesting_policy.value -> {
                         var name = nameHash.optString(oid, null)
@@ -141,8 +147,7 @@ class FragmentVestingBalance : BtsppFragment() {
                         _data_array.add(vesting)
                     }
                     else -> {
-                        //  TODO:ebvp_linear_vesting_policy
-                        //  TODO:fowallet 1.7 暂时不支持 linear_vesting_policy
+                        //  不支持的其他的新类型
                     }
                 }
             }
@@ -173,6 +178,12 @@ class FragmentVestingBalance : BtsppFragment() {
 
             var vestingPeriodValue = "--"
             when (vesting.getJSONArray("policy").getInt(0)) {
+                EBitsharesVestingPolicy.ebvp_linear_vesting_policy.value -> {
+                    //  REMARK：vesting_duration_seconds 可为0。
+                    val policy_data = vesting.getJSONArray("policy").getJSONObject(1)
+                    val vesting_seconds = max(policy_data.getLong("vesting_duration_seconds"), 1L)
+                    vestingPeriodValue = Utils.fmtVestingPeriodDateString(_ctx!!, vesting_seconds)
+                }
                 EBitsharesVestingPolicy.ebvp_cdd_vesting_policy.value -> {
                     //  REMARK：解冻周期最低1秒
                     val policy_data = vesting.getJSONArray("policy").getJSONObject(1)
@@ -182,8 +193,7 @@ class FragmentVestingBalance : BtsppFragment() {
                 EBitsharesVestingPolicy.ebvp_instant_vesting_policy.value -> {
                     vestingPeriodValue = R.string.kVestingCellPeriodInstant.xmlstring(_ctx!!)
                 }
-                EBitsharesVestingPolicy.ebvp_linear_vesting_policy.value -> {
-                    //  TODO:不支持
+                else -> {
                     assert(false)
                 }
             }
@@ -255,6 +265,20 @@ class FragmentVestingBalance : BtsppFragment() {
         val policy = vesting.getJSONArray("policy")
 
         when (policy.getInt(0)) {
+            EBitsharesVestingPolicy.ebvp_linear_vesting_policy.value -> {
+                val policy_data = policy.getJSONObject(1)
+                val begin_timestamp = policy_data.getString("begin_timestamp")
+                val begin_timestamp_ts = Utils.parseBitsharesTimeString(begin_timestamp)
+                val now_ts = Utils.now_ts()
+                val vesting_cliff_seconds = policy_data.getLong("vesting_cliff_seconds")
+                if (now_ts <= begin_timestamp_ts || (now_ts - begin_timestamp_ts) < vesting_cliff_seconds) {
+                    val d = Date((begin_timestamp_ts + vesting_cliff_seconds) * 1000)
+                    val f = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                    val s = f.format(d)
+                    showToast(String.format(R.string.kVestingTipsStartClaim.xmlstring(_ctx!!), s))
+                    return
+                }
+            }
             //  验证提取日期
             EBitsharesVestingPolicy.ebvp_cdd_vesting_policy.value -> {
                 val policy_data = policy.getJSONObject(1)
@@ -272,8 +296,8 @@ class FragmentVestingBalance : BtsppFragment() {
             //  不用额外验证
             EBitsharesVestingPolicy.ebvp_instant_vesting_policy.value -> {
             }
-            EBitsharesVestingPolicy.ebvp_linear_vesting_policy.value -> {
-                assert(false)   //  TODO:不支持
+            else -> {
+                assert(false)
             }
         }
 

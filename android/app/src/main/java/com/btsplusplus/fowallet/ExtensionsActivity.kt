@@ -50,10 +50,14 @@ fun AppCompatActivity.setBottomNavigationStyle(position: Int) {
             bottom_nav_image_view_diya.setColorFilter(color)
         }
         2 -> {
+            bottom_nav_text_view_miner.setTextColor(color)
+            bottom_nav_image_view_miner.setColorFilter(color)
+        }
+        3 -> {
             bottom_nav_text_view_services.setTextColor(color)
             bottom_nav_image_view_services.setColorFilter(color)
         }
-        3 -> {
+        4 -> {
             bottom_nav_text_view_my.setTextColor(color)
             bottom_nav_image_view_my.setColorFilter(color)
         }
@@ -83,6 +87,13 @@ fun AppCompatActivity.setBottomNavigationStyle(position: Int) {
     } else {
         bottom_nav_diya_frame.visibility = View.GONE
     }
+    bottom_nav_miner_frame.setOnClickListener {
+        val top = BtsppApp.getInstance().getTopActivity()
+        if (top == null || top !is ActivityIndexMiner) {
+            goTo(ActivityIndexMiner::class.java)
+            BtsppApp.getInstance().finishAllActivity()
+        }
+    }
     bottom_nav_services_frame.setOnClickListener {
         val top = BtsppApp.getInstance().getTopActivity()
         if (top == null || top !is ActivityIndexServices) {
@@ -97,20 +108,6 @@ fun AppCompatActivity.setBottomNavigationStyle(position: Int) {
             BtsppApp.getInstance().finishAllActivity()
         }
     }
-}
-
-fun AppCompatActivity.clearBottomAllColor() {
-    val default_color: Int = resources.getColor(R.color.theme01_textColorGray)
-    //  文字
-    bottom_nav_text_view_markets.setTextColor(default_color)
-    bottom_nav_text_view_diya.setTextColor(default_color)
-    bottom_nav_text_view_services.setTextColor(default_color)
-    bottom_nav_text_view_my.setTextColor(default_color)
-    //  图片
-    bottom_nav_image_view_markets.setColorFilter(default_color)
-    bottom_nav_image_view_diya.setColorFilter(default_color)
-    bottom_nav_image_view_services.setColorFilter(default_color)
-    bottom_nav_image_view_my.setColorFilter(default_color)
 }
 
 fun android.app.Activity.alerShowMessageConfirm(title: String?, message: String): Promise {
@@ -191,7 +188,12 @@ fun android.app.Activity.viewUserAssets(account_name_or_id: String) {
 
     val chainMgr = ChainObjectManager.sharedChainObjectManager()
     chainMgr.queryFullAccountInfo(account_name_or_id).then {
-        val full_account_data = it as JSONObject
+        val full_account_data = it as? JSONObject
+        if (full_account_data == null) {
+            mask.dismiss()
+            showToast(resources.getString(R.string.kGPErrorAccountNotExist))
+            return@then null
+        }
         val userAssetDetailInfos = OrgUtils.calcUserAssetDetailInfos(full_account_data)
         val args = userAssetDetailInfos.getJSONObject("validBalancesHash").keys().toJSONArray()
         return@then chainMgr.queryAllAssetsInfo(args).then {
@@ -286,6 +288,16 @@ fun android.app.Activity.showGrapheneError(error: Any?) {
                     showToast(resources.getString(R.string.kGPErrorApiNodeVersionTooLow))
                     return
                 }
+                if (lowermsg.indexOf("killing limit order due to unable to fill") >= 0) {
+                    showToast(resources.getString(R.string.kGPErrorLimitOrderUnableToFill))
+                    return
+                }
+                //  Execution error: Assert Exception: _dynamic_data_obj->current_supply + o.delta_debt.amount <= _debt_asset->options.max_supply: Borrowing this quantity would exceed MAX_SUPPLY
+                if (lowermsg.indexOf("borrowing this quantity would exceed max_supply") >= 0) {
+                    showToast(resources.getString(R.string.kGPErrorExceedMaxSupply))
+                    return
+                }
+
                 if (lowermsg.indexOf("fee pool balance") >= 0) {
                     //  format = "core_fee_paid <= fee_asset_dyn_data->fee_pool: Fee pool balance of '${b}' is less than the ${r} required to convert ${c}";
                     showToast(resources.getString(R.string.kGPErrorFeePoolInsufficient))
@@ -427,17 +439,19 @@ fun android.app.Activity.GuardProposalOrNormalTransaction(opcode: EBitsharesOper
 fun android.app.Activity.guardWalletUnlocked(checkActivePermission: Boolean, body: (unlocked: Boolean) -> Unit) {
     val walletMgr = WalletManager.sharedWalletManager()
     if (walletMgr.isLocked()) {
-        val title = if (walletMgr.getWalletMode() == AppCacheManager.EWalletMode.kwmPasswordOnlyMode.value) R.string.unlockTipsUnlockAccount.xmlstring(this) else R.string.unlockTipsUnlockWallet.xmlstring(this)
-        val placeholder = when (walletMgr.getWalletMode()) {
-            //  账号密码
-            AppCacheManager.EWalletMode.kwmPasswordOnlyMode.value -> resources.getString(R.string.unlockTipsPleaseInputAccountPassword)
-            //  交易密码
-            AppCacheManager.EWalletMode.kwmPasswordWithWallet.value -> resources.getString(R.string.kLoginTipsPlaceholderTradePassword)
-            AppCacheManager.EWalletMode.kwmPrivateKeyWithWallet.value -> resources.getString(R.string.kLoginTipsPlaceholderTradePassword)
-            AppCacheManager.EWalletMode.kwmBrainKeyWithWallet.value -> resources.getString(R.string.kLoginTipsPlaceholderTradePassword)
-            //  钱包密码
-            AppCacheManager.EWalletMode.kwmFullWalletMode.value -> resources.getString(R.string.registerLoginPagePleaseInputWalletPws)
-            else -> resources.getString(R.string.kLoginImportTipsPleaseInputPassword)
+        val title: String
+        val placeholder: String
+        when (walletMgr.getWalletMode()) {
+            AppCacheManager.EWalletMode.kwmPasswordOnlyMode.value -> {
+                //  解锁账号
+                title = resources.getString(R.string.unlockTipsUnlockAccount)
+                placeholder = resources.getString(R.string.unlockTipsPleaseInputAccountPassword)
+            }
+            else -> {
+                //  解锁钱包
+                title = resources.getString(R.string.unlockTipsUnlockWallet)
+                placeholder = resources.getString(R.string.unlockTipsPleaseInputWalletPassword)
+            }
         }
         UtilsAlert.showInputBox(this, title, placeholder, resources.getString(R.string.unlockBtnUnlock)).then {
             val password = it as? String
