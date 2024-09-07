@@ -282,7 +282,7 @@ typedef enum EBitsharesOperations
 } EBitsharesOperations;
 
 //  BTS公钥地址前缀
-#define BTS_ADDRESS_PREFIX                  "ACB"
+#define BTS_ADDRESS_PREFIX                  "NBS"
 
 //  BTS公钥地址前缀长度 = strlen(BTS_ADDRESS_PREFIX)
 //#define BTS_ADDRESS_PREFIX_LENGTH           3
@@ -293,10 +293,10 @@ typedef enum EBitsharesOperations
 //  TODO:4.0 大部分参数可通过 get_config 接口返回。
 
 //  BTS主网公链ID（正式网络）
-#define BTS_NETWORK_CHAIN_ID                "f4eb7a6b2955e5bad3a5b55d263eae76d94e5118c5f46ec9f37c556000ca9ac1"
+#define BTS_NETWORK_CHAIN_ID                "cd931cb96d657ff0ef0226f7ae9d25175b3cc96a84490a674ed36170830324e7"
 
 //  BTS主网核心资产名称（正式网络）
-#define BTS_NETWORK_CORE_ASSET              "ACB"
+#define BTS_NETWORK_CORE_ASSET              "NBS"
 
 //  BTS主网核心资产ID号
 #define BTS_NETWORK_CORE_ASSET_ID           @"1.3.0"

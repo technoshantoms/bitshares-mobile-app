@@ -33,7 +33,7 @@ enum
     kVcSubDataMiner,        //  MINER推荐挖矿数据
     kVcSubDataScny,         //  SCNY推荐挖矿数据
     
-    kVcSubMinerNbsLock,     //  KSH真锁仓挖矿
+    kVcSubMinerNbsLock,     //  NBS真锁仓挖矿
     kVcSubMyLockList,       //  我的锁仓列表
     
     kVcSubShareLink,        //  邀请好久（推荐挖矿）
@@ -64,7 +64,7 @@ enum
         @[@(kVcSubMinerMining),     @"kMinerCellLabelMinerMining"],                         //  MINER挖矿
         @[@(kVcSubMinerExit),       @"kMinerCellLabelMinerExit"],                           //  退出MINER挖矿
         
-        @[@(kVcSubMinerNbsLock),    @"kMinerCellLabelNbsLock"],                             //  KSH定期挖矿（真锁仓）
+        @[@(kVcSubMinerNbsLock),    @"kMinerCellLabelNbsLock"],                             //  NBS定期挖矿（真锁仓）
         @[@(kVcSubMyLockList),      @"kMinerCellLabelMyLockList"],                          //  我的定期列表
     ];
     
@@ -158,13 +158,13 @@ enum
     switch (section) {
         case kVcSecMiner:
         {
-            sec_title = NSLocalizedString(@"kMinerSecTitleMiner", @"USD锁仓挖矿");
+            sec_title = NSLocalizedString(@"kMinerSecTitleMiner", @"NBS锁仓挖矿");
             url_key = @"mining_miner";
         }
             break;
         case kVcSecScny:
         {
-            sec_title = NSLocalizedString(@"kMinerSecTitleScny", @"CNY抵押挖矿");
+            sec_title = NSLocalizedString(@"kMinerSecTitleScny", @"nbCNY抵押挖矿");
             url_key = @"mining_scny";
         }
             break;
@@ -271,35 +271,35 @@ enum
             case kVcSubMinerMining:
             {
                 [self GuardWalletExist:^{
-                    [self gotoMiningOrExit:@"1.3.0"];   //  KSH TODO:立即值
+                    [self gotoMiningOrExit:@"1.3.0"];   //  NBS TODO:立即值
                 }];
             }
                 break;
             case kVcSubScnyMining:
             {
                 [self GuardWalletExist:^{
-                    [self gotoMiningOrExit:@"1.3.4"];  //  BTC TODO:立即值
+                    [self gotoMiningOrExit:@"1.3.14"];  //  CNY TODO:立即值
                 }];
             }
                 break;
             case kVcSubMinerExit:
             {
                 [self GuardWalletExist:^{
-                    [self gotoMiningOrExit:@"1.3.25"];  //  USD TODO:立即值
+                    [self gotoMiningOrExit:@"1.3.23"];  //  MINER TODO:立即值
                 }];
             }
                 break;
             case kVcSubScnyExit:
             {
                 [self GuardWalletExist:^{
-                    [self gotoMiningOrExit:@"1.3.7"];  //  GOLD TODO:立即值
+                    [self gotoMiningOrExit:@"1.3.24"];  //  SCNY TODO:立即值
                 }];
             }
                 break;
             case kVcSubDataMiner:
             {
                 [self GuardWalletExist:^{
-                    [self gotoViewMiningData:@"1.3.25"  //  USD TODO:立即值
+                    [self gotoViewMiningData:@"1.3.23"  //  MINER TODO:立即值
                                        title:NSLocalizedString(@"kVcTitleAssetMiningDataMiner", @"MINER挖矿数据")];
                 }];
             }
@@ -307,7 +307,7 @@ enum
             case kVcSubDataScny:
             {
                 [self GuardWalletExist:^{
-                    [self gotoViewMiningData:@"1.3.7"  //  GOLD TODO:立即值
+                    [self gotoViewMiningData:@"1.3.24"  //  SCNY TODO:立即值
                                        title:NSLocalizedString(@"kVcTitleAssetMiningDataScny", @"SCNY挖矿数据")];
                 }];
             }
@@ -324,7 +324,7 @@ enum
             case kVcSubMinerNbsLock:
             {
                 [self GuardWalletExist:^{
-                    [self gotoLockMining:@"1.3.0"];  //  KSH真锁仓挖矿 TODO:立即值
+                    [self gotoLockMining:@"1.3.0"];  //  NBS真锁仓挖矿 TODO:立即值
                 }];
             }
                 break;

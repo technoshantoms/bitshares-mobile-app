@@ -1,13 +1,13 @@
 {
   "version": "0",
   "force": "0",
-  "appURL": "https://homepesa.org",
+  "appURL": "https://nbs.plus",
   "newVersionInfo": "",
   "newVersionInfoEn": "",
   "faucetURL": "",
   "wssNodes": {
     "default": [
-      "ws://127.0.0.1:8090/ws",
+      "wss://web.cnvote.vip:80",
     ],
     "cn": [],
     "en": [],

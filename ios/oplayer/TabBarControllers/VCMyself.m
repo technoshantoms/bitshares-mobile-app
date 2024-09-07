@@ -152,7 +152,7 @@ enum
 //                              @"kLblCellShareLink",             //  分享专属链接
                               @"kSettingEx",                    //  设置,
 #ifdef DEBUG
-                              @"Testing Page",
+                              @"测试页面",
 #endif  //  DEBUG
                               nil];
         [obj addObject:@{@"type":@(kVcSetting), @"rows":pSection4}];
@@ -465,7 +465,7 @@ enum
                     case kVcSubTestPage:
                     {
                         vc = [[VCTest alloc] init];
-                        vc.title = @"Test";
+                        vc.title = @"测试页面";
                     }
                         break;
 #endif  //  DEBUG

@@ -76,7 +76,7 @@ enum
         [obj addObject:@[@(kVcSubAccountQuery),     @"kServicesCellLabelAccountSearch"]];       //  帐号查询
         //  TODO:7.0 通用资产查询（目前仅支持智能币查询）
         //  [obj addObject:@[@(kVcSubAssetQuery),       @"TODO:4.0资产查询"]];//TODO:4.0 lang
-        if ([[[ChainObjectManager sharedChainObjectManager] getMainSmartAssetList] count] > 0) {
+        if ([[[SettingManager sharedSettingManager] getAppMainSmartAssetList] count] > 0) {
             [obj addObject:@[@(kVcSubAssetInfos),   @"kServicesCellLabelSmartCoin"]];           //  智能币
         }
     })] copy];
@@ -99,13 +99,16 @@ enum
 #endif  //  kAppModuleEnableOTC
     })] copy];
     
-    NSArray* pSection5 = @[
-#if kAppModuleEnableGateway
-        @[@(kVcSubDepositWithdraw),     @"kServicesCellLabelDepositWithdraw"],                  //  充币提币
-#endif  //  kAppModuleEnableGateway
-        @[@(kVcSubAdvanced),            @"kServicesCellLabelAdvFunction"],                      //  高级功能
-        @[@(kVcSubBtsExplorer),         @"kServicesCellLabelBtsExplorer"],                      //  BTS区块浏览器
-    ];
+    id enabled_gateway_list = [[[SettingManager sharedSettingManager] getAppKnownGatewayList] ruby_select:^BOOL(id gateway_config) {
+        return ![[gateway_config objectForKey:@"disabled"] boolValue];
+    }];
+    NSArray* pSection5 = [[[NSMutableArray array] ruby_apply:(^(id obj) {
+        if (enabled_gateway_list && [enabled_gateway_list count] > 0) {
+            [obj addObject:@[@(kVcSubDepositWithdraw),  @"kServicesCellLabelDepositWithdraw"]]; //  充币提币
+        }
+        [obj addObject:@[@(kVcSubAdvanced),             @"kServicesCellLabelAdvFunction"]];     //  高级功能
+        [obj addObject:@[@(kVcSubBtsExplorer),          @"kServicesCellLabelBtsExplorer"]];     //  BTS区块浏览器
+    })] copy];
     
     _dataArray = [@[pSection1, pSection2, pSection3, pSection4, pSection5] ruby_select:^BOOL(id section) {
         return [section count] > 0;
@@ -352,10 +355,6 @@ enum
             {
                 vc = [[VCAssetInfos alloc] init];
                 vc.title = NSLocalizedString(@"kVcTitleSmartCoin", @"智能币");
-                // TODO:其他点击
-                //  vc = [[VCBtsaiWebView alloc] initWithUrl:@"http://bts.ai/a/cny"];
-                //  vc.title = @"资产查询";
-//                break;
             }
                 break;
                 
@@ -441,8 +440,8 @@ enum
                 break;
             }
                 
-            case kVcSubBtsExplorer:     //  BTS区块浏览器（bts.ai）
-                [OrgUtils safariOpenURL:[NSString stringWithFormat:@"https://bts.ai?lang=%@", NSLocalizedString(@"btsaiLangKey", @"langkey")]];
+            case kVcSubBtsExplorer:     //  NBS区块浏览器（explorer.nbs.plus）
+                [OrgUtils safariOpenURL:[NSString stringWithFormat:@"https://explorer.nbs.plus/?lang=%@", NSLocalizedString(@"btsaiLangKey", @"langkey")]];
                 break;
             default:
                 break;

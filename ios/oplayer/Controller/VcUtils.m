@@ -477,7 +477,7 @@
     }
     if (containWelcomeMessage) {
         value = [NSString stringWithFormat:@"%@\n%@",
-                 NSLocalizedString(@"kShareWelcomeMessage", @"立即注册 KSH 账号，享受每日高额挖矿收益。（推荐使用系统浏览器打开）"), value];
+                 NSLocalizedString(@"kShareWelcomeMessage", @"立即注册 NBS 账号，享受每日高额挖矿收益。（推荐使用系统浏览器打开）"), value];
     }
     
     return value;

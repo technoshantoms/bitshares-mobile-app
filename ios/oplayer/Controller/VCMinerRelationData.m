@@ -285,7 +285,7 @@ enum
     
     [self showBlockViewWithTitle:NSLocalizedString(@"kTipsBeRequesting", @"请求中...")];
     
-    BOOL is_miner = [_asset_id isEqualToString:@"1.3.25"];  //  TODO:MINER立即值
+    BOOL is_miner = [_asset_id isEqualToString:@"1.3.23"];  //  TODO:MINER立即值
     NSInteger i_master_minimum = [[[SettingManager sharedSettingManager] getAppParameters:is_miner ? @"master_minimum_miner" : @"master_minimum_scny"] integerValue];
     
     //  查询推荐关系
@@ -487,7 +487,7 @@ enum
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BOOL is_miner = [_asset_id isEqualToString:@"1.3.25"];  //  TODO:MINER立即值
+    BOOL is_miner = [_asset_id isEqualToString:@"1.3.23"];  //  TODO:MINER立即值
     
     if (indexPath.section == kVcSecHeader) {
         _header.is_miner = is_miner;

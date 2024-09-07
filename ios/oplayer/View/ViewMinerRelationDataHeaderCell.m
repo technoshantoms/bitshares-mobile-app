@@ -217,11 +217,11 @@
     if (_is_miner) {
         str_miner_prefix = NSLocalizedString(@"kMinerNBSMiningRewardTitle", @"MINER锁仓挖矿收益");
         str_share_prefix = NSLocalizedString(@"kMinerNBSShareMiningRewardTitle", @"MINER推荐挖矿收益");
-        str_mining_asset_symbol = @"USD";
+        str_mining_asset_symbol = @"MINER";
     } else {
         str_miner_prefix = NSLocalizedString(@"kMinerCNYMiningRewardTitle", @"SCNY抵押挖矿收益");
         str_share_prefix = NSLocalizedString(@"kMinerCNYShareMiningRewardTitle", @"SCNY推荐挖矿收益");
-        str_mining_asset_symbol = @"CNY";
+        str_mining_asset_symbol = @"SCNY";
     }
     
     ChainObjectManager* chainMgr = [ChainObjectManager sharedChainObjectManager];
